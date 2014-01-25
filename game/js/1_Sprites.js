@@ -4,7 +4,9 @@
 
 resources.load([
     'res/background.png',
-	'res/player.png'
+	'res/player_square.png',
+	'res/player_circle.png',
+	'res/player_triangle.png'
 ]);
 resources.onReady(initialize);
  

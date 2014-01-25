@@ -16,6 +16,10 @@ var pressedKeys = [];
 var gameTime = 0;
 var paused = false;
 
+var PLAYER_IS_CIRCLE = 1;
+var PLAYER_IS_SQUARE = 2;
+var PLAYER_IS_TRIANGLE = 3;
+
 var FRICTION = 0.95;
 var FLOOR = canvas.height;
 var SQUARE_SPEED = 300;
@@ -28,7 +32,9 @@ var CIRCLE_SPEED = 600;
 
 resources.load([
     'res/background.png',
-	'res/player.png'
+	'res/player_square.png',
+	'res/player_circle.png',
+	'res/player_triangle.png'
 ]);
 resources.onReady(initialize);
  
@@ -258,14 +264,13 @@ function Player(x,y,width,height){
 
 	Entity.call(this,x,y,width,height);
 	
-	this.speed = 600;
-	this.jumpSpeed = (-577);
+	this.speed = 300;
 	this.vx = 0;
 	this.vy = 0;
-	
+	this.currentType = PLAYER_IS_SQUARE;
 	this.midAir = false;
 	
-	this.sprite = new Sprite('res/player.png', [0, 0], [40,40] , 12, [0]);
+	this.sprite = new Sprite('res/player_square.png', [0, 0], [40,40] , 12, [0]);
 	
 	this.update = function(dt) {
 		this.vx *= FRICTION;
@@ -276,8 +281,26 @@ function Player(x,y,width,height){
 		}
 	
 		this.x += this.vx * dt;
-		this.y += this.vy ;
+		this.y += this.vy;
 	}
+	
+	this.transform = function(type){
+		if(type == PLAYER_IS_CIRCLE){
+			this.speed = 600;
+			this.sprite = new Sprite('res/player_circle.png', [0, 0], [40,40] , 12, [0]);
+			this.currentType = PLAYER_IS_CIRCLE;
+		}
+		else if(type == PLAYER_IS_SQUARE){
+			this.speed = 300;
+			this.sprite = new Sprite('res/player_square.png', [0, 0], [40,40] , 12, [0]);
+			this.currentType = PLAYER_IS_SQUARE;
+		}
+		else if(type == PLAYER_IS_TRIANGLE){
+			this.speed = 300;
+			this.sprite = new Sprite('res/player_triangle.png', [0, 0], [40,40] , 12, [0]);
+			this.currentType = PLAYER_IS_TRIANGLE;
+		}
+	};
 	
 }
 
@@ -293,19 +316,43 @@ function Keyboard(){
 		//alert(dt);
 	
 		//PLAYER MOVEMENT
-		if(pressedKeys[VK_LEFT]){
+		if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
 			player.vx -= player.speed * dt;
 		}
-		else if(pressedKeys[VK_RIGHT]){
+		else if(pressedKeys[VK_RIGHT] || pressedKeys[VK_D]){
 			player.vx += player.speed * dt;
         }
 		
-		//PLAYER JUMP
-		if(pressedKeys[VK_UP] || pressedKeys[VK_W]){
-			if(!player.midAir){
-				player.vy = player.jumpSpeed * dt;
-				player.midAir = true;
+		//PLAYER SKILL
+		if(pressedKeys[VK_S]){
+			//CIRCLE -- JUMP
+			if(player.currentType == PLAYER_IS_CIRCLE){
+				if(!player.midAir){
+					player.vy = (-577) * dt;
+					player.midAir = true;
+				}
 			}
+			//SQUARE -- PUSH
+			else if(player.currentType == PLAYER_IS_SQUARE){
+				
+			}
+			//TRIANGLE -- DESTROY
+			else if(player.currentType == PLAYER_IS_TRIANGLE){
+				
+			}
+		}
+		
+		//TRANSFORM TO CIRCLE
+		if(pressedKeys[VK_Q]){
+			player.transform(PLAYER_IS_CIRCLE);
+		}
+		//TRANSFORM TO SQUARE
+		if(pressedKeys[VK_W]){
+			player.transform(PLAYER_IS_SQUARE);
+		}
+		//TRANSFORM TO TRIANGLE
+		if(pressedKeys[VK_E]){
+			player.transform(PLAYER_IS_TRIANGLE);
 		}
 		
 	};
