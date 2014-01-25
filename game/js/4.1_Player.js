@@ -12,9 +12,14 @@ function Player(x, y){
 	this.collidingWith;
 	this.collidingFrom;
 	
-	this.sprite = new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+	this.currentSprites = playerCircleSprites;
+	this.currentAction = IDLE;
+	this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 	
 	this.update = function(dt) {
+		this.determineCurrentAction();
+	
+		this.sprite = this.currentSprites[this.currentAction];
 		this.sprite.update(dt);
 		
 		if(Math.abs(this.vx)<=0.3){
@@ -86,19 +91,37 @@ function Player(x, y){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
 				this.speed = 600;
-				this.sprite = new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+				this.currentSprites = playerCircleSprites;
+				//this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
 				this.speed = 300;
-				this.sprite = new Sprite('res/player_square.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
+				this.currentSprites = playerSquareSprites;
+				//this.sprite = player_square_walking;//new Sprite('res/player_square.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
 				this.speed = 300;
-				this.sprite = new Sprite('res/player_triangle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
+				this.currentSprites = playerTriangleSprites;
+				//this.sprite = player_triangle_walking;//new Sprite('res/player_triangle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_TRIANGLE;
 			}
+		}
+	};
+	
+	this.determineCurrentAction = function(){
+		//idle
+		if(this.vx == 0 && this.vy == 0){
+			this.currentAction = IDLE;
+		}
+		//walking
+		else if(this.vx != 0 && !this.midAir){
+			this.currentAction = WALKING;
+		}
+		//skill
+		else if(this.vy != 0 && this.midAir){
+			this.currentAction = SKILL;
 		}
 	};
 	

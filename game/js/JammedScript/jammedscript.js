@@ -46,11 +46,46 @@ resources.load([
 	'res/square_spritesheet.png',
 	'res/circle_spritesheet.png',
 	'res/player_triangle.png',
+	'res/triangle_spritesheet.png',
 	'res/box.png'
 ]);
 resources.onReady(initialize);
  
 var backgroundPattern;
+var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
+
+//(url, pos, size, speed, frames, dir, once) 
+var IDLE = 0;
+var WALKING = 1;
+var SKILL = 2;
+
+var playerCircleSprites = new Array();
+var playerSquareSprites = new Array();
+var playerTriangleSprites = new Array();
+
+var player_circle_idle = new Sprite('res/circle_spritesheet.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
+var player_square_idle = new Sprite('res/square_spritesheet.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
+var player_triangle_idle = new Sprite('res/triangle_spritesheet.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
+
+var player_circle_walking = new Sprite('res/circle_spritesheet.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
+var player_square_walking = new Sprite('res/square_spritesheet.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
+var player_triangle_walking = new Sprite('res/triangle_spritesheet.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
+
+var player_circle_skill = new Sprite('res/circle_spritesheet.png', [0,256], spritesize, 7, [0], 'horizontal', false);
+var player_square_skill = new Sprite('res/square_spritesheet.png', [0,256], spritesize, 7, [0], 'horizontal', false);
+var player_triangle_skill = new Sprite('res/triangle_spritesheet.png', [0,256], spritesize, 7, [0], 'horizontal', false);
+
+playerCircleSprites[IDLE] = player_circle_idle;
+playerCircleSprites[WALKING] = player_circle_walking;
+playerCircleSprites[SKILL] = player_circle_skill;
+
+playerSquareSprites[IDLE] = player_square_idle;
+playerSquareSprites[WALKING] = player_square_walking;
+playerSquareSprites[SKILL] = player_square_skill;
+
+playerTriangleSprites[IDLE] = player_triangle_idle;
+playerTriangleSprites[WALKING] = player_triangle_walking;
+playerTriangleSprites[SKILL] = player_triangle_skill;
 
 // Jamming from file: 2_VkValues.js
 /* *************************
@@ -343,9 +378,14 @@ function Player(x, y){
 	this.collidingWith;
 	this.collidingFrom;
 	
-	this.sprite = new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+	this.currentSprites = playerCircleSprites;
+	this.currentAction = IDLE;
+	this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 	
 	this.update = function(dt) {
+		this.determineCurrentAction();
+	
+		this.sprite = this.currentSprites[this.currentAction];
 		this.sprite.update(dt);
 		
 		if(Math.abs(this.vx)<=0.3){
@@ -417,25 +457,44 @@ function Player(x, y){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
 				this.speed = 600;
-				this.sprite = new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+				this.currentSprites = playerCircleSprites;
+				//this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
 				this.speed = 300;
-				this.sprite = new Sprite('res/player_square.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
+				this.currentSprites = playerSquareSprites;
+				//this.sprite = player_square_walking;//new Sprite('res/player_square.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
 				this.speed = 300;
-				this.sprite = new Sprite('res/player_triangle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
+				this.currentSprites = playerTriangleSprites;
+				//this.sprite = player_triangle_walking;//new Sprite('res/player_triangle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_TRIANGLE;
 			}
+		}
+	};
+	
+	this.determineCurrentAction = function(){
+		//idle
+		if(this.vx == 0 && this.vy == 0){
+			this.currentAction = IDLE;
+		}
+		//walking
+		else if(this.vx != 0 && !this.midAir){
+			this.currentAction = WALKING;
+		}
+		//skill
+		else if(this.vy != 0 && this.midAir){
+			this.currentAction = SKILL;
 		}
 	};
 	
 }
 
 var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE);
+
 // Jamming from file: 4.2_Box.js
 /* *************************
  * "CLASS": Box
