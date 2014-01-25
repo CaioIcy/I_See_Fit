@@ -14,3 +14,5 @@ var pressedKeys = [];
 
 var gameTime = 0;
 var paused = false;
+
+var FRICTION = 0.95;

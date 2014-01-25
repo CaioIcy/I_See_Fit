@@ -16,6 +16,8 @@ var pressedKeys = [];
 var gameTime = 0;
 var paused = false;
 
+var FRICTION = 0.95;
+
 // Jamming from file: 1_Sprites.js
 /* *************************
  * Game Images
@@ -247,6 +249,8 @@ function Player(x,y,width,height){
 	this.sprite = new Sprite('res/player.png', [0, 0], [40,40] , 12, [0]);
 	
 	this.update = function(dt) {
+		this.vx *= FRICTION;
+	
 		this.x += this.vx * dt;
 		this.y += this.vy * dt;
 	}
@@ -265,10 +269,10 @@ function Keyboard(){
 	
 		//PLAYER MOVEMENT
 		if(pressedKeys[VK_LEFT]){
-			player.vx -= 1;
+			player.vx -= 10;
 		}
 		else if(pressedKeys[VK_RIGHT]){
-			player.vx += 1;
+			player.vx += 10;
         }
 		
 	};

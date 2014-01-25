@@ -9,6 +9,8 @@ function Player(x,y,width,height){
 	this.sprite = new Sprite('res/player.png', [0, 0], [40,40] , 12, [0]);
 	
 	this.update = function(dt) {
+		this.vx *= FRICTION;
+	
 		this.x += this.vx * dt;
 		this.y += this.vy * dt;
 	}

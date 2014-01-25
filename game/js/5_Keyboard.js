@@ -8,10 +8,10 @@ function Keyboard(){
 	
 		//PLAYER MOVEMENT
 		if(pressedKeys[VK_LEFT]){
-			player.vx -= 1;
+			player.vx -= 10;
 		}
 		else if(pressedKeys[VK_RIGHT]){
-			player.vx += 1;
+			player.vx += 10;
         }
 		
 	};
