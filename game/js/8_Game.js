@@ -3,14 +3,10 @@
  * *************************/
 
 function update(dt){
-	keyboard.checkPause();
-	if(!paused){
+	
 		keyboard.updateKeyInput(dt);
 		mouse.update();
-	}
-	else{
-		//do nothing, paused
-	}
+		player.update(dt);
  }
 
 function render(){
@@ -18,9 +14,9 @@ function render(){
 	d.fillStyle = backgroundPattern;
 	d.fillRect(0, 0, canvas.width, canvas.height);
 	
-	renderHUD();
+	player.render();
 	
-	
+	renderHUD();	
 	
 }
 

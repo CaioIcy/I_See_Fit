@@ -2,10 +2,12 @@
  * "CLASS": Entity
  * *************************/
 
-function Entity(x, y){
+function Entity(x, y, width, height){
 
 	this.x = x;
 	this.y = y;
+	this.width = width;
+	this.height = height;
 	
 	this.sprite;
 	this.speed;

@@ -8,23 +8,6 @@ function Keyboard(){
 	
 	};
 	
-	this.checkPause = function(){
-		//PAUSE
-		if(pressedKeys[VK_ENTER]){
-			if(paused){
-				alert("paused = false");
-				paused = false;
-			}
-			else{
-				alert("paused = true");
-				paused = true;
-			}
-		}
-		else{
-		
-		}
-	};
-	
 }
 
 function keyPressed(e) {
@@ -33,6 +16,15 @@ function keyPressed(e) {
 	}
 	e=e||event;
 	pressedKeys[e.keyCode] = true;
+	
+	if(pressedKeys[VK_ENTER]){
+			if(paused){
+				paused = false;
+			}
+			else{
+				paused = true;
+			}
+		}
 };
 
 function keyReleased(e){

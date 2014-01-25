@@ -190,10 +190,12 @@ function renderHUD(){
  * "CLASS": Entity
  * *************************/
 
-function Entity(x, y){
+function Entity(x, y, width, height){
 
 	this.x = x;
 	this.y = y;
+	this.width = width;
+	this.height = height;
 	
 	this.sprite;
 	this.speed;
@@ -220,23 +222,6 @@ function Keyboard(){
 	
 	};
 	
-	this.checkPause = function(){
-		//PAUSE
-		if(pressedKeys[VK_ENTER]){
-			if(paused){
-				alert("paused = false");
-				paused = false;
-			}
-			else{
-				alert("paused = true");
-				paused = true;
-			}
-		}
-		else{
-		
-		}
-	};
-	
 }
 
 function keyPressed(e) {
@@ -245,6 +230,15 @@ function keyPressed(e) {
 	}
 	e=e||event;
 	pressedKeys[e.keyCode] = true;
+	
+	if(pressedKeys[VK_ENTER]){
+			if(paused){
+				paused = false;
+			}
+			else{
+				paused = true;
+			}
+		}
 };
 
 function keyReleased(e){
@@ -340,20 +334,41 @@ window.addEventListener('mousemove', mouseXY, false);
 window.addEventListener('mousedown', doMouseClick, false);
 
 
-// Jamming from file: 7_Game.js
+// Jamming from file: 7_Player.js
+
+function Player(x,y,width,height){
+
+	Entity.call(this,x,y,width,height);
+	
+	this.render = function(){
+		
+		d.fillStyle = "black";
+		d.fillRect(player.x,player.y,player.width,player.height);
+		
+	}
+	
+	this.update = function(dt) {
+		if(pressedKeys[VK_LEFT]){
+			this.x=this.x-1;
+		}
+		else if(pressedKeys[VK_RIGHT]){
+			this.x=this.x+1;
+		}
+	}
+	
+}
+
+player = new Player(50, canvas.height - 40, 40, 40);
+// Jamming from file: 8_Game.js
 /* *************************
  * Main
  * *************************/
 
 function update(dt){
-	keyboard.checkPause();
-	if(!paused){
+	
 		keyboard.updateKeyInput(dt);
 		mouse.update();
-	}
-	else{
-		//do nothing, paused
-	}
+		player.update(dt);
  }
 
 function render(){
@@ -361,9 +376,9 @@ function render(){
 	d.fillStyle = backgroundPattern;
 	d.fillRect(0, 0, canvas.width, canvas.height);
 	
-	renderHUD();
+	player.render();
 	
-	
+	renderHUD();	
 	
 }
 
