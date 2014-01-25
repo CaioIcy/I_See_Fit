@@ -273,7 +273,7 @@ function Player(x,y,width,height){
 		}
 	
 		this.x += this.vx * dt;
-		this.y += this.vy * dt;
+		this.y += this.vy ;
 	}
 	
 }
@@ -290,16 +290,16 @@ function Keyboard(){
 	
 		//PLAYER MOVEMENT
 		if(pressedKeys[VK_LEFT]){
-			player.vx -= 10;
+			player.vx -= 15;
 		}
 		else if(pressedKeys[VK_RIGHT]){
-			player.vx += 10;
+			player.vx += 15;
         }
 		
 		//PLAYER JUMP
 		if(pressedKeys[VK_UP] || pressedKeys[VK_W]){
 			if(!player.midAir){
-				player.vy = -40;
+				player.vy = -15;
 				player.midAir = true;
 			}
 		}

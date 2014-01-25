@@ -19,7 +19,7 @@ function Player(x,y,width,height){
 		}
 	
 		this.x += this.vx * dt;
-		this.y += this.vy * dt;
+		this.y += this.vy ;
 	}
 	
 }
