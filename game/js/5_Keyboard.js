@@ -46,7 +46,10 @@ function Keyboard(){
 			}
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
-				
+				if(player.collidingWith != false){
+					player.collidingWith.destroy();
+					player.collidingWith = false;
+				}
 			}
 		}
 		else{
