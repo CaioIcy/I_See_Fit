@@ -130,7 +130,7 @@ function Player(x, y){
 	
 	this.checkDirection = function(){
 		if(this.vx > 0){
-			//player_direction = 'right';
+			player_direction = 'right';
 			playerCircleSprites[IDLE] =  player_circle_idle_right;
 			playerCircleSprites[WALKING] = player_circle_walking_right;
 			playerCircleSprites[SKILL] = player_circle_skill_right;
@@ -144,7 +144,7 @@ function Player(x, y){
 			playerTriangleSprites[SKILL] = player_triangle_skill_right;
 		}
 		else{
-			//player_direction = 'left';
+			player_direction = 'left';
 			playerCircleSprites[IDLE] =  player_circle_idle_left;
 			playerCircleSprites[WALKING] = player_circle_walking_left;
 			playerCircleSprites[SKILL] = player_circle_skill_left;

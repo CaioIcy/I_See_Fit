@@ -34,4 +34,7 @@ var NOT_COLLIDING = 5;
 var SPRITE_SIZE = 64;
 var JUMPSPEED = (-830);
 
+var player_direction = '';
 
+var LEFT_CAMERA_PIN = 200;
+var RIGHT_CAMERA_PIN = 600;

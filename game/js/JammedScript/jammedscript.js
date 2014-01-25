@@ -35,7 +35,10 @@ var NOT_COLLIDING = 5;
 var SPRITE_SIZE = 64;
 var JUMPSPEED = (-830);
 
+var player_direction = '';
 
+var LEFT_CAMERA_PIN = 200;
+var RIGHT_CAMERA_PIN = 600;
 
 // Jamming from file: 1.0_Sprites.js
 /* *************************
@@ -46,10 +49,13 @@ resources.load([
     'res/background.png',
 	'res/player_circle.png',
 	'res/player_square.png',
-	'res/square_spritesheet.png',
-	'res/circle_spritesheet.png',
+	'res/square_spritesheet_left.png',
+	'res/square_spritesheet_right.png',
+	'res/circle_spritesheet_left.png',
+	'res/circle_spritesheet_right.png',
 	'res/player_triangle.png',
-	'res/triangle_spritesheet.png',
+	'res/triangle_spritesheet_left.png',
+	'res/triangle_spritesheet_right.png',
 	'res/box.png'
 ]);
 resources.onReady(initialize);
@@ -66,29 +72,43 @@ var playerCircleSprites = new Array();
 var playerSquareSprites = new Array();
 var playerTriangleSprites = new Array();
 
-var player_circle_idle = new Sprite('res/circle_spritesheet.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
-var player_square_idle = new Sprite('res/square_spritesheet.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
-var player_triangle_idle = new Sprite('res/triangle_spritesheet.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
+/* RIGHT */
+var player_circle_idle_right = new Sprite('res/circle_spritesheet_right.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
+var player_square_idle_right = new Sprite('res/square_spritesheet_right.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_triangle_idle_right = new Sprite('res/triangle_spritesheet_right.png', [0,0], spritesize, 0, [0], 'horizontal', true);
 
-var player_circle_walking = new Sprite('res/circle_spritesheet.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
-var player_square_walking = new Sprite('res/square_spritesheet.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
-var player_triangle_walking = new Sprite('res/triangle_spritesheet.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
+var player_circle_walking_right = new Sprite('res/circle_spritesheet_right.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
+var player_square_walking_right = new Sprite('res/square_spritesheet_right.png', [0,64], spritesize, 7, [0,1,2,3,4,5,6], 'horizontal', false);
+var player_triangle_walking_right = new Sprite('res/triangle_spritesheet_right.png', [0,128], spritesize, 7, [0,1,2,3,4,5,6,7], 'horizontal', false);
 
-var player_circle_skill = new Sprite('res/circle_spritesheet.png', [0,256], spritesize, 7, [0], 'horizontal', false);
-var player_square_skill = new Sprite('res/square_spritesheet.png', [0,256], spritesize, 7, [0], 'horizontal', false);
-var player_triangle_skill = new Sprite('res/triangle_spritesheet.png', [0,256], spritesize, 7, [0], 'horizontal', false);
+var player_circle_skill_right = new Sprite('res/circle_spritesheet_right.png', [0,256], spritesize, 7, [0], 'horizontal', false);
+var player_square_skill_right = new Sprite('res/square_spritesheet_right.png', [0,128], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_triangle_skill_right = new Sprite('res/triangle_spritesheet_right.png', [0,64], spritesize, 7, [0,1,2,3], 'horizontal', false);
 
-playerCircleSprites[IDLE] = player_circle_idle;
-playerCircleSprites[WALKING] = player_circle_walking;
-playerCircleSprites[SKILL] = player_circle_skill;
+/* LEFT */
+var player_circle_idle_left = new Sprite('res/circle_spritesheet_left.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
+var player_square_idle_left = new Sprite('res/square_spritesheet_left.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_triangle_idle_left = new Sprite('res/triangle_spritesheet_left.png', [0,0], spritesize, 0, [0], 'horizontal', true);
 
-playerSquareSprites[IDLE] = player_square_idle;
-playerSquareSprites[WALKING] = player_square_walking;
-playerSquareSprites[SKILL] = player_square_skill;
+var player_circle_walking_left = new Sprite('res/circle_spritesheet_left.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
+var player_square_walking_left = new Sprite('res/square_spritesheet_left.png', [0,64], spritesize, 7, [0,1,2,3,4,5,6], 'horizontal', false);
+var player_triangle_walking_left = new Sprite('res/triangle_spritesheet_left.png', [0,128], spritesize, 7, [0,1,2,3,4,5,6,7], 'horizontal', false);
 
-playerTriangleSprites[IDLE] = player_triangle_idle;
-playerTriangleSprites[WALKING] = player_triangle_walking;
-playerTriangleSprites[SKILL] = player_triangle_skill;
+var player_circle_skill_left = new Sprite('res/circle_spritesheet_left.png', [0,256], spritesize, 7, [0], 'horizontal', false);
+var player_square_skill_left = new Sprite('res/square_spritesheet_left.png', [0,128], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_triangle_skill_left = new Sprite('res/triangle_spritesheet_left.png', [0,64], spritesize, 7, [0,1,2,3], 'horizontal', false);
+
+playerCircleSprites[IDLE] =  player_circle_idle_left;
+playerCircleSprites[WALKING] = player_circle_walking_left;
+playerCircleSprites[SKILL] = player_circle_skill_left;
+
+playerSquareSprites[IDLE] = player_square_idle_left;
+playerSquareSprites[WALKING] = player_square_walking_left;
+playerSquareSprites[SKILL] = player_square_skill_left;
+
+playerTriangleSprites[IDLE] = player_triangle_idle_left;
+playerTriangleSprites[WALKING] = player_triangle_walking_left;
+playerTriangleSprites[SKILL] = player_triangle_skill_left;
 
 // Jamming from file: 1.1_Audio.js
 /* *************************
@@ -417,7 +437,7 @@ function Player(x, y){
 	
 	this.currentSprites = playerCircleSprites;
 	this.currentAction = IDLE;
-	this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+	this.sprite = player_circle_walking_left;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 	
 	this.update = function(dt) {
 		this.determineCurrentAction();
@@ -426,6 +446,8 @@ function Player(x, y){
 		this.sprite.update(dt);
 		this.audio = this.currentAudio[this.currentAction];
 		this.audio.play();
+		
+		this.checkDirection();
 		
 		if(Math.abs(this.vx)<=0.3){
 			this.vx = 0;
@@ -497,19 +519,16 @@ function Player(x, y){
 			if(type == PLAYER_IS_CIRCLE){
 				this.speed = 600;
 				this.currentSprites = playerCircleSprites;
-				//this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
 				this.speed = 300;
 				this.currentSprites = playerSquareSprites;
-				//this.sprite = player_square_walking;//new Sprite('res/player_square.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
 				this.speed = 300;
 				this.currentSprites = playerTriangleSprites;
-				//this.sprite = player_triangle_walking;//new Sprite('res/player_triangle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_TRIANGLE;
 			}
 		}
@@ -527,6 +546,37 @@ function Player(x, y){
 		//skill
 		else if(this.vy != 0 && this.midAir){
 			this.currentAction = SKILL;
+		}
+	};
+	
+	this.checkDirection = function(){
+		if(this.vx > 0){
+			player_direction = 'right';
+			playerCircleSprites[IDLE] =  player_circle_idle_right;
+			playerCircleSprites[WALKING] = player_circle_walking_right;
+			playerCircleSprites[SKILL] = player_circle_skill_right;
+
+			playerSquareSprites[IDLE] = player_square_idle_right;
+			playerSquareSprites[WALKING] = player_square_walking_right;
+			playerSquareSprites[SKILL] = player_square_skill_right;
+
+			playerTriangleSprites[IDLE] = player_triangle_idle_right;
+			playerTriangleSprites[WALKING] = player_triangle_walking_right;
+			playerTriangleSprites[SKILL] = player_triangle_skill_right;
+		}
+		else{
+			player_direction = 'left';
+			playerCircleSprites[IDLE] =  player_circle_idle_left;
+			playerCircleSprites[WALKING] = player_circle_walking_left;
+			playerCircleSprites[SKILL] = player_circle_skill_left;
+
+			playerSquareSprites[IDLE] = player_square_idle_left;
+			playerSquareSprites[WALKING] = player_square_walking_left;
+			playerSquareSprites[SKILL] = player_square_skill_left;
+
+			playerTriangleSprites[IDLE] = player_triangle_idle_left;
+			playerTriangleSprites[WALKING] = player_triangle_walking_left;
+			playerTriangleSprites[SKILL] = player_triangle_skill_left;
 		}
 	};
 	
@@ -583,6 +633,31 @@ function createBox(xpos,ypos,mutant){
 	var position = xpos*7 + ypos;
 	entities[position] = new Box(x,y,mutant);
 }
+// Jamming from file: 4.3_Scenary.js
+/* *************************
+ * "CLASS": Scenary
+ * *************************/
+
+function Scenary(x, y){
+
+	Entity.call(this, x, y);
+	this.sprite = new Image();
+	this.sprite.src = "res/background.png";
+
+	
+	this.update = function(dt){
+	};
+	
+	this.render = function(){
+		//img, sx, sy, sw, sh, x, y, w, h
+		d.drawImage(this.sprite, this.x, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+	};
+
+	return this;
+}
+
+var scenary = new Scenary(0, 0);
+
 // Jamming from file: 5_Camera.js
 /* *************************
  * "CLASS": Camera
@@ -593,15 +668,32 @@ function Camera(x, y){
 	Entity.call(this,x,y);
 	
 	this.update = function(dt){
-		if(player.x>=600){
-			camera.x += player.x-600;
+		if(player_direction == 'left'){
+			//LEFT END OF SCENARY
+			scenary.x += player.vx * dt * 2;
+			if(scenary.x <= 0){
+				scenary.x = 0;
+			}
+			if(player.x <= RIGHT_CAMERA_PIN){
+				player.x = RIGHT_CAMERA_PIN;
+			}
+		}
+		else if(player_direction == 'right'){
+			//RIGHT END OF SCENARY
+			scenary.x += player.vx * dt * 2;
+			if(scenary.x >= (2000 - canvas.width)){
+				scenary.x = 2000 - canvas.width;
+			}
+			if(player.x >= LEFT_CAMERA_PIN){
+				player.x = LEFT_CAMERA_PIN;
+			}
 		}
 	};
 
 	return this;
 }
 
-camera = new Camera(0,0);
+var camera = new Camera(0,0);
 // Jamming from file: 6_Keyboard.js
 /* *************************
  * "CLASS": Keyboard
@@ -809,18 +901,10 @@ function update(dt){
 		camera.update(dt);
 	}
  }
-
- var background = new Image();
- background.src = "res/background.png";
  
 function render(){
 	if(!paused){
-		
-		d.clearRect(0,0, canvas.width, canvas.height);
-			player.x<600 ?
-			d.drawImage(background,0,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height) : 
-			d.drawImage(background,player.x-600,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height);
-	
+		scenary.render();
 		player.render();
 		renderAll(entities);
 	}
@@ -839,7 +923,7 @@ function initialize(){
 	createBox(0, 6, false);
 	createBox(0, 7, false);
 	createBox(5, 7, false);
-	createBox(4, 6, false);
+	createBox(9, 6, false);
 	
 	lastTime = window.performance.now();
     main();

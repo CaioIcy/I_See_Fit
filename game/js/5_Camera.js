@@ -7,12 +7,29 @@ function Camera(x, y){
 	Entity.call(this,x,y);
 	
 	this.update = function(dt){
-		if(player.x>=600){
-			camera.x += player.x-600;
+		if(player_direction == 'left'){
+			//LEFT END OF SCENARY
+			scenary.x += player.vx * dt * 2;
+			if(scenary.x <= 0){
+				scenary.x = 0;
+			}
+			if(player.x <= RIGHT_CAMERA_PIN){
+				player.x = RIGHT_CAMERA_PIN;
+			}
+		}
+		else if(player_direction == 'right'){
+			//RIGHT END OF SCENARY
+			scenary.x += player.vx * dt * 2;
+			if(scenary.x >= (2000 - canvas.width)){
+				scenary.x = 2000 - canvas.width;
+			}
+			if(player.x >= LEFT_CAMERA_PIN){
+				player.x = LEFT_CAMERA_PIN;
+			}
 		}
 	};
 
 	return this;
 }
 
-camera = new Camera(0,0);
+var camera = new Camera(0,0);

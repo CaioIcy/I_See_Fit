@@ -11,18 +11,10 @@ function update(dt){
 		camera.update(dt);
 	}
  }
-
- var background = new Image();
- background.src = "res/background.png";
  
 function render(){
 	if(!paused){
-		
-		d.clearRect(0,0, canvas.width, canvas.height);
-			player.x<600 ?
-			d.drawImage(background,0,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height) : 
-			d.drawImage(background,player.x-600,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height);
-	
+		scenary.render();
 		player.render();
 		renderAll(entities);
 	}
@@ -41,7 +33,7 @@ function initialize(){
 	createBox(0, 6, false);
 	createBox(0, 7, false);
 	createBox(5, 7, false);
-	createBox(4, 6, false);
+	createBox(9, 6, false);
 	
 	lastTime = window.performance.now();
     main();
