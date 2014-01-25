@@ -16,5 +16,7 @@ var gameTime = 0;
 var paused = false;
 
 var FRICTION = 0.95;
-
 var FLOOR = canvas.height;
+var SQUARE_SPEED = 300;
+var TRIANGLE_SPEED = 300;
+var CIRCLE_SPEED = 600;

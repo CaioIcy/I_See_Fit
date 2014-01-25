@@ -5,19 +5,20 @@
 function Keyboard(){
 
 	this.updateKeyInput = function(dt){	
+		//alert(dt);
 	
 		//PLAYER MOVEMENT
 		if(pressedKeys[VK_LEFT]){
-			player.vx -= 15;
+			player.vx -= player.speed * dt;
 		}
 		else if(pressedKeys[VK_RIGHT]){
-			player.vx += 15;
+			player.vx += player.speed * dt;
         }
 		
 		//PLAYER JUMP
 		if(pressedKeys[VK_UP] || pressedKeys[VK_W]){
 			if(!player.midAir){
-				player.vy = -15;
+				player.vy = player.jumpSpeed * dt;
 				player.midAir = true;
 			}
 		}

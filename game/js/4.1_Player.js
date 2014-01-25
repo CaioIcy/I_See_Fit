@@ -3,6 +3,8 @@ function Player(x,y,width,height){
 
 	Entity.call(this,x,y,width,height);
 	
+	this.speed = 600;
+	this.jumpSpeed = (-577);
 	this.vx = 0;
 	this.vy = 0;
 	

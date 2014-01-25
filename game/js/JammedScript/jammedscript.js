@@ -17,9 +17,10 @@ var gameTime = 0;
 var paused = false;
 
 var FRICTION = 0.95;
-
 var FLOOR = canvas.height;
-
+var SQUARE_SPEED = 300;
+var TRIANGLE_SPEED = 300;
+var CIRCLE_SPEED = 600;
 // Jamming from file: 1_Sprites.js
 /* *************************
  * Game Images
@@ -257,6 +258,8 @@ function Player(x,y,width,height){
 
 	Entity.call(this,x,y,width,height);
 	
+	this.speed = 600;
+	this.jumpSpeed = (-577);
 	this.vx = 0;
 	this.vy = 0;
 	
@@ -287,19 +290,20 @@ var player = new Player(50, canvas.height - 40, 40, 40);
 function Keyboard(){
 
 	this.updateKeyInput = function(dt){	
+		//alert(dt);
 	
 		//PLAYER MOVEMENT
 		if(pressedKeys[VK_LEFT]){
-			player.vx -= 15;
+			player.vx -= player.speed * dt;
 		}
 		else if(pressedKeys[VK_RIGHT]){
-			player.vx += 15;
+			player.vx += player.speed * dt;
         }
 		
 		//PLAYER JUMP
 		if(pressedKeys[VK_UP] || pressedKeys[VK_W]){
 			if(!player.midAir){
-				player.vy = -15;
+				player.vy = player.jumpSpeed * dt;
 				player.midAir = true;
 			}
 		}
