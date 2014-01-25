@@ -15,6 +15,7 @@ function render(){
 	d.fillRect(0, 0, canvas.width, canvas.height);
 	
 	player.render();
+	renderAll(boxes);
 	
 	renderHUD();	
 	
@@ -22,7 +23,9 @@ function render(){
 
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
-
+	
+	createBox(300, FLOOR-40, false);
+	
 	lastTime = window.performance.now();
     main();
 }

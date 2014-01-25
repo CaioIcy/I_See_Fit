@@ -34,7 +34,8 @@ resources.load([
     'res/background.png',
 	'res/player_square.png',
 	'res/player_circle.png',
-	'res/player_triangle.png'
+	'res/player_triangle.png',
+	'res/box.png'
 ]);
 resources.onReady(initialize);
  
@@ -260,9 +261,9 @@ function Entity(x, y, width, height){
  
 // Jamming from file: 4.1_Player.js
 
-function Player(x,y,width,height){
+function Player(x, y, width, height){
 
-	Entity.call(this,x,y,width,height);
+	Entity.call(this, x, y, width, height);
 	
 	this.speed = 300;
 	this.vx = 0;
@@ -270,7 +271,7 @@ function Player(x,y,width,height){
 	this.currentType = PLAYER_IS_SQUARE;
 	this.midAir = false;
 	
-	this.sprite = new Sprite('res/player_square.png', [0, 0], [40,40] , 12, [0]);
+	this.sprite = new Sprite('res/player_square.png', [0, 0], [width,height] , 12, [0]);
 	
 	this.update = function(dt) {
 		this.vx *= FRICTION;
@@ -288,17 +289,17 @@ function Player(x,y,width,height){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
 				this.speed = 600;
-				this.sprite = new Sprite('res/player_circle.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = new Sprite('res/player_circle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
 				this.speed = 300;
-				this.sprite = new Sprite('res/player_square.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = new Sprite('res/player_square.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
 				this.speed = 300;
-				this.sprite = new Sprite('res/player_triangle.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = new Sprite('res/player_triangle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_TRIANGLE;
 			}
 		}
@@ -307,6 +308,52 @@ function Player(x,y,width,height){
 }
 
 var player = new Player(50, canvas.height - 40, 40, 40);
+// Jamming from file: 4.2_Box.js
+/* *************************
+ * "CLASS": Box
+ * *************************/
+
+var boxes = [];
+ 
+function Box(x, y, mutant){
+
+	Entity.call(this,x,y);
+	
+	this.mutant = mutant;	
+	this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+
+	
+	this.update = function(dt){
+		if(this.mutant){
+			if(player.currentType == PLAYER_IS_SQUARE){
+				//this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+			}
+			else if(player.currentType == PLAYER_IS_CIRCLE){
+				//this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+			}
+			else if(player.currentType == PLAYER_IS_TRIANGLE){
+				// Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+			}
+		}
+		else{
+			//don't change sprites
+		}
+	};
+	
+	this.render = function(){
+		renderEntity(this);
+	};
+	
+	this.destroy = function(){
+		boxes.splice(boxes.indexOf(this), 1);
+	};
+
+	return this;
+}
+
+function createBox(x,y,mutant){
+	boxes[boxes.length] = new Box(x,y,mutant);
+}
 // Jamming from file: 5_Keyboard.js
 /* *************************
  * "CLASS": Keyboard
@@ -489,6 +536,7 @@ function render(){
 	d.fillRect(0, 0, canvas.width, canvas.height);
 	
 	player.render();
+	renderAll(boxes);
 	
 	renderHUD();	
 	
@@ -496,7 +544,9 @@ function render(){
 
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
-
+	
+	createBox(300, FLOOR-40, false);
+	
 	lastTime = window.performance.now();
     main();
 }
