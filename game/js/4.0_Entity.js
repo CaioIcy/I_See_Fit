@@ -11,7 +11,6 @@ function Entity(x, y, width, height){
 	
 	this.sprite;
 	this.speed;
-	this.radius;
 	
 	this.update = function(dt){
 	}

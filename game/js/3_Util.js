@@ -23,6 +23,32 @@ function refreshPage(){
 	location.reload(true);
 }
 
+function renderEntity(entity){
+	d.save();
+	d.translate(entity.x, entity.y);
+	entity.sprite.render(d);
+	d.restore();
+}
+
+function renderAll(listOfEntities) {
+    for(i = 0; i< listOfEntities.length; i++){
+		var entity = listOfEntities[i];
+		entity.render();
+	}
+}
+
+function updateAll(listOfEntities, dt) {
+    for(i = 0; i< listOfEntities.length; i++){
+		var entity = listOfEntities[i];
+		if(dt==null || dt == undefined){
+			entity.update();
+		}
+		else{
+			entity.update(dt);
+		}
+	}
+}
+
 function renderHUD(){
 	daux.clearRect(0, 0, canvas.width, canvas.height);
 	

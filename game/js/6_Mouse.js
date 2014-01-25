@@ -23,7 +23,7 @@ function Mouse() {
 	};
 	
 	this.mouseClick = function(){
-		alert("mouse click");
+		
 	};
 
 }

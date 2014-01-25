@@ -8,16 +8,14 @@ var canvas = document.getElementById("canvas");
 var d = canvas.getContext("2d");
 var auxcanvas = document.getElementById("auxcanvas");
 var daux = auxcanvas.getContext("2d");
-
 // Auxiliary global index
 var i = 0;
-
 // Keystrokes array
 var pressedKeys = [];
 
 var gameTime = 0;
-
 var paused = false;
+
 // Jamming from file: 1_Sprites.js
 /* *************************
  * Game Images
@@ -25,6 +23,7 @@ var paused = false;
 
 resources.load([
     'res/background.png',
+	'res/player.png'
 ]);
 resources.onReady(initialize);
  
@@ -165,6 +164,32 @@ function refreshPage(){
 	location.reload(true);
 }
 
+function renderEntity(entity){
+	d.save();
+	d.translate(entity.x, entity.y);
+	entity.sprite.render(d);
+	d.restore();
+}
+
+function renderAll(listOfEntities) {
+    for(i = 0; i< listOfEntities.length; i++){
+		var entity = listOfEntities[i];
+		entity.render();
+	}
+}
+
+function updateAll(listOfEntities, dt) {
+    for(i = 0; i< listOfEntities.length; i++){
+		var entity = listOfEntities[i];
+		if(dt==null || dt == undefined){
+			entity.update();
+		}
+		else{
+			entity.update(dt);
+		}
+	}
+}
+
 function renderHUD(){
 	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
@@ -185,7 +210,7 @@ function renderHUD(){
 	
 }
 
-// Jamming from file: 4_Entity.js
+// Jamming from file: 4.0_Entity.js
 /* *************************
  * "CLASS": Entity
  * *************************/
@@ -199,7 +224,6 @@ function Entity(x, y, width, height){
 	
 	this.sprite;
 	this.speed;
-	this.radius;
 	
 	this.update = function(dt){
 	}
@@ -211,6 +235,25 @@ function Entity(x, y, width, height){
 	return this;
 }
  
+// Jamming from file: 4.1_Player.js
+
+function Player(x,y,width,height){
+
+	Entity.call(this,x,y,width,height);
+	
+	this.vx = 0;
+	this.vy = 0;
+	
+	this.sprite = new Sprite('res/player.png', [0, 0], [40,40] , 12, [0]);
+	
+	this.update = function(dt) {
+		this.x += this.vx * dt;
+		this.y += this.vy * dt;
+	}
+	
+}
+
+var player = new Player(50, canvas.height - 40, 40, 40);
 // Jamming from file: 5_Keyboard.js
 /* *************************
  * "CLASS": Keyboard
@@ -220,6 +263,14 @@ function Keyboard(){
 
 	this.updateKeyInput = function(dt){	
 	
+		//PLAYER MOVEMENT
+		if(pressedKeys[VK_LEFT]){
+			player.vx -= 1;
+		}
+		else if(pressedKeys[VK_RIGHT]){
+			player.vx += 1;
+        }
+		
 	};
 	
 }
@@ -280,7 +331,7 @@ function Mouse() {
 	};
 	
 	this.mouseClick = function(){
-		alert("mouse click");
+		
 	};
 
 }
@@ -334,32 +385,7 @@ window.addEventListener('mousemove', mouseXY, false);
 window.addEventListener('mousedown', doMouseClick, false);
 
 
-// Jamming from file: 7_Player.js
-
-function Player(x,y,width,height){
-
-	Entity.call(this,x,y,width,height);
-	
-	this.render = function(){
-		
-		d.fillStyle = "black";
-		d.fillRect(player.x,player.y,player.width,player.height);
-		
-	}
-	
-	this.update = function(dt) {
-		if(pressedKeys[VK_LEFT]){
-			this.x=this.x-1;
-		}
-		else if(pressedKeys[VK_RIGHT]){
-			this.x=this.x+1;
-		}
-	}
-	
-}
-
-player = new Player(50, canvas.height - 40, 40, 40);
-// Jamming from file: 8_Game.js
+// Jamming from file: 7_Game.js
 /* *************************
  * Main
  * *************************/

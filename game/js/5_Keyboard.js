@@ -6,6 +6,14 @@ function Keyboard(){
 
 	this.updateKeyInput = function(dt){	
 	
+		//PLAYER MOVEMENT
+		if(pressedKeys[VK_LEFT]){
+			player.vx -= 1;
+		}
+		else if(pressedKeys[VK_RIGHT]){
+			player.vx += 1;
+        }
+		
 	};
 	
 }
