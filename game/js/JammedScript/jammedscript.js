@@ -34,7 +34,10 @@ var NOT_COLLIDING = 5;
 
 var SPRITE_SIZE = 64;
 var JUMPSPEED = (-830);
-// Jamming from file: 1_Sprites.js
+
+
+
+// Jamming from file: 1.0_Sprites.js
 /* *************************
  * Game Images
  * *************************/
@@ -87,6 +90,38 @@ playerTriangleSprites[IDLE] = player_triangle_idle;
 playerTriangleSprites[WALKING] = player_triangle_walking;
 playerTriangleSprites[SKILL] = player_triangle_skill;
 
+// Jamming from file: 1.1_Audio.js
+/* *************************
+ * Game Images
+ * *************************/
+
+var playerCircleAudio = new Array();
+var playerSquareAudio = new Array();
+var playerTriangleAudio = new Array();
+
+var sound_circle_idle = new Audio("res/Audio/motor.mp3");
+var sound_square_idle = new Audio();
+var sound_triangle_idle = new Audio();
+
+var sound_circle_walking = new Audio();
+var sound_square_walking = new Audio();
+var sound_triangle_walking = new Audio();
+
+var sound_circle_skill = new Audio();
+var sound_square_skill = new Audio();
+var sound_triangle_skill = new Audio();
+
+playerCircleAudio[IDLE] = sound_circle_idle;
+playerCircleAudio[WALKING] = sound_circle_walking;
+playerCircleAudio[SKILL] = sound_circle_skill;
+
+playerSquareAudio[IDLE] = sound_square_idle;
+playerSquareAudio[WALKING] = sound_square_walking;
+playerSquareAudio[SKILL] = sound_square_skill;
+
+playerTriangleAudio[IDLE] = sound_triangle_idle;
+playerTriangleAudio[WALKING] = sound_triangle_walking;
+playerTriangleAudio[SKILL] = sound_triangle_skill;
 // Jamming from file: 2_VkValues.js
 /* *************************
  * Virtual Keyboard Values
@@ -378,6 +413,8 @@ function Player(x, y){
 	this.collidingWith;
 	this.collidingFrom;
 	
+	this.currentAudio = playerCircleAudio;
+	
 	this.currentSprites = playerCircleSprites;
 	this.currentAction = IDLE;
 	this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
@@ -387,6 +424,8 @@ function Player(x, y){
 	
 		this.sprite = this.currentSprites[this.currentAction];
 		this.sprite.update(dt);
+		this.audio = this.currentAudio[this.currentAction];
+		this.audio.play();
 		
 		if(Math.abs(this.vx)<=0.3){
 			this.vx = 0;

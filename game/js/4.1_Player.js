@@ -12,6 +12,8 @@ function Player(x, y){
 	this.collidingWith;
 	this.collidingFrom;
 	
+	this.currentAudio = playerCircleAudio;
+	
 	this.currentSprites = playerCircleSprites;
 	this.currentAction = IDLE;
 	this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
@@ -21,6 +23,8 @@ function Player(x, y){
 	
 		this.sprite = this.currentSprites[this.currentAction];
 		this.sprite.update(dt);
+		this.audio = this.currentAudio[this.currentAction];
+		this.audio.play();
 		
 		if(Math.abs(this.vx)<=0.3){
 			this.vx = 0;

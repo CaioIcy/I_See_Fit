@@ -33,3 +33,5 @@ var NOT_COLLIDING = 5;
 
 var SPRITE_SIZE = 64;
 var JUMPSPEED = (-830);
+
+
