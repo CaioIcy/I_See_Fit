@@ -2,12 +2,10 @@
  * "CLASS": Entity
  * *************************/
 
-function Entity(x, y, width, height){
+function Entity(x, y){
 
 	this.x = x;
 	this.y = y;
-	this.width = width;
-	this.height = height;
 	
 	this.sprite;
 	this.speed;
@@ -21,4 +19,6 @@ function Entity(x, y, width, height){
 
 	return this;
 }
- 
+
+var numberOfEntities = (canvas.width*2/64) * ((canvas.height-88)/64);
+var entities = [numberOfEntities];

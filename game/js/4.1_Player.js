@@ -1,7 +1,7 @@
 
-function Player(x, y, width, height){
+function Player(x, y){
 
-	Entity.call(this, x, y, width, height);
+	Entity.call(this, x, y);
 	
 	this.speed = 300;
 	this.vx = 0;
@@ -12,7 +12,7 @@ function Player(x, y, width, height){
 	this.collidingWith;
 	this.collidingFrom;
 	
-	this.sprite = new Sprite('res/player_square.png', [0, 0], [width,height] , 12, [0]);
+	this.sprite = new Sprite('res/player_square.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0]);
 	
 	this.update = function(dt) {
 		this.vx *= FRICTION;
@@ -84,4 +84,4 @@ function Player(x, y, width, height){
 	
 }
 
-var player = new Player(canvas.width/2, canvas.height - 40, 40, 40);
+var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE);

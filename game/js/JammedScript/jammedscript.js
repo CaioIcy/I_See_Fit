@@ -31,6 +31,9 @@ var FROM_RIGHT = 2;
 var FROM_UP = 3;
 var FROM_DOWN = 4;
 var NOT_COLLIDING = 5;
+
+var SPRITE_SIZE = 64;
+var JUMPSPEED = (-830);
 // Jamming from file: 1_Sprites.js
 /* *************************
  * Game Images
@@ -266,6 +269,9 @@ function applyGravity(obj){
 }
 
 function renderHUD(){
+	d.fillStyle = "red";
+	d.fillRect(0,0,canvas.width,88);
+
 	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
 	if(paused){
@@ -290,12 +296,10 @@ function renderHUD(){
  * "CLASS": Entity
  * *************************/
 
-function Entity(x, y, width, height){
+function Entity(x, y){
 
 	this.x = x;
 	this.y = y;
-	this.width = width;
-	this.height = height;
 	
 	this.sprite;
 	this.speed;
@@ -309,12 +313,16 @@ function Entity(x, y, width, height){
 
 	return this;
 }
- 
+
+var numberOfEntities = (canvas.width*2/64) * ((canvas.height-88)/64);
+var entities = [numberOfEntities];
+alert(numberOfEntities);
+
 // Jamming from file: 4.1_Player.js
 
-function Player(x, y, width, height){
+function Player(x, y){
 
-	Entity.call(this, x, y, width, height);
+	Entity.call(this, x, y);
 	
 	this.speed = 300;
 	this.vx = 0;
@@ -325,7 +333,7 @@ function Player(x, y, width, height){
 	this.collidingWith;
 	this.collidingFrom;
 	
-	this.sprite = new Sprite('res/player_square.png', [0, 0], [width,height] , 12, [0]);
+	this.sprite = new Sprite('res/player_square.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0]);
 	
 	this.update = function(dt) {
 		this.vx *= FRICTION;
@@ -397,7 +405,7 @@ function Player(x, y, width, height){
 	
 }
 
-var player = new Player(canvas.width/2, canvas.height - 40, 40, 40);
+var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE);
 // Jamming from file: 4.2_Box.js
 /* *************************
  * "CLASS": Box
@@ -410,7 +418,7 @@ function Box(x, y, mutant){
 	Entity.call(this,x,y);
 	
 	this.mutant = mutant;	
-	this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+	this.sprite = new Sprite('res/box.png', [0, 0], [SPRITE_SIZE,SPRITE_SIZE] , 12, [0]);
 
 	
 	this.update = function(dt){
@@ -467,7 +475,7 @@ function Keyboard(){
 			//CIRCLE -- JUMP
 			if(player.currentType == PLAYER_IS_CIRCLE){
 				if(!player.midAir){
-					player.vy = (-630) * dt;
+					player.vy = JUMPSPEED * dt;
 					player.midAir = true;
 				}
 			}
@@ -658,8 +666,8 @@ function render(){
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
 	
-	createBox(150, FLOOR-40, false);
-	createBox(550, FLOOR-100, false);
+	createBox(150, FLOOR-64, false);
+	createBox(550, FLOOR-124, false);
 	
 	lastTime = window.performance.now();
     main();

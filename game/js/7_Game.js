@@ -25,8 +25,8 @@ function render(){
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
 	
-	createBox(150, FLOOR-40, false);
-	createBox(550, FLOOR-100, false);
+	createBox(150, FLOOR-64, false);
+	createBox(550, FLOOR-124, false);
 	
 	lastTime = window.performance.now();
     main();

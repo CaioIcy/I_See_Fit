@@ -9,7 +9,7 @@ function Box(x, y, mutant){
 	Entity.call(this,x,y);
 	
 	this.mutant = mutant;	
-	this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+	this.sprite = new Sprite('res/box.png', [0, 0], [SPRITE_SIZE,SPRITE_SIZE] , 12, [0]);
 
 	
 	this.update = function(dt){
@@ -34,12 +34,14 @@ function Box(x, y, mutant){
 	};
 	
 	this.destroy = function(){
-		boxes.splice(boxes.indexOf(this), 1);
+		entities.splice(entities.indexOf(this), 1);
 	};
 
 	return this;
 }
 
-function createBox(x,y,mutant){
-	boxes[boxes.length] = new Box(x,y,mutant);
+function createBox(xpos,ypos,mutant){
+	var x = xpos*SPRITE_SIZE;
+	var y = ypos*SPRITE_SIZE;
+	entities[entities.length] = new Box(x,y,mutant);
 }

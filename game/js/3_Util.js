@@ -107,6 +107,9 @@ function applyGravity(obj){
 }
 
 function renderHUD(){
+	d.fillStyle = "red";
+	d.fillRect(0,0,canvas.width,88);
+
 	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
 	if(paused){
