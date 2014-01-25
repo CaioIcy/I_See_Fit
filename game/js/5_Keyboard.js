@@ -20,7 +20,7 @@ function Keyboard(){
 			//CIRCLE -- JUMP
 			if(player.currentType == PLAYER_IS_CIRCLE){
 				if(!player.midAir){
-					player.vy = (-577) * dt;
+					player.vy = (-630) * dt;
 					player.midAir = true;
 				}
 			}

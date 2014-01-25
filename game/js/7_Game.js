@@ -7,6 +7,7 @@ function update(dt){
 		keyboard.updateKeyInput(dt);
 		mouse.update();
 		player.update(dt);
+		player.checkPlayerCollisionWith(boxes);
  }
 
 function render(){
@@ -24,7 +25,8 @@ function render(){
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
 	
-	createBox(300, FLOOR-40, false);
+	createBox(150, FLOOR-40, false);
+	createBox(550, FLOOR-100, false);
 	
 	lastTime = window.performance.now();
     main();

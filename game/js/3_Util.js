@@ -19,6 +19,51 @@ var requestAnimFrame = (function(){
         };
 })();
 
+function detectCollision(reference, target){
+	var collided = NOT_COLLIDING;
+	if(reference.x + reference.sprite.width >= target.x && (reference.y + reference.sprite.height)>= target.y ){
+		if(reference.x <= (target.x + target.sprite.width) && reference.y <= (target.y + target.sprite.height)){
+			collided = whereCollision(reference, target);
+		}
+	}
+	return collided;
+}
+
+function whereCollision(A, B){
+
+	var AcenterX = A.x+(A.sprite.width/2);
+	var AcenterY = A.y+(A.sprite.height/2);;
+	var BcenterX = B.x+(A.sprite.width/2);;
+	var BcenterY = B.y+(A.sprite.height/2);;
+	var w = 0.5 * (A.sprite.width + B.sprite.width);
+	var h = 0.5 * (A.sprite.height+ B.sprite.height);
+	var dx = AcenterX - BcenterX;
+	var dy = AcenterY - BcenterY;
+
+	if (Math.abs(dx) <= w && Math.abs(dy) <= h){
+		/* collision! */
+		var wy = w * dy;
+		var hx = h * dx;
+
+		if (wy > hx){
+			if (wy > -hx)
+				/* collision at the top */
+				return FROM_UP;
+			else
+				/* on the left */
+				return FROM_LEFT;
+		}
+		else{
+			if (wy > -hx)
+				/* on the right */
+				return FROM_RIGHT;
+			else
+				/* at the bottom */
+				return FROM_DOWN;
+		}
+	}
+}
+
 function refreshPage(){
 	location.reload(true);
 }

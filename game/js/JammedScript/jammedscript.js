@@ -25,6 +25,12 @@ var FLOOR = canvas.height;
 var SQUARE_SPEED = 300;
 var TRIANGLE_SPEED = 300;
 var CIRCLE_SPEED = 600;
+
+var FROM_LEFT = 1;
+var FROM_RIGHT = 2;
+var FROM_UP = 3;
+var FROM_DOWN = 4;
+var NOT_COLLIDING = 5;
 // Jamming from file: 1_Sprites.js
 /* *************************
  * Game Images
@@ -172,6 +178,51 @@ var requestAnimFrame = (function(){
         };
 })();
 
+function detectCollision(reference, target){
+	var collided = NOT_COLLIDING;
+	if(reference.x + reference.sprite.width >= target.x && (reference.y + reference.sprite.height)>= target.y ){
+		if(reference.x <= (target.x + target.sprite.width) && reference.y <= (target.y + target.sprite.height)){
+			collided = whereCollision(reference, target);
+		}
+	}
+	return collided;
+}
+
+function whereCollision(A, B){
+
+	var AcenterX = A.x+(A.sprite.width/2);
+	var AcenterY = A.y+(A.sprite.height/2);;
+	var BcenterX = B.x+(A.sprite.width/2);;
+	var BcenterY = B.y+(A.sprite.height/2);;
+	var w = 0.5 * (A.sprite.width + B.sprite.width);
+	var h = 0.5 * (A.sprite.height+ B.sprite.height);
+	var dx = AcenterX - BcenterX;
+	var dy = AcenterY - BcenterY;
+
+	if (Math.abs(dx) <= w && Math.abs(dy) <= h){
+		/* collision! */
+		var wy = w * dy;
+		var hx = h * dx;
+
+		if (wy > hx){
+			if (wy > -hx)
+				/* collision at the top */
+				return FROM_UP;
+			else
+				/* on the left */
+				return FROM_LEFT;
+		}
+		else{
+			if (wy > -hx)
+				/* on the right */
+				return FROM_RIGHT;
+			else
+				/* at the bottom */
+				return FROM_DOWN;
+		}
+	}
+}
+
 function refreshPage(){
 	location.reload(true);
 }
@@ -285,6 +336,36 @@ function Player(x, y, width, height){
 		this.y += this.vy;
 	}
 	
+	this.checkPlayerCollisionWith = function(array){
+		for(i = 0; i<array.length; i++){
+			var collision = detectCollision(player, array[i]);
+			if(collision != NOT_COLLIDING){
+				if(collision == FROM_LEFT){
+					this.x = array[i].x - this.sprite.width - 1;
+					this.vx = -1;
+				}
+				else if(collision == FROM_RIGHT){
+					this.x = array[i].x + array[i].sprite.width + 1;
+					this.vx = 1;
+				}
+				else if(collision == FROM_UP){
+					this.y = array[i].y + array[i].sprite.height + 1;
+					this.vy = 0;
+				}
+				else if(collision == FROM_DOWN){
+					this.y = array[i].y - this.sprite.height - 1;
+					this.vy = 0;
+					this.midAir = false;
+				}
+			}
+			else{
+				if(this.y < FLOOR - this.sprite.height){
+					this.midAir = true;
+				}
+			}
+		}
+	;}
+	
 	this.transform = function(type){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
@@ -307,7 +388,7 @@ function Player(x, y, width, height){
 	
 }
 
-var player = new Player(50, canvas.height - 40, 40, 40);
+var player = new Player(canvas.width/2, canvas.height - 40, 40, 40);
 // Jamming from file: 4.2_Box.js
 /* *************************
  * "CLASS": Box
@@ -377,7 +458,7 @@ function Keyboard(){
 			//CIRCLE -- JUMP
 			if(player.currentType == PLAYER_IS_CIRCLE){
 				if(!player.midAir){
-					player.vy = (-577) * dt;
+					player.vy = (-630) * dt;
 					player.midAir = true;
 				}
 			}
@@ -528,6 +609,7 @@ function update(dt){
 		keyboard.updateKeyInput(dt);
 		mouse.update();
 		player.update(dt);
+		player.checkPlayerCollisionWith(boxes);
  }
 
 function render(){
@@ -545,7 +627,8 @@ function render(){
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
 	
-	createBox(300, FLOOR-40, false);
+	createBox(150, FLOOR-40, false);
+	createBox(550, FLOOR-100, false);
 	
 	lastTime = window.performance.now();
     main();

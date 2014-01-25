@@ -23,6 +23,36 @@ function Player(x, y, width, height){
 		this.y += this.vy;
 	}
 	
+	this.checkPlayerCollisionWith = function(array){
+		for(i = 0; i<array.length; i++){
+			var collision = detectCollision(player, array[i]);
+			if(collision != NOT_COLLIDING){
+				if(collision == FROM_LEFT){
+					this.x = array[i].x - this.sprite.width - 1;
+					this.vx = -1;
+				}
+				else if(collision == FROM_RIGHT){
+					this.x = array[i].x + array[i].sprite.width + 1;
+					this.vx = 1;
+				}
+				else if(collision == FROM_UP){
+					this.y = array[i].y + array[i].sprite.height + 1;
+					this.vy = 0;
+				}
+				else if(collision == FROM_DOWN){
+					this.y = array[i].y - this.sprite.height - 1;
+					this.vy = 0;
+					this.midAir = false;
+				}
+			}
+			else{
+				if(this.y < FLOOR - this.sprite.height){
+					this.midAir = true;
+				}
+			}
+		}
+	;}
+	
 	this.transform = function(type){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
@@ -45,4 +75,4 @@ function Player(x, y, width, height){
 	
 }
 
-var player = new Player(50, canvas.height - 40, 40, 40);
+var player = new Player(canvas.width/2, canvas.height - 40, 40, 40);
