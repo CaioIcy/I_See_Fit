@@ -24,20 +24,22 @@ function Player(x,y,width,height){
 	}
 	
 	this.transform = function(type){
-		if(type == PLAYER_IS_CIRCLE){
-			this.speed = 600;
-			this.sprite = new Sprite('res/player_circle.png', [0, 0], [40,40] , 12, [0]);
-			this.currentType = PLAYER_IS_CIRCLE;
-		}
-		else if(type == PLAYER_IS_SQUARE){
-			this.speed = 300;
-			this.sprite = new Sprite('res/player_square.png', [0, 0], [40,40] , 12, [0]);
-			this.currentType = PLAYER_IS_SQUARE;
-		}
-		else if(type == PLAYER_IS_TRIANGLE){
-			this.speed = 300;
-			this.sprite = new Sprite('res/player_triangle.png', [0, 0], [40,40] , 12, [0]);
-			this.currentType = PLAYER_IS_TRIANGLE;
+		if(!this.midAir){
+			if(type == PLAYER_IS_CIRCLE){
+				this.speed = 600;
+				this.sprite = new Sprite('res/player_circle.png', [0, 0], [40,40] , 12, [0]);
+				this.currentType = PLAYER_IS_CIRCLE;
+			}
+			else if(type == PLAYER_IS_SQUARE){
+				this.speed = 300;
+				this.sprite = new Sprite('res/player_square.png', [0, 0], [40,40] , 12, [0]);
+				this.currentType = PLAYER_IS_SQUARE;
+			}
+			else if(type == PLAYER_IS_TRIANGLE){
+				this.speed = 300;
+				this.sprite = new Sprite('res/player_triangle.png', [0, 0], [40,40] , 12, [0]);
+				this.currentType = PLAYER_IS_TRIANGLE;
+			}
 		}
 	};
 	
