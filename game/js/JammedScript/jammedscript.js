@@ -92,7 +92,7 @@ playerTriangleSprites[SKILL] = player_triangle_skill;
 
 // Jamming from file: 1.1_Audio.js
 /* *************************
- * Game Images
+ * Game Sounds
  * *************************/
 
 var playerCircleAudio = new Array();
@@ -583,7 +583,26 @@ function createBox(xpos,ypos,mutant){
 	var position = xpos*7 + ypos;
 	entities[position] = new Box(x,y,mutant);
 }
-// Jamming from file: 5_Keyboard.js
+// Jamming from file: 5_Camera.js
+/* *************************
+ * "CLASS": Camera
+ * *************************/
+ 
+function Camera(x, y){
+
+	Entity.call(this,x,y);
+	
+	this.update = function(dt){
+		if(player.x>=600){
+			camera.x += player.x-600;
+		}
+	};
+
+	return this;
+}
+
+camera = new Camera(0,0);
+// Jamming from file: 6_Keyboard.js
 /* *************************
  * "CLASS": Keyboard
  * *************************/
@@ -696,7 +715,7 @@ window.addEventListener('keyup', keyReleased, false);
 
 var keyboard = new Keyboard();
 
-// Jamming from file: 6_Mouse.js
+// Jamming from file: 7_Mouse.js
 /* *************************
  * "CLASS": Mouse
  * *************************/
@@ -776,7 +795,7 @@ window.addEventListener('mousemove', mouseXY, false);
 window.addEventListener('mousedown', doMouseClick, false);
 
 
-// Jamming from file: 7_Game.js
+// Jamming from file: 8_Game.js
 /* *************************
  * Main
  * *************************/
@@ -787,14 +806,21 @@ function update(dt){
 		mouse.update();
 		player.update(dt);
 		player.checkPlayerCollisionWith(entities);
+		camera.update(dt);
 	}
  }
 
+ var background = new Image();
+ background.src = "res/background.png";
+ 
 function render(){
 	if(!paused){
-		d.fillStyle = backgroundPattern;
-		d.fillRect(0, 0, canvas.width, canvas.height);
 		
+		d.clearRect(0,0, canvas.width, canvas.height);
+			player.x<600 ?
+			d.drawImage(background,0,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height) : 
+			d.drawImage(background,player.x-600,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height);
+	
 		player.render();
 		renderAll(entities);
 	}

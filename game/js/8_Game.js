@@ -8,14 +8,21 @@ function update(dt){
 		mouse.update();
 		player.update(dt);
 		player.checkPlayerCollisionWith(entities);
+		camera.update(dt);
 	}
  }
 
+ var background = new Image();
+ background.src = "res/background.png";
+ 
 function render(){
 	if(!paused){
-		d.fillStyle = backgroundPattern;
-		d.fillRect(0, 0, canvas.width, canvas.height);
 		
+		d.clearRect(0,0, canvas.width, canvas.height);
+			player.x<600 ?
+			d.drawImage(background,0,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height) : 
+			d.drawImage(background,player.x-600,0,canvas.width,canvas.height, 0, 0, canvas.width,canvas.height);
+	
 		player.render();
 		renderAll(entities);
 	}

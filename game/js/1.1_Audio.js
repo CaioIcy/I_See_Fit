@@ -1,5 +1,5 @@
 /* *************************
- * Game Images
+ * Game Sounds
  * *************************/
 
 var playerCircleAudio = new Array();
