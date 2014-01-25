@@ -38,3 +38,5 @@ var player_direction = '';
 
 var LEFT_CAMERA_PIN = 200;
 var RIGHT_CAMERA_PIN = 600;
+
+var BACKGROUND_WIDTH = 2000;

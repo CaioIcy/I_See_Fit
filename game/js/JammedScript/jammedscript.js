@@ -40,6 +40,8 @@ var player_direction = '';
 var LEFT_CAMERA_PIN = 200;
 var RIGHT_CAMERA_PIN = 600;
 
+var BACKGROUND_WIDTH = 2000;
+
 // Jamming from file: 1.0_Sprites.js
 /* *************************
  * Game Images
@@ -415,7 +417,7 @@ var numberOfEntities = (canvas.width*2/64) * ((canvas.height-88)/64);
 var entities = new Array();
 
 for(i=0;i<numberOfEntities;i++){
-	entities[i]=0;
+	entities[i] = 0;
 }
 
 // Jamming from file: 4.1_Player.js
@@ -671,21 +673,38 @@ function Camera(x, y){
 		if(player_direction == 'left'){
 			//LEFT END OF SCENARY
 			scenary.x += player.vx * dt * 2;
+			
+			for(i=0; i<entities.length; i++){
+				var entity = entities[i];
+				if(entity != 0){
+					entity.x -= player.vx * dt * 2;
+				}
+			}
+			
 			if(scenary.x <= 0){
 				scenary.x = 0;
 			}
-			if(player.x <= RIGHT_CAMERA_PIN){
-				player.x = RIGHT_CAMERA_PIN;
+			if(player.x <= LEFT_CAMERA_PIN){
+				player.x = LEFT_CAMERA_PIN;
 			}
 		}
 		else if(player_direction == 'right'){
 			//RIGHT END OF SCENARY
 			scenary.x += player.vx * dt * 2;
-			if(scenary.x >= (2000 - canvas.width)){
-				scenary.x = 2000 - canvas.width;
+			for(i=0; i<entities.length; i++){
+				var entity = entities[i];
+				if(entity != 0){
+					entity.x -= player.vx * dt * 2;
+				}
 			}
-			if(player.x >= LEFT_CAMERA_PIN){
-				player.x = LEFT_CAMERA_PIN;
+			if(scenary.x >= (BACKGROUND_WIDTH - canvas.width)){
+				scenary.x = BACKGROUND_WIDTH - canvas.width;
+			}
+			if(player.x >= RIGHT_CAMERA_PIN && player.x < RIGHT_CAMERA_PIN+5 &&scenary.x != BACKGROUND_WIDTH-canvas.width){
+				player.x = RIGHT_CAMERA_PIN;
+			}
+			if(player.x >= canvas.width - player.sprite.width){
+				player.x = canvas.width - player.sprite.width;
 			}
 		}
 	};
