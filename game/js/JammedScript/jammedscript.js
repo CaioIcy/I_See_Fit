@@ -240,7 +240,9 @@ function renderEntity(entity){
 function renderAll(listOfEntities) {
     for(i = 0; i< listOfEntities.length; i++){
 		var entity = listOfEntities[i];
-		entity.render();
+		if(entity){
+			entity.render();
+		}
 	}
 }
 
@@ -315,8 +317,11 @@ function Entity(x, y){
 }
 
 var numberOfEntities = (canvas.width*2/64) * ((canvas.height-88)/64);
-var entities = [numberOfEntities];
-alert(numberOfEntities);
+var entities = new Array();
+
+for(i=0;i<numberOfEntities;i++){
+	entities[i]=0;
+}
 
 // Jamming from file: 4.1_Player.js
 
@@ -443,14 +448,17 @@ function Box(x, y, mutant){
 	};
 	
 	this.destroy = function(){
-		boxes.splice(boxes.indexOf(this), 1);
+		entities.splice(entities.indexOf(this), 1);
 	};
 
 	return this;
 }
 
-function createBox(x,y,mutant){
-	boxes[boxes.length] = new Box(x,y,mutant);
+function createBox(xpos,ypos,mutant){
+	var x = xpos*SPRITE_SIZE;
+	var y = ypos*SPRITE_SIZE;
+	var position = xpos*7 + ypos;
+	entities[position] = new Box(x,y,mutant);
 }
 // Jamming from file: 5_Keyboard.js
 /* *************************
@@ -657,7 +665,7 @@ function render(){
 	d.fillRect(0, 0, canvas.width, canvas.height);
 	
 	player.render();
-	renderAll(boxes);
+	renderAll(entities);
 	
 	renderHUD();	
 	
@@ -666,8 +674,8 @@ function render(){
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
 	
-	createBox(150, FLOOR-64, false);
-	createBox(550, FLOOR-124, false);
+	createBox(1, 7, false);
+	createBox(5, 7, false);
 	
 	lastTime = window.performance.now();
     main();

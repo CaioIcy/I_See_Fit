@@ -21,4 +21,8 @@ function Entity(x, y){
 }
 
 var numberOfEntities = (canvas.width*2/64) * ((canvas.height-88)/64);
-var entities = [numberOfEntities];
+var entities = new Array();
+
+for(i=0;i<numberOfEntities;i++){
+	entities[i]=0;
+}

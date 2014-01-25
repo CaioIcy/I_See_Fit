@@ -43,5 +43,6 @@ function Box(x, y, mutant){
 function createBox(xpos,ypos,mutant){
 	var x = xpos*SPRITE_SIZE;
 	var y = ypos*SPRITE_SIZE;
-	entities[entities.length] = new Box(x,y,mutant);
+	var position = xpos*7 + ypos;
+	entities[position] = new Box(x,y,mutant);
 }

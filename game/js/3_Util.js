@@ -78,7 +78,9 @@ function renderEntity(entity){
 function renderAll(listOfEntities) {
     for(i = 0; i< listOfEntities.length; i++){
 		var entity = listOfEntities[i];
-		entity.render();
+		if(entity){
+			entity.render();
+		}
 	}
 }
 
