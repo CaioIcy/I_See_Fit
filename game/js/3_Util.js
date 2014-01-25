@@ -53,11 +53,11 @@ function applyGravity(obj){
 	if(obj.midAir){
 		var gravity = 15/40;
 		obj.vy += gravity;
-		/*if(obj.y > floor){
+		if( (obj.y + obj.sprite.height) > FLOOR){
 			obj.vy = 0;
-			obj.y = floor;
+			obj.y = FLOOR - obj.sprite.height;
 			obj.midAir = false;
-		}*/
+		}
 	}	
 }
 
