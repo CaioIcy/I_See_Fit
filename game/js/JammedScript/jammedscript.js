@@ -451,11 +451,44 @@ function Player(x, y){
 	
 	this.update = function(dt) {
 		this.determineCurrentAction();
-	
+		
 		this.sprite = this.currentSprites[this.currentAction];
+		
+		if(this.currentType == PLAYER_IS_SQUARE && pressedKeys[VK_S] && this.vx != 0){
+			//this.sprite = (player_direction == 'left') ? player_square_skill_left : player_square_skill_right;
+			if(player_direction == 'left'){
+				//pushing
+				if(this.vx < 0 && this.collidingFrom == FROM_RIGHT){
+					this.sprite = player_square_skill_left;
+				}
+				//pulling
+				else if(this.vx < 0 && this.collidingFrom == FROM_LEFT){
+					this.sprite = player_square_skill_right;
+				}
+				else{
+					this.sprite = player_square_walking_left;
+				}
+			}
+			else if(player_direction == 'right'){
+				//pushing
+				if(this.vx > 0 && this.collidingFrom == FROM_LEFT){
+					this.sprite = player_square_skill_right;
+				}
+				//pulling
+				else if(this.vx > 0 && this.collidingFrom == FROM_RIGHT){
+					this.sprite = player_square_skill_left;
+				}
+				else{
+					this.sprite = player_square_walking_right;
+				}
+			}
+		}
+		
 		this.sprite.update(dt);
 		this.audio = this.currentAudio[this.currentAction];
 		this.audio.play();
+		
+		
 		
 		this.checkDirection();
 		
@@ -512,6 +545,7 @@ function Player(x, y){
 			}
 			else{
 				//this.collidingFrom = NOT_COLLIDING;
+				this.collidingWith = false;
 				
 				if(FLOOR != canvas.height){
 					if(this.lastCollision.x > (this.x+this.sprite.width) || this.x > (this.lastCollision.x+this.lastCollision.sprite.width)){
