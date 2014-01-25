@@ -11,6 +11,7 @@ function Player(x, y){
 	
 	this.collidingWith;
 	this.collidingFrom;
+	this.lastCollision;
 	
 	this.currentAudio = playerCircleAudio;
 	
@@ -74,6 +75,9 @@ function Player(x, y){
 					this.midAir = false;
 					FLOOR = array[i].y;
 					this.lastCollision = array[i];
+				}
+				if(this.lastCollision.sprite == boxgear_triangle_sprite){
+					alert("KYOP MACHUCOU");
 				}
 			}
 			else{

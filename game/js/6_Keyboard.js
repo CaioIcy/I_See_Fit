@@ -20,16 +20,19 @@ function Keyboard(){
 			//CIRCLE -- JUMP
 			if(player.currentType == PLAYER_IS_CIRCLE){
 				if(!player.midAir){
-					player.vy = JUMPSPEED * dt;
+					if(player.collidingFrom == FROM_UP && player.collidingWith.sprite == boxgear_circle_sprite || player.collidingWith.sprite == box_circle_sprite){
+						player.vy = JUMPSPEED * Math.sqrt(Math.PI) * 0.78 * dt;
+					}
+					else{
+						player.vy = JUMPSPEED * dt;
+					}
 					player.midAir = true;
 					FLOOR = canvas.height;
 				}
 			}
 			//SQUARE -- PUSH
-			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false){
-				//alert("colliding from " + player.collidingFrom);
+			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false && player.collidingWith.sprite != metal_box){
 				if(player.collidingFrom == FROM_LEFT){
-					//alert("kyop from left");
 					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
 						player.collidingWith.x = player.x + player.sprite.width;
 					}
@@ -38,7 +41,6 @@ function Keyboard(){
 					}
 				}
 				else if(player.collidingFrom == FROM_RIGHT){
-					//alert("kyop from right");
 					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
 						player.collidingWith.x = player.x - player.collidingWith.sprite.width - 2;
 					}
@@ -51,7 +53,7 @@ function Keyboard(){
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
 				if(player.collidingWith != false){
-					if(player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT){
+					if(player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT && player.collidingWith.sprite != metal_box){
 						player.collidingWith.destroy();
 						player.collidingWith = false;
 					}

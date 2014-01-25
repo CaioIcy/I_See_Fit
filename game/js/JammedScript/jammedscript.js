@@ -81,7 +81,7 @@ var player_square_walking_right = new Sprite('res/square_spritesheet_right.png',
 var player_triangle_walking_right = new Sprite('res/triangle_spritesheet_right.png', [0,128], spritesize, 7, [0,1,2,3,4,5,6,7], 'horizontal', false);
 
 var player_circle_skill_right = new Sprite('res/circle_spritesheet_right.png', [0,256], spritesize, 7, [0], 'horizontal', false);
-var player_square_skill_right = new Sprite('res/square_spritesheet_right.png', [0,128], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_square_skill_right = new Sprite('res/square_spritesheet_right.png', [0,192], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
 var player_triangle_skill_right = new Sprite('res/triangle_spritesheet_right.png', [0,64], spritesize, 7, [0,1,2,3], 'horizontal', false);
 
 /* LEFT */
@@ -94,7 +94,7 @@ var player_square_walking_left = new Sprite('res/square_spritesheet_left.png', [
 var player_triangle_walking_left = new Sprite('res/triangle_spritesheet_left.png', [0,128], spritesize, 7, [0,1,2,3,4,5,6,7], 'horizontal', false);
 
 var player_circle_skill_left = new Sprite('res/circle_spritesheet_left.png', [0,256], spritesize, 7, [0], 'horizontal', false);
-var player_square_skill_left = new Sprite('res/square_spritesheet_left.png', [0,128], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_square_skill_left = new Sprite('res/square_spritesheet_left.png', [0,192], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
 var player_triangle_skill_left = new Sprite('res/triangle_spritesheet_left.png', [0,64], spritesize, 7, [0,1,2,3], 'horizontal', false);
 
 playerCircleSprites[IDLE] =  player_circle_idle_left;
@@ -120,6 +120,7 @@ var boxgear_circle_sprite = new Sprite('res/misc_spritesheet.png', [448, 0], spr
 var box_triangle_sprite = new Sprite('res/misc_spritesheet.png', [192, 0], spritesize , 0, [0], 'horizontal', true);
 var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], spritesize , 0, [0], 'horizontal', true);
 
+var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0, [0], 'horizontal', true);
 
 // Jamming from file: 1.1_Audio.js
 /* *************************
@@ -440,6 +441,7 @@ function Player(x, y){
 	
 	this.collidingWith;
 	this.collidingFrom;
+	this.lastCollision;
 	
 	this.currentAudio = playerCircleAudio;
 	
@@ -503,6 +505,9 @@ function Player(x, y){
 					this.midAir = false;
 					FLOOR = array[i].y;
 					this.lastCollision = array[i];
+				}
+				if(this.lastCollision.sprite == boxgear_triangle_sprite){
+					alert("KYOP MACHUCOU");
 				}
 			}
 			else{
@@ -597,14 +602,12 @@ var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE);
  * "CLASS": Box
  * *************************/
 
-var boxes = [];
- 
-function Box(x, y, mutant){
+function Box(x, y, mutant,sprite){
 
 	Entity.call(this,x,y);
 	
 	this.mutant = mutant;	
-	this.sprite = box_square_sprite;
+	this.sprite = sprite;
 	
 	this.update = function(dt){
 		this.sprite.update(dt);
@@ -635,11 +638,11 @@ function Box(x, y, mutant){
 	return this;
 }
 
-function createBox(xpos,ypos,mutant){
+function createBox(xpos,ypos,mutant,sprite){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 88;
 	var position = xpos*7 + ypos;
-	entities[position] = new Box(x,y,mutant);
+	entities[position] = new Box(x,y,mutant,sprite);
 }
 // Jamming from file: 4.3_Scenary.js
 /* *************************
@@ -742,16 +745,19 @@ function Keyboard(){
 			//CIRCLE -- JUMP
 			if(player.currentType == PLAYER_IS_CIRCLE){
 				if(!player.midAir){
-					player.vy = JUMPSPEED * dt;
+					if(player.collidingFrom == FROM_UP && player.collidingWith.sprite == boxgear_circle_sprite || player.collidingWith.sprite == box_circle_sprite){
+						player.vy = JUMPSPEED * Math.sqrt(Math.PI) * 0.78 * dt;
+					}
+					else{
+						player.vy = JUMPSPEED * dt;
+					}
 					player.midAir = true;
 					FLOOR = canvas.height;
 				}
 			}
 			//SQUARE -- PUSH
-			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false){
-				//alert("colliding from " + player.collidingFrom);
+			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false && player.collidingWith.sprite != metal_box){
 				if(player.collidingFrom == FROM_LEFT){
-					//alert("kyop from left");
 					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
 						player.collidingWith.x = player.x + player.sprite.width;
 					}
@@ -760,7 +766,6 @@ function Keyboard(){
 					}
 				}
 				else if(player.collidingFrom == FROM_RIGHT){
-					//alert("kyop from right");
 					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
 						player.collidingWith.x = player.x - player.collidingWith.sprite.width - 2;
 					}
@@ -773,7 +778,7 @@ function Keyboard(){
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
 				if(player.collidingWith != false){
-					if(player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT){
+					if(player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT && player.collidingWith.sprite != metal_box){
 						player.collidingWith.destroy();
 						player.collidingWith = false;
 					}
@@ -940,16 +945,16 @@ function render(){
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
 	
-	createBox(0, 0, false);
-	createBox(0, 1, false);
-	createBox(0, 2, false);
-	createBox(0, 3, true);
-	createBox(0, 4, false);
-	createBox(0, 5, true);
-	createBox(0, 6, false);
-	createBox(0, 7, false);
-	createBox(5, 7, true);
-	createBox(9, 6, false);
+	createBox(0, 0, false, metal_box);
+	createBox(0, 1, false, metal_box);
+	createBox(0, 2, false, metal_box);
+	createBox(0, 3, false, metal_box);
+	createBox(0, 4, false, metal_box);
+	createBox(0, 5, false, metal_box);
+	createBox(0, 6, false, metal_box);
+	createBox(0, 7, false, metal_box);
+	
+	createBox(3,7,true,boxgear_circle_sprite);
 	
 	lastTime = window.performance.now();
     main();

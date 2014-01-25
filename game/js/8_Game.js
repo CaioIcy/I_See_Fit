@@ -25,16 +25,16 @@ function render(){
 function initialize(){
 	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
 	
-	createBox(0, 0, false);
-	createBox(0, 1, false);
-	createBox(0, 2, false);
-	createBox(0, 3, true);
-	createBox(0, 4, false);
-	createBox(0, 5, true);
-	createBox(0, 6, false);
-	createBox(0, 7, false);
-	createBox(5, 7, true);
-	createBox(9, 6, false);
+	createBox(0, 0, false, metal_box);
+	createBox(0, 1, false, metal_box);
+	createBox(0, 2, false, metal_box);
+	createBox(0, 3, false, metal_box);
+	createBox(0, 4, false, metal_box);
+	createBox(0, 5, false, metal_box);
+	createBox(0, 6, false, metal_box);
+	createBox(0, 7, false, metal_box);
+	
+	createBox(3,7,true,boxgear_circle_sprite);
 	
 	lastTime = window.performance.now();
     main();

@@ -2,14 +2,12 @@
  * "CLASS": Box
  * *************************/
 
-var boxes = [];
- 
-function Box(x, y, mutant){
+function Box(x, y, mutant,sprite){
 
 	Entity.call(this,x,y);
 	
 	this.mutant = mutant;	
-	this.sprite = box_square_sprite;
+	this.sprite = sprite;
 	
 	this.update = function(dt){
 		this.sprite.update(dt);
@@ -40,9 +38,9 @@ function Box(x, y, mutant){
 	return this;
 }
 
-function createBox(xpos,ypos,mutant){
+function createBox(xpos,ypos,mutant,sprite){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 88;
 	var position = xpos*7 + ypos;
-	entities[position] = new Box(x,y,mutant);
+	entities[position] = new Box(x,y,mutant,sprite);
 }
