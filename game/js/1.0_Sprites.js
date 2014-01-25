@@ -4,16 +4,13 @@
 
 resources.load([
     'res/background.png',
-	'res/player_circle.png',
-	'res/player_square.png',
 	'res/square_spritesheet_left.png',
 	'res/square_spritesheet_right.png',
 	'res/circle_spritesheet_left.png',
 	'res/circle_spritesheet_right.png',
-	'res/player_triangle.png',
 	'res/triangle_spritesheet_left.png',
 	'res/triangle_spritesheet_right.png',
-	'res/box.png'
+	'res/misc_spritesheet.png'
 ]);
 resources.onReady(initialize);
  
@@ -44,7 +41,7 @@ var player_triangle_skill_right = new Sprite('res/triangle_spritesheet_right.png
 
 /* LEFT */
 var player_circle_idle_left = new Sprite('res/circle_spritesheet_left.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
-var player_square_idle_left = new Sprite('res/square_spritesheet_left.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_square_idle_left = new Sprite('res/square_spritesheet_left.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
 var player_triangle_idle_left = new Sprite('res/triangle_spritesheet_left.png', [0,0], spritesize, 0, [0], 'horizontal', true);
 
 var player_circle_walking_left = new Sprite('res/circle_spritesheet_left.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
@@ -66,3 +63,15 @@ playerSquareSprites[SKILL] = player_square_skill_left;
 playerTriangleSprites[IDLE] = player_triangle_idle_left;
 playerTriangleSprites[WALKING] = player_triangle_walking_left;
 playerTriangleSprites[SKILL] = player_triangle_skill_left;
+
+/* MISC */
+
+var box_square_sprite = new Sprite('res/misc_spritesheet.png', [0,0], spritesize, 0, [0], 'horizontal', true);
+var boxgear_square_sprite = new Sprite('res/misc_spritesheet.png', [64,0], spritesize, 0, [0], 'horizontal', true);
+
+var box_circle_sprite = new Sprite('res/misc_spritesheet.png', [384,0], spritesize, 0, [0], 'horizontal', true);
+var boxgear_circle_sprite = new Sprite('res/misc_spritesheet.png', [448, 0], spritesize , 0, [0], 'horizontal', true);
+
+var box_triangle_sprite = new Sprite('res/misc_spritesheet.png', [192, 0], spritesize , 0, [0], 'horizontal', true);
+var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], spritesize , 0, [0], 'horizontal', true);
+

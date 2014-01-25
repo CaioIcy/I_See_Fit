@@ -9,19 +9,19 @@ function Box(x, y, mutant){
 	Entity.call(this,x,y);
 	
 	this.mutant = mutant;	
-	this.sprite = new Sprite('res/box.png', [0, 0], [SPRITE_SIZE,SPRITE_SIZE] , 12, [0]);
-
+	this.sprite = box_square_sprite;
 	
 	this.update = function(dt){
+		this.sprite.update(dt);
 		if(this.mutant){
 			if(player.currentType == PLAYER_IS_SQUARE){
-				//this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = boxgear_square_sprite;
 			}
 			else if(player.currentType == PLAYER_IS_CIRCLE){
-				//this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = boxgear_circle_sprite;
 			}
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
-				// Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = boxgear_triangle_sprite;
 			}
 		}
 		else{

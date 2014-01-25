@@ -49,16 +49,13 @@ var BACKGROUND_WIDTH = 2000;
 
 resources.load([
     'res/background.png',
-	'res/player_circle.png',
-	'res/player_square.png',
 	'res/square_spritesheet_left.png',
 	'res/square_spritesheet_right.png',
 	'res/circle_spritesheet_left.png',
 	'res/circle_spritesheet_right.png',
-	'res/player_triangle.png',
 	'res/triangle_spritesheet_left.png',
 	'res/triangle_spritesheet_right.png',
-	'res/box.png'
+	'res/misc_spritesheet.png'
 ]);
 resources.onReady(initialize);
  
@@ -89,7 +86,7 @@ var player_triangle_skill_right = new Sprite('res/triangle_spritesheet_right.png
 
 /* LEFT */
 var player_circle_idle_left = new Sprite('res/circle_spritesheet_left.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
-var player_square_idle_left = new Sprite('res/square_spritesheet_left.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var player_square_idle_left = new Sprite('res/square_spritesheet_left.png', [0,0], spritesize, 7, [0,1], 'horizontal', false);
 var player_triangle_idle_left = new Sprite('res/triangle_spritesheet_left.png', [0,0], spritesize, 0, [0], 'horizontal', true);
 
 var player_circle_walking_left = new Sprite('res/circle_spritesheet_left.png', [0,128], spritesize, 7, [0,1,2,3,4], 'horizontal', false);
@@ -111,6 +108,18 @@ playerSquareSprites[SKILL] = player_square_skill_left;
 playerTriangleSprites[IDLE] = player_triangle_idle_left;
 playerTriangleSprites[WALKING] = player_triangle_walking_left;
 playerTriangleSprites[SKILL] = player_triangle_skill_left;
+
+/* MISC */
+
+var box_square_sprite = new Sprite('res/misc_spritesheet.png', [0,0], spritesize, 0, [0], 'horizontal', true);
+var boxgear_square_sprite = new Sprite('res/misc_spritesheet.png', [64,0], spritesize, 0, [0], 'horizontal', true);
+
+var box_circle_sprite = new Sprite('res/misc_spritesheet.png', [384,0], spritesize, 0, [0], 'horizontal', true);
+var boxgear_circle_sprite = new Sprite('res/misc_spritesheet.png', [448, 0], spritesize , 0, [0], 'horizontal', true);
+
+var box_triangle_sprite = new Sprite('res/misc_spritesheet.png', [192, 0], spritesize , 0, [0], 'horizontal', true);
+var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], spritesize , 0, [0], 'horizontal', true);
+
 
 // Jamming from file: 1.1_Audio.js
 /* *************************
@@ -343,10 +352,7 @@ function renderAll(listOfEntities) {
 function updateAll(listOfEntities, dt) {
     for(i = 0; i< listOfEntities.length; i++){
 		var entity = listOfEntities[i];
-		if(dt==null || dt == undefined){
-			entity.update();
-		}
-		else{
+		if(entity != 0){
 			entity.update(dt);
 		}
 	}
@@ -598,19 +604,19 @@ function Box(x, y, mutant){
 	Entity.call(this,x,y);
 	
 	this.mutant = mutant;	
-	this.sprite = new Sprite('res/box.png', [0, 0], [SPRITE_SIZE,SPRITE_SIZE] , 12, [0]);
-
+	this.sprite = box_square_sprite;
 	
 	this.update = function(dt){
+		this.sprite.update(dt);
 		if(this.mutant){
 			if(player.currentType == PLAYER_IS_SQUARE){
-				//this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = boxgear_square_sprite;
 			}
 			else if(player.currentType == PLAYER_IS_CIRCLE){
-				//this.sprite = new Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = boxgear_circle_sprite;
 			}
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
-				// Sprite('res/box.png', [0, 0], [40,40] , 12, [0]);
+				this.sprite = boxgear_triangle_sprite;
 			}
 		}
 		else{
@@ -917,6 +923,7 @@ function update(dt){
 		mouse.update();
 		player.update(dt);
 		player.checkPlayerCollisionWith(entities);
+		updateAll(entities, dt);
 		camera.update(dt);
 	}
  }
@@ -936,12 +943,12 @@ function initialize(){
 	createBox(0, 0, false);
 	createBox(0, 1, false);
 	createBox(0, 2, false);
-	createBox(0, 3, false);
+	createBox(0, 3, true);
 	createBox(0, 4, false);
-	createBox(0, 5, false);
+	createBox(0, 5, true);
 	createBox(0, 6, false);
 	createBox(0, 7, false);
-	createBox(5, 7, false);
+	createBox(5, 7, true);
 	createBox(9, 6, false);
 	
 	lastTime = window.performance.now();

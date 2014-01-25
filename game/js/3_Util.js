@@ -87,10 +87,7 @@ function renderAll(listOfEntities) {
 function updateAll(listOfEntities, dt) {
     for(i = 0; i< listOfEntities.length; i++){
 		var entity = listOfEntities[i];
-		if(dt==null || dt == undefined){
-			entity.update();
-		}
-		else{
+		if(entity != 0){
 			entity.update(dt);
 		}
 	}
