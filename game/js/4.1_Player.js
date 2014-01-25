@@ -16,7 +16,7 @@ function Player(x, y){
 	
 	this.currentSprites = playerCircleSprites;
 	this.currentAction = IDLE;
-	this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+	this.sprite = player_circle_walking_left;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 	
 	this.update = function(dt) {
 		this.determineCurrentAction();
@@ -25,6 +25,8 @@ function Player(x, y){
 		this.sprite.update(dt);
 		this.audio = this.currentAudio[this.currentAction];
 		this.audio.play();
+		
+		this.checkDirection();
 		
 		if(Math.abs(this.vx)<=0.3){
 			this.vx = 0;
@@ -96,19 +98,16 @@ function Player(x, y){
 			if(type == PLAYER_IS_CIRCLE){
 				this.speed = 600;
 				this.currentSprites = playerCircleSprites;
-				//this.sprite = player_circle_walking;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
 				this.speed = 300;
 				this.currentSprites = playerSquareSprites;
-				//this.sprite = player_square_walking;//new Sprite('res/player_square.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
 				this.speed = 300;
 				this.currentSprites = playerTriangleSprites;
-				//this.sprite = player_triangle_walking;//new Sprite('res/player_triangle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
 				this.currentType = PLAYER_IS_TRIANGLE;
 			}
 		}
@@ -126,6 +125,37 @@ function Player(x, y){
 		//skill
 		else if(this.vy != 0 && this.midAir){
 			this.currentAction = SKILL;
+		}
+	};
+	
+	this.checkDirection = function(){
+		if(this.vx > 0){
+			//player_direction = 'right';
+			playerCircleSprites[IDLE] =  player_circle_idle_right;
+			playerCircleSprites[WALKING] = player_circle_walking_right;
+			playerCircleSprites[SKILL] = player_circle_skill_right;
+
+			playerSquareSprites[IDLE] = player_square_idle_right;
+			playerSquareSprites[WALKING] = player_square_walking_right;
+			playerSquareSprites[SKILL] = player_square_skill_right;
+
+			playerTriangleSprites[IDLE] = player_triangle_idle_right;
+			playerTriangleSprites[WALKING] = player_triangle_walking_right;
+			playerTriangleSprites[SKILL] = player_triangle_skill_right;
+		}
+		else{
+			//player_direction = 'left';
+			playerCircleSprites[IDLE] =  player_circle_idle_left;
+			playerCircleSprites[WALKING] = player_circle_walking_left;
+			playerCircleSprites[SKILL] = player_circle_skill_left;
+
+			playerSquareSprites[IDLE] = player_square_idle_left;
+			playerSquareSprites[WALKING] = player_square_walking_left;
+			playerSquareSprites[SKILL] = player_square_skill_left;
+
+			playerTriangleSprites[IDLE] = player_triangle_idle_left;
+			playerTriangleSprites[WALKING] = player_triangle_walking_left;
+			playerTriangleSprites[SKILL] = player_triangle_skill_left;
 		}
 	};
 	
