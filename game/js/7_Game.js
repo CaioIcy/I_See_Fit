@@ -3,22 +3,23 @@
  * *************************/
 
 function update(dt){
+	if(!paused){
 		keyboard.updateKeyInput(dt);
 		mouse.update();
 		player.update(dt);
 		player.checkPlayerCollisionWith(entities);
+	}
  }
 
 function render(){
-	
-	d.fillStyle = backgroundPattern;
-	d.fillRect(0, 0, canvas.width, canvas.height);
-	
-	player.render();
-	renderAll(entities);
-	
-	renderHUD();	
-	
+	if(!paused){
+		d.fillStyle = backgroundPattern;
+		d.fillRect(0, 0, canvas.width, canvas.height);
+		
+		player.render();
+		renderAll(entities);
+	}
+	renderHUD();
 }
 
 function initialize(){

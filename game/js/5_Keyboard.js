@@ -88,13 +88,13 @@ function keyPressed(e) {
 	pressedKeys[e.keyCode] = true;
 	
 	if(pressedKeys[VK_ENTER]){
-			if(paused){
-				paused = false;
-			}
-			else{
-				paused = true;
-			}
+		if(paused){
+			paused = false;
 		}
+		else{
+			paused = true;
+		}
+	}
 };
 
 function keyReleased(e){
