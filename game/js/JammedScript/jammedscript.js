@@ -322,6 +322,9 @@ function Player(x, y, width, height){
 	this.currentType = PLAYER_IS_SQUARE;
 	this.midAir = false;
 	
+	this.collidingWith;
+	this.collidingFrom;
+	
 	this.sprite = new Sprite('res/player_square.png', [0, 0], [width,height] , 12, [0]);
 	
 	this.update = function(dt) {
@@ -340,19 +343,25 @@ function Player(x, y, width, height){
 		for(i = 0; i<array.length; i++){
 			var collision = detectCollision(player, array[i]);
 			if(collision != NOT_COLLIDING){
+				this.collidingWith = array[i];
 				if(collision == FROM_LEFT){
+					this.collidingFrom = FROM_LEFT;
 					this.x = array[i].x - this.sprite.width - 1;
 					this.vx = -1;
 				}
 				else if(collision == FROM_RIGHT){
+					this.collidingFrom = FROM_RIGHT;
 					this.x = array[i].x + array[i].sprite.width + 1;
 					this.vx = 1;
 				}
 				else if(collision == FROM_UP){
+					this.collidingFrom = FROM_UP;
 					this.y = array[i].y + array[i].sprite.height + 1;
 					this.vy = 0;
+					this.midAir = false;
 				}
 				else if(collision == FROM_DOWN){
+					this.collidingFrom = FROM_DOWN;
 					this.y = array[i].y - this.sprite.height - 1;
 					this.vy = 0;
 					this.midAir = false;
@@ -463,13 +472,32 @@ function Keyboard(){
 				}
 			}
 			//SQUARE -- PUSH
-			else if(player.currentType == PLAYER_IS_SQUARE){
+			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false){
+				if(player.collidingFrom == FROM_LEFT){
+					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
+						player.collidingWith.x = player.x + player.sprite.width;
+					}
+					else if(pressedKeys[VK_RIGHT] || pressedKeys[VK_D]){
+						player.collidingWith.x = player.x+player.sprite.width + 2;
+					}
+				}
+				else if(player.collidingFrom == FROM_RIGHT){
+					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
+						player.collidingWith.x = player.x - player.collidingWith.sprite.width - 2;
+					}
+					else if(pressedKeys[VK_RIGHT] || pressedKeys[VK_D]){
+						player.collidingWith.x = player.x - player.sprite.width;
+					}
+				}
 				
 			}
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
 				
 			}
+		}
+		else{
+			player.collidingWith = false;
 		}
 		
 		//TRANSFORM TO CIRCLE

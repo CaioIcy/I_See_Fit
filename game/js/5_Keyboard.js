@@ -25,13 +25,32 @@ function Keyboard(){
 				}
 			}
 			//SQUARE -- PUSH
-			else if(player.currentType == PLAYER_IS_SQUARE){
+			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false){
+				if(player.collidingFrom == FROM_LEFT){
+					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
+						player.collidingWith.x = player.x + player.sprite.width;
+					}
+					else if(pressedKeys[VK_RIGHT] || pressedKeys[VK_D]){
+						player.collidingWith.x = player.x+player.sprite.width + 2;
+					}
+				}
+				else if(player.collidingFrom == FROM_RIGHT){
+					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
+						player.collidingWith.x = player.x - player.collidingWith.sprite.width - 2;
+					}
+					else if(pressedKeys[VK_RIGHT] || pressedKeys[VK_D]){
+						player.collidingWith.x = player.x - player.sprite.width;
+					}
+				}
 				
 			}
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
 				
 			}
+		}
+		else{
+			player.collidingWith = false;
 		}
 		
 		//TRANSFORM TO CIRCLE
