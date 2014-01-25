@@ -3,19 +3,26 @@ function Player(x, y){
 
 	Entity.call(this, x, y);
 	
-	this.speed = 300;
+	this.speed = 600;
 	this.vx = 0;
 	this.vy = 0;
-	this.currentType = PLAYER_IS_SQUARE;
+	this.currentType = PLAYER_IS_CIRCLE;
 	this.midAir = false;
 	
 	this.collidingWith;
 	this.collidingFrom;
 	
-	this.sprite = new Sprite('res/player_square.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0]);
+	this.sprite = new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 	
 	this.update = function(dt) {
-		this.vx *= FRICTION;
+		this.sprite.update(dt);
+		
+		if(Math.abs(this.vx)<=0.3){
+			this.vx = 0;
+		}
+		else{
+			this.vx *= FRICTION;
+		}
 		this.vy *= FRICTION;
 		
 		if(this.midAir){
@@ -24,7 +31,7 @@ function Player(x, y){
 	
 		this.x += this.vx * dt;
 		this.y += this.vy;
-	}
+	};
 	
 	this.checkPlayerCollisionWith = function(array){
 		for(i = 0; i<array.length; i++){
@@ -33,40 +40,53 @@ function Player(x, y){
 				this.collidingWith = array[i];
 				if(collision == FROM_LEFT){
 					this.collidingFrom = FROM_LEFT;
-					this.x = array[i].x - this.sprite.width - 1;
+					this.x = array[i].x - this.sprite.width;
 					this.vx = -1;
+					this.lastCollision = array[i];
 				}
 				else if(collision == FROM_RIGHT){
 					this.collidingFrom = FROM_RIGHT;
-					this.x = array[i].x + array[i].sprite.width + 1;
+					this.x = array[i].x + array[i].sprite.width;
 					this.vx = 1;
-				}
-				else if(collision == FROM_UP){
-					this.collidingFrom = FROM_UP;
-					this.y = array[i].y + array[i].sprite.height + 1;
-					this.vy = 0;
-					this.midAir = false;
+					this.lastCollision = array[i];
 				}
 				else if(collision == FROM_DOWN){
 					this.collidingFrom = FROM_DOWN;
-					this.y = array[i].y - this.sprite.height - 1;
+					this.y = array[i].y + array[i].sprite.height;
+					this.vy = 0;
+					this.lastCollision = array[i];
+				}
+				else if(collision == FROM_UP){
+					this.collidingFrom = FROM_UP;
+					this.y = array[i].y - this.sprite.height;
 					this.vy = 0;
 					this.midAir = false;
+					FLOOR = array[i].y;
+					this.lastCollision = array[i];
 				}
 			}
 			else{
+				//this.collidingFrom = NOT_COLLIDING;
+				
+				if(FLOOR != canvas.height){
+					if(this.lastCollision.x > (this.x+this.sprite.width) || this.x > (this.lastCollision.x+this.lastCollision.sprite.width)){
+						FLOOR = canvas.height;
+					}
+				}
+				
 				if(this.y < FLOOR - this.sprite.height){
 					this.midAir = true;
 				}
+				
 			}
 		}
-	;}
+	};
 	
 	this.transform = function(type){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
 				this.speed = 600;
-				this.sprite = new Sprite('res/player_circle.png', [0, 0], [this.sprite.width, this.sprite.height] , 12, [0]);
+				this.sprite = new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){

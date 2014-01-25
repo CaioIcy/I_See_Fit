@@ -27,8 +27,8 @@ var CIRCLE_SPEED = 600;
 
 var FROM_LEFT = 1;
 var FROM_RIGHT = 2;
-var FROM_UP = 3;
-var FROM_DOWN = 4;
+var FROM_DOWN = 3;
+var FROM_UP = 4;
 var NOT_COLLIDING = 5;
 
 var SPRITE_SIZE = 64;

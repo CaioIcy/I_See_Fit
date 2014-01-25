@@ -4,8 +4,10 @@
 
 resources.load([
     'res/background.png',
-	'res/player_square.png',
 	'res/player_circle.png',
+	'res/player_square.png',
+	'res/square_spritesheet.png',
+	'res/circle_spritesheet.png',
 	'res/player_triangle.png',
 	'res/box.png'
 ]);

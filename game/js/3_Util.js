@@ -32,9 +32,9 @@ function detectCollision(reference, target){
 function whereCollision(A, B){
 
 	var AcenterX = A.x+(A.sprite.width/2);
-	var AcenterY = A.y+(A.sprite.height/2);;
-	var BcenterX = B.x+(A.sprite.width/2);;
-	var BcenterY = B.y+(A.sprite.height/2);;
+	var AcenterY = A.y+(A.sprite.height/2);
+	var BcenterX = B.x+(A.sprite.width/2);
+	var BcenterY = B.y+(A.sprite.height/2);
 	var w = 0.5 * (A.sprite.width + B.sprite.width);
 	var h = 0.5 * (A.sprite.height+ B.sprite.height);
 	var dx = AcenterX - BcenterX;
@@ -48,7 +48,7 @@ function whereCollision(A, B){
 		if (wy > hx){
 			if (wy > -hx)
 				/* collision at the top */
-				return FROM_UP;
+				return FROM_DOWN;
 			else
 				/* on the left */
 				return FROM_LEFT;
@@ -59,7 +59,7 @@ function whereCollision(A, B){
 				return FROM_RIGHT;
 			else
 				/* at the bottom */
-				return FROM_DOWN;
+				return FROM_UP;
 		}
 	}
 }
@@ -111,6 +111,7 @@ function applyGravity(obj){
 function renderHUD(){
 	d.fillStyle = "red";
 	d.fillRect(0,0,canvas.width,88);
+	
 
 	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
@@ -127,6 +128,8 @@ function renderHUD(){
 	mouse.render();
 	
 	//Game Time
-	daux.fillText(gameTime.toFixed(2), 5, auxcanvas.height-15);
+	daux.fillText(gameTime.toFixed(2) +" floor:"+ FLOOR, 5, auxcanvas.height-15);
+	daux.fillText("pX: " + player.x, 600, auxcanvas.height-15);
+	daux.fillText("pY+H: " + (player.y+player.sprite.height), 600, auxcanvas.height-30);
 	
 }

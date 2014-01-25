@@ -22,11 +22,14 @@ function Keyboard(){
 				if(!player.midAir){
 					player.vy = JUMPSPEED * dt;
 					player.midAir = true;
+					FLOOR = canvas.height;
 				}
 			}
 			//SQUARE -- PUSH
 			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false){
+				//alert("colliding from " + player.collidingFrom);
 				if(player.collidingFrom == FROM_LEFT){
+					//alert("kyop from left");
 					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
 						player.collidingWith.x = player.x + player.sprite.width;
 					}
@@ -35,6 +38,7 @@ function Keyboard(){
 					}
 				}
 				else if(player.collidingFrom == FROM_RIGHT){
+					//alert("kyop from right");
 					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
 						player.collidingWith.x = player.x - player.collidingWith.sprite.width - 2;
 					}
@@ -47,8 +51,11 @@ function Keyboard(){
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
 				if(player.collidingWith != false){
-					player.collidingWith.destroy();
-					player.collidingWith = false;
+					if(player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT){
+						player.collidingWith.destroy();
+						player.collidingWith = false;
+					}
+					
 				}
 			}
 		}
