@@ -14,6 +14,14 @@ function Keyboard(){
 			player.vx += 10;
         }
 		
+		//PLAYER JUMP
+		if(pressedKeys[VK_UP] || pressedKeys[VK_W]){
+			if(!player.midAir){
+				player.vy = -40;
+				player.midAir = true;
+			}
+		}
+		
 	};
 	
 }

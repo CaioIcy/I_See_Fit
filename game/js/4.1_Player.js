@@ -6,10 +6,17 @@ function Player(x,y,width,height){
 	this.vx = 0;
 	this.vy = 0;
 	
+	this.midAir = false;
+	
 	this.sprite = new Sprite('res/player.png', [0, 0], [40,40] , 12, [0]);
 	
 	this.update = function(dt) {
 		this.vx *= FRICTION;
+		this.vy *= FRICTION;
+		
+		if(this.midAir){
+			applyGravity(this);
+		}
 	
 		this.x += this.vx * dt;
 		this.y += this.vy * dt;

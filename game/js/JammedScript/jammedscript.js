@@ -192,6 +192,18 @@ function updateAll(listOfEntities, dt) {
 	}
 }
 
+function applyGravity(obj){
+	if(obj.midAir){
+		var gravity = 15/40;
+		obj.vy += gravity;
+		/*if(obj.y > floor){
+			obj.vy = 0;
+			obj.y = floor;
+			obj.midAir = false;
+		}*/
+	}	
+}
+
 function renderHUD(){
 	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
@@ -246,10 +258,17 @@ function Player(x,y,width,height){
 	this.vx = 0;
 	this.vy = 0;
 	
+	this.midAir = false;
+	
 	this.sprite = new Sprite('res/player.png', [0, 0], [40,40] , 12, [0]);
 	
 	this.update = function(dt) {
 		this.vx *= FRICTION;
+		this.vy *= FRICTION;
+		
+		if(this.midAir){
+			applyGravity(this);
+		}
 	
 		this.x += this.vx * dt;
 		this.y += this.vy * dt;
@@ -274,6 +293,14 @@ function Keyboard(){
 		else if(pressedKeys[VK_RIGHT]){
 			player.vx += 10;
         }
+		
+		//PLAYER JUMP
+		if(pressedKeys[VK_UP] || pressedKeys[VK_W]){
+			if(!player.midAir){
+				player.vy = -40;
+				player.midAir = true;
+			}
+		}
 		
 	};
 	

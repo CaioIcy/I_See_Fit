@@ -49,6 +49,18 @@ function updateAll(listOfEntities, dt) {
 	}
 }
 
+function applyGravity(obj){
+	if(obj.midAir){
+		var gravity = 15/40;
+		obj.vy += gravity;
+		/*if(obj.y > floor){
+			obj.vy = 0;
+			obj.y = floor;
+			obj.midAir = false;
+		}*/
+	}	
+}
+
 function renderHUD(){
 	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
