@@ -138,16 +138,22 @@ var spike_square_start = new Sprite('res/misc_spritesheet.png', [0,3*64], sprite
 var spike_square = new Sprite('res/misc_spritesheet.png', [1*64,3*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_square = new Sprite('res/misc_spritesheet.png', [2*64,3*64], spritesize, 0, [0], 'horizontal', true);
 var spike_square_end = new Sprite('res/misc_spritesheet.png', [3*64,3*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_square_start = new Sprite('res/misc_spritesheet.png', [0,4*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_square_end = new Sprite('res/misc_spritesheet.png', [3*64,4*64], spritesize, 0, [0], 'horizontal', true);
 
 var spike_circle_start = new Sprite('res/misc_spritesheet.png', [0,1*64], spritesize, 0, [0], 'horizontal', true);
 var spike_circle = new Sprite('res/misc_spritesheet.png', [1*64,1*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_circle = new Sprite('res/misc_spritesheet.png', [2*64,1*64], spritesize, 0, [0], 'horizontal', true);
 var spike_circle_end = new Sprite('res/misc_spritesheet.png', [3*64,1*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_circle_start = new Sprite('res/misc_spritesheet.png', [0,2*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_circle_end = new Sprite('res/misc_spritesheet.png', [3*64,2*64], spritesize, 0, [0], 'horizontal', true);
 
 var spike_triangle_start = new Sprite('res/misc_spritesheet.png', [0,5*64], spritesize, 0, [0], 'horizontal', true);
-var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [1*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spike_triangle = new Sprite('res/misc_spritesheet.png', [1*64,5*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [2*64,5*64], spritesize, 0, [0], 'horizontal', true);
 var spike_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle_start = new Sprite('res/misc_spritesheet.png', [0,6*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,6*64], spritesize, 0, [0], 'horizontal', true);
 
 
 // Jamming from file: 1.1_Audio.js
@@ -774,24 +780,54 @@ function createBox(xpos,ypos,mutant,sprite){
  * "CLASS": Spike
  * *************************/
 
-function Spike(x,y,mutant,sprite){
+var START_SPIKE = 55;
+var MIDDLE_SPIKE = 56;
+var END_SPIKE = 57;
+ 
+function Spike(x,y,mutant,sprite,type){
+	// type = 0, 1, 2
 
 	Entity.call(this,x,y);
 	
 	this.mutant = mutant;	
 	this.sprite = sprite;
+	this.type = type;
 	
 	this.update = function(dt){
 		this.sprite.update(dt);
 		if(this.mutant){
 			if(player.currentType == PLAYER_IS_SQUARE){
-				this.sprite = spikegear_square;
+				if(this.type == START_SPIKE){
+					this.sprite = spikegear_square_start;
+				}
+				else if(this.type == MIDDLE_SPIKE){
+					this.sprite = spikegear_square;
+				}
+				else if(this.type == END_SPIKE){
+					this.sprite = spikegear_square_end;
+				}
 			}
 			else if(player.currentType == PLAYER_IS_CIRCLE){
-				this.sprite = spikegear_circle;
+				if(this.type == START_SPIKE){
+					this.sprite = spikegear_circle_start;
+				}
+				else if(this.type == MIDDLE_SPIKE){
+					this.sprite = spikegear_circle;
+				}
+				else if(this.type == END_SPIKE){
+					this.sprite = spikegear_circle_end;
+				}
 			}
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
-				this.sprite = spikegear_triangle;
+				if(this.type == START_SPIKE){
+					this.sprite = spikegear_triangle_start;
+				}
+				else if(this.type == MIDDLE_SPIKE){
+					this.sprite = spikegear_triangle;
+				}
+				else if(this.type == END_SPIKE){
+					this.sprite = spikegear_triangle_end;
+				}
 			}
 		}
 		else{
@@ -810,11 +846,11 @@ function Spike(x,y,mutant,sprite){
 	return this;
 }
 
-function createSpike(xpos,ypos,mutant,sprite){
+function createSpike(xpos,ypos,mutant,sprite,type){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 64;
 	var position = xpos*7 + ypos;
-	entities[position] = new Spike(x,y,mutant,sprite);
+	entities[position] = new Spike(x,y,mutant,sprite,type);
 }
 // Jamming from file: 4.3_Scenary.js
 /* *************************
@@ -939,6 +975,23 @@ function Keyboard(){
 					 
 					 }
 					 else if(boxesColliding != NOT_COLLIDING){
+						//player.lastCollision.x = entities[i].x + entities[i].sprite.width + 2;
+						if(player.collidingFrom == FROM_LEFT){
+							/*if((pressedKeys[VK_LEFT] || pressedKeys[VK_A])){
+								player.lastCollision.x = entities[i].x + entities[i].sprite.width;
+							}
+							else*/ if((pressedKeys[VK_RIGHT] || pressedKeys[VK_D])){
+								player.lastCollision.x = entities[i].x- player.lastCollision.sprite.width - 2;
+							}
+						}
+						else if(player.collidingFrom == FROM_RIGHT){
+							if((pressedKeys[VK_LEFT] || pressedKeys[VK_A])){
+								player.lastCollision.x = entities[i].x + entities[i].sprite.width + 2;
+							}
+							/*else if((pressedKeys[VK_RIGHT] || pressedKeys[VK_D])){
+								player.lastCollision.x = entities[i].x - entities[i].sprite.width;
+							}*/
+						}
 						break;
 					}
 				}
@@ -1142,11 +1195,11 @@ function initialize(){
 	createBox(0, 7, false, metal_box);
 	
 	//puzzle 1
-	createBox(1, 7, false, box_square_sprite);
+	createBox(3, 7, false, box_square_sprite);
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
-	//puzzle 2
+	//puzzle 2k
 	createBox(9, 7, true, boxgear_circle_sprite);
 	createBox(15, 5, false, metal_box);
 	createBox(15, 6, false, metal_box);
@@ -1170,9 +1223,13 @@ function initialize(){
 	//createBox(4, 2, false, metal_box);
 	//createBox(4, 1, false, metal_box);
 	//gear on 1,2
-	createSpike(2,2,false,spike_triangle_start);
-	createSpike(3,2,false,spikegear_triangle);
-	createSpike(4,2,false,spike_triangle_end);
+	createSpike(2,2,true,spikegear_triangle_start,START_SPIKE);
+	createSpike(3,2,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(4,2,true,spikegear_triangle_end,END_SPIKE);
+	
+	createSpike(2,1,false,spike_triangle_start,START_SPIKE);
+	createSpike(3,1,false,spike_triangle,MIDDLE_SPIKE);
+	createSpike(4,1,false,spike_triangle_end,END_SPIKE);
 	
 	createBox(30, 0, false, metal_box);
 	createBox(30, 1, false, metal_box);

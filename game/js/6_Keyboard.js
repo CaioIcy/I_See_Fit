@@ -40,6 +40,23 @@ function Keyboard(){
 					 
 					 }
 					 else if(boxesColliding != NOT_COLLIDING){
+						//player.lastCollision.x = entities[i].x + entities[i].sprite.width + 2;
+						if(player.collidingFrom == FROM_LEFT){
+							/*if((pressedKeys[VK_LEFT] || pressedKeys[VK_A])){
+								player.lastCollision.x = entities[i].x + entities[i].sprite.width;
+							}
+							else*/ if((pressedKeys[VK_RIGHT] || pressedKeys[VK_D])){
+								player.lastCollision.x = entities[i].x- player.lastCollision.sprite.width - 2;
+							}
+						}
+						else if(player.collidingFrom == FROM_RIGHT){
+							if((pressedKeys[VK_LEFT] || pressedKeys[VK_A])){
+								player.lastCollision.x = entities[i].x + entities[i].sprite.width + 2;
+							}
+							/*else if((pressedKeys[VK_RIGHT] || pressedKeys[VK_D])){
+								player.lastCollision.x = entities[i].x - entities[i].sprite.width;
+							}*/
+						}
 						break;
 					}
 				}

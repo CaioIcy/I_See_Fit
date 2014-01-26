@@ -33,11 +33,11 @@ function initialize(){
 	createBox(0, 7, false, metal_box);
 	
 	//puzzle 1
-	createBox(1, 7, false, box_square_sprite);
+	createBox(3, 7, false, box_square_sprite);
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
-	//puzzle 2
+	//puzzle 2k
 	createBox(9, 7, true, boxgear_circle_sprite);
 	createBox(15, 5, false, metal_box);
 	createBox(15, 6, false, metal_box);
