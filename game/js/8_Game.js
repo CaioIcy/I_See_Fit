@@ -43,6 +43,8 @@ function initialize(){
 	
 	createBox(3,7,true,boxgear_circle_sprite);
 	
+	createEnemy(5,5);
+	
 	lastTime = window.performance.now();
     main();
 }

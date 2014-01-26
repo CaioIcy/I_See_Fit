@@ -56,7 +56,9 @@ resources.load([
 	'res/triangle_spritesheet_left.png',
 	'res/triangle_spritesheet_right.png',
 	'res/misc_spritesheet.png',
-	'res/giant_floor.png'
+	'res/giant_floor.png',
+	'res/enemycopter.png',
+	'res/gear_animation.png'
 ]);
 resources.onReady(initialize);
  
@@ -125,6 +127,10 @@ var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], s
 
 var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0, [0], 'horizontal', true);
 
+var enemycopter_sprite = new Sprite('res/enemycopter.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var gear_sprite =  new Sprite('res/gear_animation.png', [0,0], spritesize, 7, [0,1,2,3,4,3,2,1,0], 'horizontal', false);
+
+//enemycopter_sprite = gear_sprite;
 // Jamming from file: 1.1_Audio.js
 /* *************************
  * Game Sounds
@@ -429,7 +435,7 @@ for(i=0;i<numberOfEntities;i++){
 	entities[i] = 0;
 }
 
-// Jamming from file: 4.1_Player.js
+// Jamming from file: 4.1.0_Player.js
 
 function Player(x, y){
 
@@ -630,6 +636,49 @@ function Player(x, y){
 
 var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE - 24);
 
+// Jamming from file: 4.1.1_EnemyCopter.js
+/* *************************
+ * "CLASS": EnemyCopter
+ * *************************/
+
+function EnemyCopter(x, y){
+
+	Entity.call(this,x,y);
+	this.sprite = enemycopter_sprite;
+	this.speed = 177;
+	
+	this.updateMovement = function(dt){
+		var xToFollow = player.x - this.x;
+		var yToFollow = player.y - this.y;
+		var hypotenuse = Math.sqrt( (xToFollow*xToFollow)+(yToFollow*yToFollow) );
+		
+		hypotenuse = (hypotenuse==0) ? 1 : hypotenuse;
+		xToFollow /= hypotenuse;
+		yToFollow /= hypotenuse;
+		
+		this.x += xToFollow * dt * this.speed;
+		this.y += yToFollow * dt * this.speed;
+	};
+	
+	//Update
+	this.update = function(dt){
+		this.sprite.update(dt);
+		this.updateMovement(dt);
+	};
+	
+	this.destroy = function(){
+		entities.splice(entities.indexOf(this), 1);
+	};
+	
+	return this;
+}
+
+function createEnemy(xpos,ypos){
+	var x = xpos*SPRITE_SIZE;
+	var y = (ypos*SPRITE_SIZE) + 64;
+	var position = xpos*7 + ypos;
+	entities[position] = new EnemyCopter(x,y);
+}
 // Jamming from file: 4.2_Box.js
 /* *************************
  * "CLASS": Box
@@ -997,6 +1046,8 @@ function initialize(){
 	createBox(30, 7, false, metal_box);
 	
 	createBox(3,7,true,boxgear_circle_sprite);
+	
+	createEnemy(5,5);
 	
 	lastTime = window.performance.now();
     main();

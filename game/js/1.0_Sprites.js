@@ -11,7 +11,9 @@ resources.load([
 	'res/triangle_spritesheet_left.png',
 	'res/triangle_spritesheet_right.png',
 	'res/misc_spritesheet.png',
-	'res/giant_floor.png'
+	'res/giant_floor.png',
+	'res/enemycopter.png',
+	'res/gear_animation.png'
 ]);
 resources.onReady(initialize);
  
@@ -79,3 +81,8 @@ var box_triangle_sprite = new Sprite('res/misc_spritesheet.png', [192, 0], sprit
 var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], spritesize , 0, [0], 'horizontal', true);
 
 var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0, [0], 'horizontal', true);
+
+var enemycopter_sprite = new Sprite('res/enemycopter.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var gear_sprite =  new Sprite('res/gear_animation.png', [0,0], spritesize, 7, [0,1,2,3,4,3,2,1,0], 'horizontal', false);
+
+//enemycopter_sprite = gear_sprite;
