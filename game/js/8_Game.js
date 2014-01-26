@@ -140,7 +140,7 @@ function main() {
 	requestAnimFrame(main);
 	
 	//drawing menu
-	if(state==0){
+	if(state == STATE_MENU){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
@@ -148,19 +148,32 @@ function main() {
 		d.fillRect(0,0,canvas.width, canvas.height);
 	}
 	//credits
-	else if(state==2){
+	else if(state == STATE_CREDITS){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
-		//d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
-		d.fillStyle="red";d.fillRect(0,0,canvas.width,canvas.height);
+		d.drawImage(creditsScreen,0,0,canvas.width, canvas.height);
 	}
 	//help
-	else if(state==3){
+	else if(state == STATE_HELP){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
 		d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
+	}
+	else if(ENDGAME_VICTORY && state == STATE_GAME ){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.drawImage(victoryScreen,0,0,canvas.width, canvas.height);
+		state = STATE_ENDGAME;
+	}
+	else if(ENDGAME_GAMEOVER && state == STATE_GAME ){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.drawImage(gameOverScreen,0,0,canvas.width, canvas.height);
+		state = STATE_ENDGAME;
 	}
 	
 }

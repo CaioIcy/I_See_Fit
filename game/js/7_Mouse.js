@@ -27,20 +27,34 @@ function Mouse() {
 		//paused = false;
 		
 		//if menu
-		if(state == 0){
+		if(state == STATE_MENU){
 			//if start
 			if(this.mx > 83 && this.mx < 290 && this.my > 453 && this.my < 525){
-				state = 3;
+				state = STATE_HELP;
 			}
 			//if credits
 			if(this.mx > 500 && this.mx < 707 && this.my > 453 && this.my < 525){
-				state = 2;
+				state = STATE_CREDITS;
 			}
 		}
-		if(state == 3){
+		//if credits
+		if(state == STATE_CREDITS){
+			if(this.mx > 293 && this.mx < 504 && this.my > 515 && this.my < 586){
+				state = STATE_MENU;
+			}
+		}
+		//if help
+		if(state == STATE_HELP){
+			//X
 			if(this.mx > 715 && this.mx < 800 && this.my > 0 && this.my < 85){
-				state = 1;
+				state = STATE_GAME;
 				paused = false;
+			}
+		}
+		//if endgame
+		if(state == STATE_ENDGAME){
+			if(this.mx > 43 && this.mx < 253 && this.my > 434 && this.my < 510){
+				refreshPage();
 			}
 		}
 	};

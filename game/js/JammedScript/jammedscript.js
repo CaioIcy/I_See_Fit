@@ -12,7 +12,17 @@ var daux = auxcanvas.getContext("2d");
 var i = 0;
 // Keystrokes array
 var pressedKeys = [];
+
 var state = 0;
+
+var ENDGAME_VICTORY = false;
+var ENDGAME_GAMEOVER = false;
+
+var STATE_MENU = 0;
+var STATE_GAME = 1;
+var STATE_CREDITS = 2;
+var STATE_HELP = 3;
+var STATE_ENDGAME = 4;
 
 var gameTime = 0;
 var paused = false;
@@ -65,15 +75,32 @@ resources.load([
 	'res/gear_HP.png',
 	'res/gear_HIT.png',
 	'res/health.png',
-	'res/help.png'
+	'res/help.png',
+	'res/game_over.png',
+	'res/victory.png',
+	'res/credits.png',
+	'res/pause.png'
 ]);
 resources.onReady(initialize);
  
 var menu;
 var giantFloor = new Image();
 giantFloor.src = "res/giant_floor.png";
+
 var helpScreen = new Image();
 helpScreen.src = "res/help.png";
+
+var victoryScreen = new Image();
+victoryScreen.src = "res/victory.png";
+
+var gameOverScreen = new Image();
+gameOverScreen.src = "res/game_over.png";
+
+var creditsScreen = new Image();
+creditsScreen.src = "res/credits.png";
+
+var pauseImage = new Image();
+pauseImage.src = "res/pause.png";
  
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 
@@ -472,24 +499,24 @@ function renderHUD(){
 	daux.fillStyle = "green";
 	//d.fillRect(0,0,canvas.width,64);
 	
-	if(paused){
-		daux.font = "32px Arial";
-		daux.fillText(" Paused! ", auxcanvas.width/2 - 60,auxcanvas.height/2);
-		daux.font = "10px Arial";
+	daux.clearRect(0,0,auxcanvas.width,auxcanvas.height);
+	
+	if(paused && !ENDGAME_VICTORY && !ENDGAME_GAMEOVER){
+		daux.drawImage(pauseImage,(auxcanvas.width-75)/2,auxcanvas.height/2,150,40);
 	}
 	else{
 		//don't render "Paused!"
 	}
 	
-	daux.clearRect(0,0,auxcanvas.width,auxcanvas.height);
+	
 	
 	//mouse position
-	mouse.render();
+	//mouse.render();
 	
 	//Game Time
-	daux.fillText(gameTime.toFixed(2) +" floor:"+ FLOOR, 5, auxcanvas.height-15);
-	daux.fillText("pX: " + player.x, 600, auxcanvas.height-15);
-	daux.fillText("pY+H: " + (player.y+player.sprite.height), 600, auxcanvas.height-30);
+	//daux.fillText(gameTime.toFixed(2) +" floor:"+ FLOOR, 5, auxcanvas.height-15);
+	//daux.fillText("pX: " + player.x, 600, auxcanvas.height-15);
+	//daux.fillText("pY+H: " + (player.y+player.sprite.height), 600, auxcanvas.height-30);
 }
 
 // Jamming from file: 4.0_Entity.js
@@ -528,7 +555,7 @@ function Player(x, y){
 
 	Entity.call(this, x, y);
 	
-	this.invulnerableSeconds = 2*1000;
+	this.invulnerableSeconds = 1*1000;
 	this.now = window.performance.now();
 	this.lastDamageTaken = this.now;
 	
@@ -642,8 +669,9 @@ function Player(x, y){
 				}
 				else if(array[i] instanceof Portal){
 					if(this.gearsCollected == 3){
-						alert("You have collected all three gears! Good job, and thank you for playing!");
-						refreshPage();
+						//alert("You have collected all three gears! Good job, and thank you for playing!");
+						//refreshPage();
+						ENDGAME_VICTORY = true;
 					}
 				}
 				else if(array[i] instanceof EnemyCopter){
@@ -807,7 +835,8 @@ function Player(x, y){
 	this.checkHealth = function(){
 		if(this.health <= 0){
 			//alert("flw");
-			refreshPage();
+			//refreshPage();
+			ENDGAME_GAMEOVER = true;
 		}
 	};
 	
@@ -1345,20 +1374,34 @@ function Mouse() {
 		//paused = false;
 		
 		//if menu
-		if(state == 0){
+		if(state == STATE_MENU){
 			//if start
 			if(this.mx > 83 && this.mx < 290 && this.my > 453 && this.my < 525){
-				state = 3;
+				state = STATE_HELP;
 			}
 			//if credits
 			if(this.mx > 500 && this.mx < 707 && this.my > 453 && this.my < 525){
-				state = 2;
+				state = STATE_CREDITS;
 			}
 		}
-		if(state == 3){
+		//if credits
+		if(state == STATE_CREDITS){
+			if(this.mx > 293 && this.mx < 504 && this.my > 515 && this.my < 586){
+				state = STATE_MENU;
+			}
+		}
+		//if help
+		if(state == STATE_HELP){
+			//X
 			if(this.mx > 715 && this.mx < 800 && this.my > 0 && this.my < 85){
-				state = 1;
+				state = STATE_GAME;
 				paused = false;
+			}
+		}
+		//if endgame
+		if(state == STATE_ENDGAME){
+			if(this.mx > 43 && this.mx < 253 && this.my > 434 && this.my < 510){
+				refreshPage();
 			}
 		}
 	};
@@ -1557,7 +1600,7 @@ function main() {
 	requestAnimFrame(main);
 	
 	//drawing menu
-	if(state==0){
+	if(state == STATE_MENU){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
@@ -1565,19 +1608,32 @@ function main() {
 		d.fillRect(0,0,canvas.width, canvas.height);
 	}
 	//credits
-	else if(state==2){
+	else if(state == STATE_CREDITS){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
-		//d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
-		d.fillStyle="red";d.fillRect(0,0,canvas.width,canvas.height);
+		d.drawImage(creditsScreen,0,0,canvas.width, canvas.height);
 	}
 	//help
-	else if(state==3){
+	else if(state == STATE_HELP){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
 		d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
+	}
+	else if(ENDGAME_VICTORY && state == STATE_GAME ){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.drawImage(victoryScreen,0,0,canvas.width, canvas.height);
+		state = STATE_ENDGAME;
+	}
+	else if(ENDGAME_GAMEOVER && state == STATE_GAME ){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.drawImage(gameOverScreen,0,0,canvas.width, canvas.height);
+		state = STATE_ENDGAME;
 	}
 	
 }

@@ -143,22 +143,22 @@ function renderHUD(){
 	daux.fillStyle = "green";
 	//d.fillRect(0,0,canvas.width,64);
 	
-	if(paused){
-		daux.font = "32px Arial";
-		daux.fillText(" Paused! ", auxcanvas.width/2 - 60,auxcanvas.height/2);
-		daux.font = "10px Arial";
+	daux.clearRect(0,0,auxcanvas.width,auxcanvas.height);
+	
+	if(paused && !ENDGAME_VICTORY && !ENDGAME_GAMEOVER){
+		daux.drawImage(pauseImage,(auxcanvas.width-75)/2,auxcanvas.height/2,150,40);
 	}
 	else{
 		//don't render "Paused!"
 	}
 	
-	daux.clearRect(0,0,auxcanvas.width,auxcanvas.height);
+	
 	
 	//mouse position
-	mouse.render();
+	//mouse.render();
 	
 	//Game Time
-	daux.fillText(gameTime.toFixed(2) +" floor:"+ FLOOR, 5, auxcanvas.height-15);
-	daux.fillText("pX: " + player.x, 600, auxcanvas.height-15);
-	daux.fillText("pY+H: " + (player.y+player.sprite.height), 600, auxcanvas.height-30);
+	//daux.fillText(gameTime.toFixed(2) +" floor:"+ FLOOR, 5, auxcanvas.height-15);
+	//daux.fillText("pX: " + player.x, 600, auxcanvas.height-15);
+	//daux.fillText("pY+H: " + (player.y+player.sprite.height), 600, auxcanvas.height-30);
 }

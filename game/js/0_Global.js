@@ -11,7 +11,17 @@ var daux = auxcanvas.getContext("2d");
 var i = 0;
 // Keystrokes array
 var pressedKeys = [];
+
 var state = 0;
+
+var ENDGAME_VICTORY = false;
+var ENDGAME_GAMEOVER = false;
+
+var STATE_MENU = 0;
+var STATE_GAME = 1;
+var STATE_CREDITS = 2;
+var STATE_HELP = 3;
+var STATE_ENDGAME = 4;
 
 var gameTime = 0;
 var paused = false;

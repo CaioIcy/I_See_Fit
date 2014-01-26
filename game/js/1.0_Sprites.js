@@ -19,15 +19,32 @@ resources.load([
 	'res/gear_HP.png',
 	'res/gear_HIT.png',
 	'res/health.png',
-	'res/help.png'
+	'res/help.png',
+	'res/game_over.png',
+	'res/victory.png',
+	'res/credits.png',
+	'res/pause.png'
 ]);
 resources.onReady(initialize);
  
 var menu;
 var giantFloor = new Image();
 giantFloor.src = "res/giant_floor.png";
+
 var helpScreen = new Image();
 helpScreen.src = "res/help.png";
+
+var victoryScreen = new Image();
+victoryScreen.src = "res/victory.png";
+
+var gameOverScreen = new Image();
+gameOverScreen.src = "res/game_over.png";
+
+var creditsScreen = new Image();
+creditsScreen.src = "res/credits.png";
+
+var pauseImage = new Image();
+pauseImage.src = "res/pause.png";
  
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 

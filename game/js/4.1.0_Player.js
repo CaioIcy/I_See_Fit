@@ -3,7 +3,7 @@ function Player(x, y){
 
 	Entity.call(this, x, y);
 	
-	this.invulnerableSeconds = 2*1000;
+	this.invulnerableSeconds = 1*1000;
 	this.now = window.performance.now();
 	this.lastDamageTaken = this.now;
 	
@@ -117,8 +117,9 @@ function Player(x, y){
 				}
 				else if(array[i] instanceof Portal){
 					if(this.gearsCollected == 3){
-						alert("You have collected all three gears! Good job, and thank you for playing!");
-						refreshPage();
+						//alert("You have collected all three gears! Good job, and thank you for playing!");
+						//refreshPage();
+						ENDGAME_VICTORY = true;
 					}
 				}
 				else if(array[i] instanceof EnemyCopter){
@@ -282,7 +283,8 @@ function Player(x, y){
 	this.checkHealth = function(){
 		if(this.health <= 0){
 			//alert("flw");
-			refreshPage();
+			//refreshPage();
+			ENDGAME_GAMEOVER = true;
 		}
 	};
 	
