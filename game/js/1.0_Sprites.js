@@ -15,13 +15,19 @@ resources.load([
 	'res/enemycopter_spritesheet.png',
 	'res/gear_animation.png',
 	'res/menu.png',
-	'res/portal_spritesheet.png'
+	'res/portal_spritesheet.png',
+	'res/gear_HP.png',
+	'res/gear_HIT.png',
+	'res/health.png',
+	'res/help.png'
 ]);
 resources.onReady(initialize);
  
 var menu;
 var giantFloor = new Image();
 giantFloor.src = "res/giant_floor.png";
+var helpScreen = new Image();
+helpScreen.src = "res/help.png";
  
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 
@@ -85,8 +91,8 @@ var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], s
 
 var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0, [0], 'horizontal', true);
 
-var enemycopter_sprite_left = new Sprite('res/enemycopter_spritesheet.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
-var enemycopter_sprite_right = new Sprite('res/enemycopter_spritesheet.png', [0,64], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var enemycopter_sprite_left = new Sprite('res/enemycopter_spritesheet.png', [0,0], spritesize, 7, [0,1,2,1,0], 'horizontal', false);
+var enemycopter_sprite_right = new Sprite('res/enemycopter_spritesheet.png', [0,64], spritesize, 7, [0,1,2,1,0], 'horizontal', false);
 var gear_sprite =  new Sprite('res/gear_animation.png', [0,0], spritesize, 7, [0,1,2,3,4,3,2,1,0], 'horizontal', false);
 
 var spike_square_start = new Sprite('res/misc_spritesheet.png', [0,3*64], spritesize, 0, [0], 'horizontal', true);
@@ -118,3 +124,7 @@ var portal_closed_sprite = new Sprite('res/portal_spritesheet.png', [0,0], [320,
 var portal_onegear_sprite = new Sprite('res/portal_spritesheet.png', [320,0], [320,256], 0, [0], 'horizontal', true);
 var portal_twogear_sprite = new Sprite('res/portal_spritesheet.png', [0,256], [320,256], 0, [0], 'horizontal', true);
 var portal_open_sprite = new Sprite('res/portal_spritesheet.png', [320,256], [320,256], 0, [0], 'horizontal', true);
+
+var health_sprite1 = new Sprite('res/health.png', [0,0], [192,64], 0, [0], 'horizontal', true);
+var health_sprite2 = new Sprite('res/health.png', [0,64*1], [192,64], 0, [0], 'horizontal', true);
+var health_sprite3 = new Sprite('res/health.png', [0,64*2], [192,64], 0, [0], 'horizontal', true);

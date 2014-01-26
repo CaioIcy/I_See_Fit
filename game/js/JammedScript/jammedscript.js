@@ -61,13 +61,19 @@ resources.load([
 	'res/enemycopter_spritesheet.png',
 	'res/gear_animation.png',
 	'res/menu.png',
-	'res/portal_spritesheet.png'
+	'res/portal_spritesheet.png',
+	'res/gear_HP.png',
+	'res/gear_HIT.png',
+	'res/health.png',
+	'res/help.png'
 ]);
 resources.onReady(initialize);
  
 var menu;
 var giantFloor = new Image();
 giantFloor.src = "res/giant_floor.png";
+var helpScreen = new Image();
+helpScreen.src = "res/help.png";
  
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 
@@ -131,8 +137,8 @@ var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], s
 
 var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0, [0], 'horizontal', true);
 
-var enemycopter_sprite_left = new Sprite('res/enemycopter_spritesheet.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
-var enemycopter_sprite_right = new Sprite('res/enemycopter_spritesheet.png', [0,64], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var enemycopter_sprite_left = new Sprite('res/enemycopter_spritesheet.png', [0,0], spritesize, 7, [0,1,2,1,0], 'horizontal', false);
+var enemycopter_sprite_right = new Sprite('res/enemycopter_spritesheet.png', [0,64], spritesize, 7, [0,1,2,1,0], 'horizontal', false);
 var gear_sprite =  new Sprite('res/gear_animation.png', [0,0], spritesize, 7, [0,1,2,3,4,3,2,1,0], 'horizontal', false);
 
 var spike_square_start = new Sprite('res/misc_spritesheet.png', [0,3*64], spritesize, 0, [0], 'horizontal', true);
@@ -165,11 +171,17 @@ var portal_onegear_sprite = new Sprite('res/portal_spritesheet.png', [320,0], [3
 var portal_twogear_sprite = new Sprite('res/portal_spritesheet.png', [0,256], [320,256], 0, [0], 'horizontal', true);
 var portal_open_sprite = new Sprite('res/portal_spritesheet.png', [320,256], [320,256], 0, [0], 'horizontal', true);
 
+var health_sprite1 = new Sprite('res/health.png', [0,0], [192,64], 0, [0], 'horizontal', true);
+var health_sprite2 = new Sprite('res/health.png', [0,64*1], [192,64], 0, [0], 'horizontal', true);
+var health_sprite3 = new Sprite('res/health.png', [0,64*2], [192,64], 0, [0], 'horizontal', true);
+
 // Jamming from file: 1.1_Audio.js
 /* *************************
  * Game Sounds
  * *************************/
 
+var music = new Audio("res/Audio/497799_King-Kilo--Automyso-low.mp3");
+ 
 var playerCircleAudio = new Array();
 var playerSquareAudio = new Array();
 var playerTriangleAudio = new Array();
@@ -198,7 +210,12 @@ playerTriangleAudio[IDLE] = sound_triangle_idle;
 playerTriangleAudio[WALKING] = sound_triangle_walking;
 playerTriangleAudio[SKILL] = sound_triangle_skill;
 
-var gear_collect = new Audio;
+var gear_collect = new Audio("res/Audio/187407__mazk1985__power-up-grab.wav");
+var robot_ready = new Audio("res/Audio/187404__mazk1985__robot-ready.wav");
+var robot_go = new Audio("res/Audio/187409__mazk1985__robot-go.wav");
+var robot_bleep = new Audio("res/Audio/150399__mikobuntu__voc-formant9.wav");
+var jump = new Audio("res/Audio/science_fiction_robot_movement_single_003-low.mp3");
+var hit = new Audio("res/Audio/87040__runnerpack__stun-low.mp3");
 
 // Jamming from file: 2_VkValues.js
 /* *************************
@@ -417,12 +434,43 @@ function applyGravity(obj){
 	}	
 }
 
+function renderHP(){
+	var gearhp = new Image();
+	gearhp.src = "res/gear_HP.png";
+	
+	d.drawImage(gearhp, 30, 30, 80, 80);
+	
+	var gearhit = new Image();
+	gearhit.src = "res/gear_HIT.png";
+	
+	var hp1 = new Image();
+	var hp2 = new Image();
+	var hp3 = new Image();
+	
+	if(player.health == 3){
+		hp1 = gearhp;
+		hp2 = gearhp;
+		hp3 = gearhp;
+	}
+	else if(player.health == 2){
+		hp1 = gearhp;
+		hp2 = gearhp;
+		hp3 = gearhit;
+	}
+	else if(player.health == 1){
+		hp1 = gearhp;
+		hp2 = gearhit;
+		hp3 = gearhit;
+	}
+	
+	daux.drawImage(hp1, 5, 5, 64,64);
+	daux.drawImage(hp2, 70, 5, 64,64);
+	daux.drawImage(hp3, 130, 5, 64,64);
+}
+
 function renderHUD(){
 	daux.fillStyle = "green";
 	//d.fillRect(0,0,canvas.width,64);
-	
-
-	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
 	if(paused){
 		daux.font = "32px Arial";
@@ -432,6 +480,8 @@ function renderHUD(){
 	else{
 		//don't render "Paused!"
 	}
+	
+	daux.clearRect(0,0,auxcanvas.width,auxcanvas.height);
 	
 	//mouse position
 	mouse.render();
@@ -500,6 +550,7 @@ function Player(x, y){
 	this.currentSprites = playerCircleSprites;
 	this.currentAction = IDLE;
 	this.sprite = player_circle_walking_left;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+	this.sprite_health = health_sprite1;
 	
 	this.update = function(dt) {
 		this.now = window.performance.now();
@@ -536,10 +587,19 @@ function Player(x, y){
 				}
 			}
 		}
+		else if(this.currentType == PLAYER_IS_TRIANGLE && pressedKeys[VK_S] && this.vx != 0){
+			if(player_direction == 'left'){
+				this.sprite = player_triangle_skill_left;
+			}
+			else if(player_direction == 'right'){
+				this.sprite = player_triangle_skill_right;
+			}
+		}
 		
 		this.sprite.update(dt);
+		this.sprite_health.update(dt);
 		this.audio = this.currentAudio[this.currentAction];
-		this.audio.play();
+		//.this.audio.play();
 		
 		
 		
@@ -566,12 +626,7 @@ function Player(x, y){
 	this.checkPlayerCollisionWith = function(array, dt){
 		for(i = 0; i<array.length; i++){
 			if(array[i] instanceof Portal){
-				//depends on number of gears collected
-				if(this.gearsCollected == 3){
-					alert("thanks for playing");
-					refreshPage();
-				}
-				else{
+				if(this.gearsCollected != 3){
 					continue;
 				}
 			}
@@ -582,6 +637,28 @@ function Player(x, y){
 				if(array[i] instanceof Gear){
 					this.gearsCollected++;
 					array[i].destroy();
+					gear_collect.play();
+					continue;
+				}
+				else if(array[i] instanceof Portal){
+					if(this.gearsCollected == 3){
+						alert("You have collected all three gears! Good job, and thank you for playing!");
+						refreshPage();
+					}
+				}
+				else if(array[i] instanceof EnemyCopter){
+					if(this.currentType == PLAYER_IS_TRIANGLE && pressedKeys[VK_S]){
+						array[i].destroy();
+					}
+					else{
+						this.takeDamage();
+						if(this.x > array[i].x){
+							array[i].x -= 50;
+						}
+						else {//if(this.x < array[i].x){
+							array[i].x += 50;
+						}
+					}
 					continue;
 				}
 				
@@ -661,16 +738,19 @@ function Player(x, y){
 	this.transform = function(type){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
+				robot_ready.play();
 				this.speed = 400;
 				this.currentSprites = playerCircleSprites;
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
+				robot_go.play();
 				this.speed = 200;
 				this.currentSprites = playerSquareSprites;
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
+				robot_bleep.play();
 				this.speed = 200;
 				this.currentSprites = playerTriangleSprites;
 				this.currentType = PLAYER_IS_TRIANGLE;
@@ -734,10 +814,25 @@ function Player(x, y){
 	this.takeDamage = function(){
 		//alert(this.now +" - "+ this.lastDamageTaken +" >= "+this.invulnerableSeconds);
 		if((this.now - this.lastDamageTaken) >= this.invulnerableSeconds){
+			hit.play();
 			this.lastDamageTaken = window.performance.now();
 			this.health--;
-			alert("health = " + this.health);
+			if(this.health == 2){
+				this.sprite_health = health_sprite2;
+			}
+			else if(this.health == 1){
+				this.sprite_health = health_sprite3;
+			}
+			//alert("health = " + this.health);
 		}
+	};
+	
+	this.render = function(){
+		renderEntity(this);
+		d.save();
+		d.translate(5, 5);
+		this.sprite_health.render(d);
+		d.restore();
 	};
 	
 }
@@ -1093,6 +1188,8 @@ function Keyboard(){
 			//CIRCLE -- JUMP
 			if(player.currentType == PLAYER_IS_CIRCLE){
 				if(!player.midAir){
+					jump.pause();
+					jump.play();
 					if(player.collidingFrom == FROM_UP && player.collidingWith.sprite == boxgear_circle_sprite || player.collidingWith.sprite == box_circle_sprite){
 						player.vy = JUMPSPEED * Math.sqrt(Math.PI) * 0.78 * dt;
 					}
@@ -1244,8 +1341,26 @@ function Mouse() {
 	};
 	
 	this.mouseClick = function(){
-		state = 1;
-		paused = false;
+		//state = 1;
+		//paused = false;
+		
+		//if menu
+		if(state == 0){
+			//if start
+			if(this.mx > 83 && this.mx < 290 && this.my > 453 && this.my < 525){
+				state = 3;
+			}
+			//if credits
+			if(this.mx > 500 && this.mx < 707 && this.my > 453 && this.my < 525){
+				state = 2;
+			}
+		}
+		if(state == 3){
+			if(this.mx > 715 && this.mx < 800 && this.my > 0 && this.my < 85){
+				state = 1;
+				paused = false;
+			}
+		}
 	};
 
 }
@@ -1320,11 +1435,14 @@ function render(){
 		scenary.render();
 		renderAll(entities);
 		player.render();
+		renderHP();
 	}
 	renderHUD();
 }
 
 function initialize(){
+	music.play();
+
 	//left wall
 	createBox(0, 0, false, metal_box);
 	createBox(0, 1, false, metal_box);
@@ -1402,7 +1520,7 @@ function initialize(){
 	createSpike(28,0,false,downspike_middle, MIDDLE_SPIKE);
 	createSpike(29,0,false,downspike_end, END_SPIKE);
 	
-	createEnemy(28,1,120);
+	createEnemy(28,1,160);
 	createGear(29,2);
 	
 	//right wall
@@ -1416,6 +1534,7 @@ function initialize(){
 	createBox(30, 7, false, metal_box);
 	
 	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
+	
 	
 	lastTime = window.performance.now();
     main();
@@ -1445,5 +1564,21 @@ function main() {
 		d.fillStyle = menu;
 		d.fillRect(0,0,canvas.width, canvas.height);
 	}
+	//credits
+	else if(state==2){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		//d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
+		d.fillStyle="red";d.fillRect(0,0,canvas.width,canvas.height);
+	}
+	//help
+	else if(state==3){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
+	}
+	
 }
 

@@ -25,6 +25,7 @@ function Player(x, y){
 	this.currentSprites = playerCircleSprites;
 	this.currentAction = IDLE;
 	this.sprite = player_circle_walking_left;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
+	this.sprite_health = health_sprite1;
 	
 	this.update = function(dt) {
 		this.now = window.performance.now();
@@ -61,10 +62,19 @@ function Player(x, y){
 				}
 			}
 		}
+		else if(this.currentType == PLAYER_IS_TRIANGLE && pressedKeys[VK_S] && this.vx != 0){
+			if(player_direction == 'left'){
+				this.sprite = player_triangle_skill_left;
+			}
+			else if(player_direction == 'right'){
+				this.sprite = player_triangle_skill_right;
+			}
+		}
 		
 		this.sprite.update(dt);
+		this.sprite_health.update(dt);
 		this.audio = this.currentAudio[this.currentAction];
-		this.audio.play();
+		//.this.audio.play();
 		
 		
 		
@@ -91,12 +101,7 @@ function Player(x, y){
 	this.checkPlayerCollisionWith = function(array, dt){
 		for(i = 0; i<array.length; i++){
 			if(array[i] instanceof Portal){
-				//depends on number of gears collected
-				if(this.gearsCollected == 3){
-					alert("thanks for playing");
-					refreshPage();
-				}
-				else{
+				if(this.gearsCollected != 3){
 					continue;
 				}
 			}
@@ -107,6 +112,28 @@ function Player(x, y){
 				if(array[i] instanceof Gear){
 					this.gearsCollected++;
 					array[i].destroy();
+					gear_collect.play();
+					continue;
+				}
+				else if(array[i] instanceof Portal){
+					if(this.gearsCollected == 3){
+						alert("You have collected all three gears! Good job, and thank you for playing!");
+						refreshPage();
+					}
+				}
+				else if(array[i] instanceof EnemyCopter){
+					if(this.currentType == PLAYER_IS_TRIANGLE && pressedKeys[VK_S]){
+						array[i].destroy();
+					}
+					else{
+						this.takeDamage();
+						if(this.x > array[i].x){
+							array[i].x -= 50;
+						}
+						else {//if(this.x < array[i].x){
+							array[i].x += 50;
+						}
+					}
 					continue;
 				}
 				
@@ -186,16 +213,19 @@ function Player(x, y){
 	this.transform = function(type){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
+				robot_ready.play();
 				this.speed = 400;
 				this.currentSprites = playerCircleSprites;
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
+				robot_go.play();
 				this.speed = 200;
 				this.currentSprites = playerSquareSprites;
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
+				robot_bleep.play();
 				this.speed = 200;
 				this.currentSprites = playerTriangleSprites;
 				this.currentType = PLAYER_IS_TRIANGLE;
@@ -259,10 +289,25 @@ function Player(x, y){
 	this.takeDamage = function(){
 		//alert(this.now +" - "+ this.lastDamageTaken +" >= "+this.invulnerableSeconds);
 		if((this.now - this.lastDamageTaken) >= this.invulnerableSeconds){
+			hit.play();
 			this.lastDamageTaken = window.performance.now();
 			this.health--;
-			alert("health = " + this.health);
+			if(this.health == 2){
+				this.sprite_health = health_sprite2;
+			}
+			else if(this.health == 1){
+				this.sprite_health = health_sprite3;
+			}
+			//alert("health = " + this.health);
 		}
+	};
+	
+	this.render = function(){
+		renderEntity(this);
+		d.save();
+		d.translate(5, 5);
+		this.sprite_health.render(d);
+		d.restore();
 	};
 	
 }

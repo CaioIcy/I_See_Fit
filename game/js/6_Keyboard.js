@@ -20,6 +20,8 @@ function Keyboard(){
 			//CIRCLE -- JUMP
 			if(player.currentType == PLAYER_IS_CIRCLE){
 				if(!player.midAir){
+					jump.pause();
+					jump.play();
 					if(player.collidingFrom == FROM_UP && player.collidingWith.sprite == boxgear_circle_sprite || player.collidingWith.sprite == box_circle_sprite){
 						player.vy = JUMPSPEED * Math.sqrt(Math.PI) * 0.78 * dt;
 					}

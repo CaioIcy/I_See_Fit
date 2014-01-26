@@ -2,6 +2,8 @@
  * Game Sounds
  * *************************/
 
+var music = new Audio("res/Audio/497799_King-Kilo--Automyso-low.mp3");
+ 
 var playerCircleAudio = new Array();
 var playerSquareAudio = new Array();
 var playerTriangleAudio = new Array();
@@ -30,4 +32,9 @@ playerTriangleAudio[IDLE] = sound_triangle_idle;
 playerTriangleAudio[WALKING] = sound_triangle_walking;
 playerTriangleAudio[SKILL] = sound_triangle_skill;
 
-var gear_collect = new Audio;
+var gear_collect = new Audio("res/Audio/187407__mazk1985__power-up-grab.wav");
+var robot_ready = new Audio("res/Audio/187404__mazk1985__robot-ready.wav");
+var robot_go = new Audio("res/Audio/187409__mazk1985__robot-go.wav");
+var robot_bleep = new Audio("res/Audio/150399__mikobuntu__voc-formant9.wav");
+var jump = new Audio("res/Audio/science_fiction_robot_movement_single_003-low.mp3");
+var hit = new Audio("res/Audio/87040__runnerpack__stun-low.mp3");

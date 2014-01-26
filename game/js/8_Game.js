@@ -18,11 +18,14 @@ function render(){
 		scenary.render();
 		renderAll(entities);
 		player.render();
+		renderHP();
 	}
 	renderHUD();
 }
 
 function initialize(){
+	music.play();
+
 	//left wall
 	createBox(0, 0, false, metal_box);
 	createBox(0, 1, false, metal_box);
@@ -100,7 +103,7 @@ function initialize(){
 	createSpike(28,0,false,downspike_middle, MIDDLE_SPIKE);
 	createSpike(29,0,false,downspike_end, END_SPIKE);
 	
-	createEnemy(28,1,120);
+	createEnemy(28,1,160);
 	createGear(29,2);
 	
 	//right wall
@@ -114,6 +117,7 @@ function initialize(){
 	createBox(30, 7, false, metal_box);
 	
 	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
+	
 	
 	lastTime = window.performance.now();
     main();
@@ -143,4 +147,20 @@ function main() {
 		d.fillStyle = menu;
 		d.fillRect(0,0,canvas.width, canvas.height);
 	}
+	//credits
+	else if(state==2){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		//d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
+		d.fillStyle="red";d.fillRect(0,0,canvas.width,canvas.height);
+	}
+	//help
+	else if(state==3){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
+	}
+	
 }

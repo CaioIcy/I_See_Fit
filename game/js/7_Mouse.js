@@ -23,8 +23,26 @@ function Mouse() {
 	};
 	
 	this.mouseClick = function(){
-		state = 1;
-		paused = false;
+		//state = 1;
+		//paused = false;
+		
+		//if menu
+		if(state == 0){
+			//if start
+			if(this.mx > 83 && this.mx < 290 && this.my > 453 && this.my < 525){
+				state = 3;
+			}
+			//if credits
+			if(this.mx > 500 && this.mx < 707 && this.my > 453 && this.my < 525){
+				state = 2;
+			}
+		}
+		if(state == 3){
+			if(this.mx > 715 && this.mx < 800 && this.my > 0 && this.my < 85){
+				state = 1;
+				paused = false;
+			}
+		}
 	};
 
 }

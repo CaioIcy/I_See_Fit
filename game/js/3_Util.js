@@ -105,12 +105,43 @@ function applyGravity(obj){
 	}	
 }
 
+function renderHP(){
+	var gearhp = new Image();
+	gearhp.src = "res/gear_HP.png";
+	
+	d.drawImage(gearhp, 30, 30, 80, 80);
+	
+	var gearhit = new Image();
+	gearhit.src = "res/gear_HIT.png";
+	
+	var hp1 = new Image();
+	var hp2 = new Image();
+	var hp3 = new Image();
+	
+	if(player.health == 3){
+		hp1 = gearhp;
+		hp2 = gearhp;
+		hp3 = gearhp;
+	}
+	else if(player.health == 2){
+		hp1 = gearhp;
+		hp2 = gearhp;
+		hp3 = gearhit;
+	}
+	else if(player.health == 1){
+		hp1 = gearhp;
+		hp2 = gearhit;
+		hp3 = gearhit;
+	}
+	
+	daux.drawImage(hp1, 5, 5, 64,64);
+	daux.drawImage(hp2, 70, 5, 64,64);
+	daux.drawImage(hp3, 130, 5, 64,64);
+}
+
 function renderHUD(){
 	daux.fillStyle = "green";
 	//d.fillRect(0,0,canvas.width,64);
-	
-
-	daux.clearRect(0, 0, canvas.width, canvas.height);
 	
 	if(paused){
 		daux.font = "32px Arial";
@@ -120,6 +151,8 @@ function renderHUD(){
 	else{
 		//don't render "Paused!"
 	}
+	
+	daux.clearRect(0,0,auxcanvas.width,auxcanvas.height);
 	
 	//mouse position
 	mouse.render();
