@@ -99,15 +99,15 @@ function applyGravity(obj){
 		obj.vy += gravity;
 		if( (obj.y + obj.sprite.height) > FLOOR){
 			obj.vy = 0;
-			obj.y = FLOOR - obj.sprite.height;
+			obj.y = FLOOR - obj.sprite.height ;
 			obj.midAir = false;
 		}
 	}	
 }
 
 function renderHUD(){
-	d.fillStyle = "red";
-	d.fillRect(0,0,canvas.width,88);
+	daux.fillStyle = "green";
+	//d.fillRect(0,0,canvas.width,64);
 	
 
 	daux.clearRect(0, 0, canvas.width, canvas.height);

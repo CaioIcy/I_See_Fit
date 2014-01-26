@@ -21,7 +21,7 @@ var PLAYER_IS_SQUARE = 2;
 var PLAYER_IS_TRIANGLE = 3;
 
 var FRICTION = 0.95;
-var FLOOR = canvas.height;
+var FLOOR = canvas.height-24;
 var SQUARE_SPEED = 300;
 var TRIANGLE_SPEED = 300;
 var CIRCLE_SPEED = 600;
@@ -365,15 +365,15 @@ function applyGravity(obj){
 		obj.vy += gravity;
 		if( (obj.y + obj.sprite.height) > FLOOR){
 			obj.vy = 0;
-			obj.y = FLOOR - obj.sprite.height;
+			obj.y = FLOOR - obj.sprite.height ;
 			obj.midAir = false;
 		}
 	}	
 }
 
 function renderHUD(){
-	d.fillStyle = "red";
-	d.fillRect(0,0,canvas.width,88);
+	daux.fillStyle = "green";
+	//d.fillRect(0,0,canvas.width,64);
 	
 
 	daux.clearRect(0, 0, canvas.width, canvas.height);
@@ -420,7 +420,7 @@ function Entity(x, y){
 	return this;
 }
 
-var numberOfEntities = (canvas.width*2/64) * ((canvas.height-88)/64);
+var numberOfEntities = (canvas.width*2/64) * ((canvas.height-64)/64);
 var entities = new Array();
 
 for(i=0;i<numberOfEntities;i++){
@@ -544,12 +544,9 @@ function Player(x, y){
 				}
 			}
 			else{
-				//this.collidingFrom = NOT_COLLIDING;
-				this.collidingWith = false;
-				
-				if(FLOOR != canvas.height){
+				if(FLOOR != (canvas.height - 24)){
 					if(this.lastCollision.x > (this.x+this.sprite.width) || this.x > (this.lastCollision.x+this.lastCollision.sprite.width)){
-						FLOOR = canvas.height;
+						FLOOR = canvas.height - 24;
 					}
 				}
 				
@@ -629,7 +626,7 @@ function Player(x, y){
 	
 }
 
-var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE);
+var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE - 24);
 
 // Jamming from file: 4.2_Box.js
 /* *************************
@@ -674,7 +671,7 @@ function Box(x, y, mutant,sprite){
 
 function createBox(xpos,ypos,mutant,sprite){
 	var x = xpos*SPRITE_SIZE;
-	var y = (ypos*SPRITE_SIZE) + 88;
+	var y = (ypos*SPRITE_SIZE) + 64;
 	var position = xpos*7 + ypos;
 	entities[position] = new Box(x,y,mutant,sprite);
 }
@@ -786,7 +783,7 @@ function Keyboard(){
 						player.vy = JUMPSPEED * dt;
 					}
 					player.midAir = true;
-					FLOOR = canvas.height;
+					FLOOR = canvas.height -24;
 				}
 			}
 			//SQUARE -- PUSH

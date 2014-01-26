@@ -20,7 +20,7 @@ function Entity(x, y){
 	return this;
 }
 
-var numberOfEntities = (canvas.width*2/64) * ((canvas.height-88)/64);
+var numberOfEntities = (canvas.width*2/64) * ((canvas.height-64)/64);
 var entities = new Array();
 
 for(i=0;i<numberOfEntities;i++){

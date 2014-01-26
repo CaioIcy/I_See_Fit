@@ -27,7 +27,7 @@ function Keyboard(){
 						player.vy = JUMPSPEED * dt;
 					}
 					player.midAir = true;
-					FLOOR = canvas.height;
+					FLOOR = canvas.height -24;
 				}
 			}
 			//SQUARE -- PUSH

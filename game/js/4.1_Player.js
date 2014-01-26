@@ -114,9 +114,9 @@ function Player(x, y){
 				}
 			}
 			else{
-				if(FLOOR != canvas.height){
+				if(FLOOR != (canvas.height - 24)){
 					if(this.lastCollision.x > (this.x+this.sprite.width) || this.x > (this.lastCollision.x+this.lastCollision.sprite.width)){
-						FLOOR = canvas.height;
+						FLOOR = canvas.height - 24;
 					}
 				}
 				
@@ -196,4 +196,4 @@ function Player(x, y){
 	
 }
 
-var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE);
+var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE - 24);

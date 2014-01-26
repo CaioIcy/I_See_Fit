@@ -20,7 +20,7 @@ var PLAYER_IS_SQUARE = 2;
 var PLAYER_IS_TRIANGLE = 3;
 
 var FRICTION = 0.95;
-var FLOOR = canvas.height;
+var FLOOR = canvas.height-24;
 var SQUARE_SPEED = 300;
 var TRIANGLE_SPEED = 300;
 var CIRCLE_SPEED = 600;
