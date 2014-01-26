@@ -10,11 +10,14 @@ resources.load([
 	'res/circle_spritesheet_right.png',
 	'res/triangle_spritesheet_left.png',
 	'res/triangle_spritesheet_right.png',
-	'res/misc_spritesheet.png'
+	'res/misc_spritesheet.png',
+	'res/giant_floor.png'
 ]);
 resources.onReady(initialize);
  
-var backgroundPattern;
+var giantFloor = new Image();
+giantFloor.src = "res/giant_floor.png";
+ 
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 
 //(url, pos, size, speed, frames, dir, once) 

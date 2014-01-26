@@ -15,6 +15,7 @@ function Scenary(x, y){
 	this.render = function(){
 		//img, sx, sy, sw, sh, x, y, w, h
 		d.drawImage(this.sprite, this.x, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+		d.drawImage(giantFloor, this.x, 0, canvas.width, canvas.height, 0, canvas.height-24, canvas.width, canvas.height);
 	};
 
 	return this;

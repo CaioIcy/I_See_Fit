@@ -55,11 +55,14 @@ resources.load([
 	'res/circle_spritesheet_right.png',
 	'res/triangle_spritesheet_left.png',
 	'res/triangle_spritesheet_right.png',
-	'res/misc_spritesheet.png'
+	'res/misc_spritesheet.png',
+	'res/giant_floor.png'
 ]);
 resources.onReady(initialize);
  
-var backgroundPattern;
+var giantFloor = new Image();
+giantFloor.src = "res/giant_floor.png";
+ 
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 
 //(url, pos, size, speed, frames, dir, once) 
@@ -394,7 +397,6 @@ function renderHUD(){
 	daux.fillText(gameTime.toFixed(2) +" floor:"+ FLOOR, 5, auxcanvas.height-15);
 	daux.fillText("pX: " + player.x, 600, auxcanvas.height-15);
 	daux.fillText("pY+H: " + (player.y+player.sprite.height), 600, auxcanvas.height-30);
-	
 }
 
 // Jamming from file: 4.0_Entity.js
@@ -693,6 +695,7 @@ function Scenary(x, y){
 	this.render = function(){
 		//img, sx, sy, sw, sh, x, y, w, h
 		d.drawImage(this.sprite, this.x, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+		d.drawImage(giantFloor, this.x, 0, canvas.width, canvas.height, 0, canvas.height-24, canvas.width, canvas.height);
 	};
 
 	return this;
@@ -713,7 +716,7 @@ function Camera(x, y){
 		if(player_direction == 'left'){
 			//LEFT END OF SCENARY
 			scenary.x += player.vx * dt * 2;
-			
+
 			for(i=0; i<entities.length; i++){
 				var entity = entities[i];
 				if(entity != 0){
@@ -731,6 +734,7 @@ function Camera(x, y){
 		else if(player_direction == 'right'){
 			//RIGHT END OF SCENARY
 			scenary.x += player.vx * dt * 2;
+
 			for(i=0; i<entities.length; i++){
 				var entity = entities[i];
 				if(entity != 0){
@@ -974,8 +978,6 @@ function render(){
 }
 
 function initialize(){
-	backgroundPattern = d.createPattern(resources.get('res/background.png'), 'repeat');
-	
 	createBox(0, 0, false, metal_box);
 	createBox(0, 1, false, metal_box);
 	createBox(0, 2, false, metal_box);
@@ -984,6 +986,15 @@ function initialize(){
 	createBox(0, 5, false, metal_box);
 	createBox(0, 6, false, metal_box);
 	createBox(0, 7, false, metal_box);
+	
+	createBox(30, 0, false, metal_box);
+	createBox(30, 1, false, metal_box);
+	createBox(30, 2, false, metal_box);
+	createBox(30, 3, false, metal_box);
+	createBox(30, 4, false, metal_box);
+	createBox(30, 5, false, metal_box);
+	createBox(30, 6, false, metal_box);
+	createBox(30, 7, false, metal_box);
 	
 	createBox(3,7,true,boxgear_circle_sprite);
 	

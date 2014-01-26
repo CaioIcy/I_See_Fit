@@ -10,7 +10,7 @@ function Camera(x, y){
 		if(player_direction == 'left'){
 			//LEFT END OF SCENARY
 			scenary.x += player.vx * dt * 2;
-			
+
 			for(i=0; i<entities.length; i++){
 				var entity = entities[i];
 				if(entity != 0){
@@ -28,6 +28,7 @@ function Camera(x, y){
 		else if(player_direction == 'right'){
 			//RIGHT END OF SCENARY
 			scenary.x += player.vx * dt * 2;
+
 			for(i=0; i<entities.length; i++){
 				var entity = entities[i];
 				if(entity != 0){

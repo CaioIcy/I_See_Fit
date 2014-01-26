@@ -128,5 +128,4 @@ function renderHUD(){
 	daux.fillText(gameTime.toFixed(2) +" floor:"+ FLOOR, 5, auxcanvas.height-15);
 	daux.fillText("pX: " + player.x, 600, auxcanvas.height-15);
 	daux.fillText("pY+H: " + (player.y+player.sprite.height), 600, auxcanvas.height-30);
-	
 }
