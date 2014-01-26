@@ -53,7 +53,9 @@ function Keyboard(){
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
 				if(player.collidingWith != false){
-					if(player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT && player.collidingWith.sprite != metal_box){
+					if((player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT) &&
+						player.collidingWith.sprite != metal_box && player.collidingWith.sprite != box_triangle_sprite &&
+						player.collidingWith.sprite != boxgear_triangle_sprite){
 						player.collidingWith.destroy();
 						player.collidingWith = false;
 					}

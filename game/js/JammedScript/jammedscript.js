@@ -441,6 +441,7 @@ function Player(x, y){
 
 	Entity.call(this, x, y);
 	
+	this.health = 3;
 	this.speed = 600;
 	this.vx = 0;
 	this.vy = 0;
@@ -514,6 +515,8 @@ function Player(x, y){
 	
 		this.x += this.vx * dt;
 		this.y += this.vy;
+		
+		this.checkHealth();
 	};
 	
 	this.checkPlayerCollisionWith = function(array){
@@ -548,7 +551,7 @@ function Player(x, y){
 					this.lastCollision = array[i];
 				}
 				if(this.lastCollision.sprite == boxgear_triangle_sprite){
-					alert("KYOP MACHUCOU");
+					this.health--;
 				}
 			}
 			else{
@@ -629,6 +632,13 @@ function Player(x, y){
 			playerTriangleSprites[IDLE] = player_triangle_idle_left;
 			playerTriangleSprites[WALKING] = player_triangle_walking_left;
 			playerTriangleSprites[SKILL] = player_triangle_skill_left;
+		}
+	};
+	
+	this.checkHealth = function(){
+		if(this.health <= 0){
+			//alert("flw");
+			refreshPage();
 		}
 	};
 	
@@ -862,7 +872,9 @@ function Keyboard(){
 			//TRIANGLE -- DESTROY
 			else if(player.currentType == PLAYER_IS_TRIANGLE){
 				if(player.collidingWith != false){
-					if(player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT && player.collidingWith.sprite != metal_box){
+					if((player.collidingFrom == FROM_LEFT || player.collidingFrom == FROM_RIGHT) &&
+						player.collidingWith.sprite != metal_box && player.collidingWith.sprite != box_triangle_sprite &&
+						player.collidingWith.sprite != boxgear_triangle_sprite){
 						player.collidingWith.destroy();
 						player.collidingWith = false;
 					}
@@ -1047,7 +1059,7 @@ function initialize(){
 	
 	createBox(3,7,true,boxgear_circle_sprite);
 	
-	createEnemy(5,5);
+	createEnemy(15,5);
 	
 	lastTime = window.performance.now();
     main();
