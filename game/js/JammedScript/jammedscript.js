@@ -156,6 +156,10 @@ var spike_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,5*64], spr
 var spikegear_triangle_start = new Sprite('res/misc_spritesheet.png', [0,6*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,6*64], spritesize, 0, [0], 'horizontal', true);
 
+var downspike_start = new Sprite('res/misc_spritesheet.png', [5*64,7*64], spritesize, 0, [0], 'horizontal', true);
+var downspike_middle = new Sprite('res/misc_spritesheet.png', [6*64,7*64], spritesize, 0, [0], 'horizontal', true);
+var downspike_end = new Sprite('res/misc_spritesheet.png', [7*64,7*64], spritesize, 0, [0], 'horizontal', true);
+
 var portal_closed_sprite = new Sprite('res/portal_spritesheet.png', [0,0], [320,256], 0, [0], 'horizontal', true);
 var portal_onegear_sprite = new Sprite('res/portal_spritesheet.png', [320,0], [320,256], 0, [0], 'horizontal', true);
 var portal_twogear_sprite = new Sprite('res/portal_spritesheet.png', [0,256], [320,256], 0, [0], 'horizontal', true);
@@ -592,6 +596,13 @@ function Player(x, y){
 					this.y = array[i].y + array[i].sprite.height;
 					this.vy = 0;
 					this.lastCollision = array[i];
+					
+					if(array[i] instanceof Spike){
+						if(array[i].sprite == downspike_start || array[i].sprite == downspike_middle || array[i].sprite == downspike_end){
+							this.takeDamage();
+						}
+					}
+					
 				}
 				else if(collision == FROM_UP){
 					this.collidingFrom = FROM_UP;
@@ -1318,12 +1329,16 @@ function initialize(){
 	createBox(0, 6, false, metal_box);
 	createBox(0, 7, false, metal_box);
 	
+	createSpike(1,4,false,downspike_start, START_SPIKE);
+	createSpike(2,4,false,downspike_middle, MIDDLE_SPIKE);
+	createSpike(3,4,false,downspike_end, END_SPIKE);
+	
 	//puzzle 1
 	createBox(3, 7, false, box_square_sprite);
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
-	createEnemy(14,4, 1000);
+	createEnemy(14,4, 200);
 	
 	//puzzle 2
 	createBox(9, 7, true, boxgear_circle_sprite);

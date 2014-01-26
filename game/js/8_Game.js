@@ -33,12 +33,16 @@ function initialize(){
 	createBox(0, 6, false, metal_box);
 	createBox(0, 7, false, metal_box);
 	
+	createSpike(1,4,false,downspike_start, START_SPIKE);
+	createSpike(2,4,false,downspike_middle, MIDDLE_SPIKE);
+	createSpike(3,4,false,downspike_end, END_SPIKE);
+	
 	//puzzle 1
 	createBox(3, 7, false, box_square_sprite);
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
-	createEnemy(14,4, 1000);
+	createEnemy(14,4, 200);
 	
 	//puzzle 2
 	createBox(9, 7, true, boxgear_circle_sprite);

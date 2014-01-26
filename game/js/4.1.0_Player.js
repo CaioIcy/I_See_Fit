@@ -121,6 +121,13 @@ function Player(x, y){
 					this.y = array[i].y + array[i].sprite.height;
 					this.vy = 0;
 					this.lastCollision = array[i];
+					
+					if(array[i] instanceof Spike){
+						if(array[i].sprite == downspike_start || array[i].sprite == downspike_middle || array[i].sprite == downspike_end){
+							this.takeDamage();
+						}
+					}
+					
 				}
 				else if(collision == FROM_UP){
 					this.collidingFrom = FROM_UP;

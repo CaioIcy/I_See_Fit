@@ -110,6 +110,10 @@ var spike_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,5*64], spr
 var spikegear_triangle_start = new Sprite('res/misc_spritesheet.png', [0,6*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,6*64], spritesize, 0, [0], 'horizontal', true);
 
+var downspike_start = new Sprite('res/misc_spritesheet.png', [5*64,7*64], spritesize, 0, [0], 'horizontal', true);
+var downspike_middle = new Sprite('res/misc_spritesheet.png', [6*64,7*64], spritesize, 0, [0], 'horizontal', true);
+var downspike_end = new Sprite('res/misc_spritesheet.png', [7*64,7*64], spritesize, 0, [0], 'horizontal', true);
+
 var portal_closed_sprite = new Sprite('res/portal_spritesheet.png', [0,0], [320,256], 0, [0], 'horizontal', true);
 var portal_onegear_sprite = new Sprite('res/portal_spritesheet.png', [320,0], [320,256], 0, [0], 'horizontal', true);
 var portal_twogear_sprite = new Sprite('res/portal_spritesheet.png', [0,256], [320,256], 0, [0], 'horizontal', true);
