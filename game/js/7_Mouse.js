@@ -23,7 +23,8 @@ function Mouse() {
 	};
 	
 	this.mouseClick = function(){
-		
+		state = 1;
+		paused = false;
 	};
 
 }

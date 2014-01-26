@@ -11,6 +11,7 @@ var daux = auxcanvas.getContext("2d");
 var i = 0;
 // Keystrokes array
 var pressedKeys = [];
+var state = 0;
 
 var gameTime = 0;
 var paused = false;

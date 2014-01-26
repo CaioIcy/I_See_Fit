@@ -45,6 +45,8 @@ function initialize(){
 	
 	createEnemy(15,5);
 	
+	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
+	
 	lastTime = window.performance.now();
     main();
 }
@@ -64,4 +66,13 @@ function main() {
 	
 	lastTime = now;
 	requestAnimFrame(main);
+	
+	//drawing menu
+	if(state==0){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.fillStyle = menu;
+		d.fillRect(0,0,canvas.width, canvas.height);
+	}
 }

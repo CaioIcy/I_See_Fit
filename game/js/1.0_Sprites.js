@@ -13,10 +13,12 @@ resources.load([
 	'res/misc_spritesheet.png',
 	'res/giant_floor.png',
 	'res/enemycopter.png',
-	'res/gear_animation.png'
+	'res/gear_animation.png',
+	'res/menu.png'
 ]);
 resources.onReady(initialize);
  
+var menu;
 var giantFloor = new Image();
 giantFloor.src = "res/giant_floor.png";
  

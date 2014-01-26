@@ -12,6 +12,7 @@ var daux = auxcanvas.getContext("2d");
 var i = 0;
 // Keystrokes array
 var pressedKeys = [];
+var state = 0;
 
 var gameTime = 0;
 var paused = false;
@@ -58,10 +59,12 @@ resources.load([
 	'res/misc_spritesheet.png',
 	'res/giant_floor.png',
 	'res/enemycopter.png',
-	'res/gear_animation.png'
+	'res/gear_animation.png',
+	'res/menu.png'
 ]);
 resources.onReady(initialize);
  
+var menu;
 var giantFloor = new Image();
 giantFloor.src = "res/giant_floor.png";
  
@@ -959,7 +962,8 @@ function Mouse() {
 	};
 	
 	this.mouseClick = function(){
-		
+		state = 1;
+		paused = false;
 	};
 
 }
@@ -1061,6 +1065,8 @@ function initialize(){
 	
 	createEnemy(15,5);
 	
+	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
+	
 	lastTime = window.performance.now();
     main();
 }
@@ -1080,5 +1086,14 @@ function main() {
 	
 	lastTime = now;
 	requestAnimFrame(main);
+	
+	//drawing menu
+	if(state==0){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		d.fillStyle = menu;
+		d.fillRect(0,0,canvas.width, canvas.height);
+	}
 }
 
