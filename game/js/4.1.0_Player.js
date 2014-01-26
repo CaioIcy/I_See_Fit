@@ -92,7 +92,13 @@ function Player(x, y){
 		for(i = 0; i<array.length; i++){
 			if(array[i] instanceof Portal){
 				//depends on number of gears collected
-				continue;
+				if(this.gearsCollected == 3){
+					alert("thanks for playing");
+					refreshPage();
+				}
+				else{
+					continue;
+				}
 			}
 			var collision = detectCollision(player, array[i]);
 			if(collision != NOT_COLLIDING){

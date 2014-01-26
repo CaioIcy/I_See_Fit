@@ -42,16 +42,14 @@ function initialize(){
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
-	createEnemy(14,4, 200);
-	
 	//puzzle 2
+	createGear(17,4);
 	createBox(9, 7, true, boxgear_circle_sprite);
-	createBox(15, 5, false, metal_box);
-	createBox(15, 6, false, metal_box);
+	createBox(15, 6, false, box_circle_sprite);
 	createBox(15, 7, false, metal_box);
+	createBox(16,7,false, box_square_sprite);
 	
 	//puzzle 3
-	createBox(17, 7, false, box_circle_sprite);
 	createBox(12, 4, false, metal_box);
 	createBox(11, 4, false, metal_box);
 	createBox(11, 3, false, metal_box);
@@ -72,11 +70,39 @@ function initialize(){
 	createBox(6, 2, false, metal_box);
 	
 	//puzzle 4
-	createPortal(18,4);
-	createBox(23, 5, false, metal_box);
-	createBox(23, 6, false, metal_box);
-	createBox(23, 7, false, metal_box);
+	createPortal(16,4);
+	createBox(16, 3, false, metal_box);
+	createBox(17, 3, false, metal_box);
+	createBox(18, 3, false, metal_box);
+	createBox(19, 3, false, metal_box);
+	createBox(20, 3, false, metal_box);
+	createBox(21, 3, false, metal_box);
+	createBox(21, 4, false, box_triangle_sprite);
+	createBox(21, 5, false, box_triangle_sprite);
+	createBox(21, 6, false, box_triangle_sprite);
+	createBox(21, 7, false, box_triangle_sprite);
 
+	//puzzle 5
+	createBox(22, 3, false, metal_box);
+	createSpike(23, 3, true, spikegear_circle_start, START_SPIKE);
+	createSpike(24, 3, true, spikegear_circle, MIDDLE_SPIKE);
+	createSpike(25, 3, true, spikegear_circle, MIDDLE_SPIKE);
+	createSpike(26, 3, true, spikegear_circle, MIDDLE_SPIKE);
+	createSpike(27, 3, true, spikegear_circle, MIDDLE_SPIKE);
+	createSpike(28, 3, true, spikegear_circle, MIDDLE_SPIKE);
+	createSpike(29, 3, true, spikegear_circle_end, END_SPIKE);
+	
+	createSpike(23,0,false,downspike_start, START_SPIKE);
+	createSpike(24,0,false,downspike_middle, MIDDLE_SPIKE);
+	createSpike(25,0,false,downspike_middle, MIDDLE_SPIKE);
+	createSpike(26,0,false,downspike_middle, MIDDLE_SPIKE);
+	createSpike(27,0,false,downspike_middle, MIDDLE_SPIKE);
+	createSpike(28,0,false,downspike_middle, MIDDLE_SPIKE);
+	createSpike(29,0,false,downspike_end, END_SPIKE);
+	
+	createEnemy(28,1,120);
+	createGear(29,2);
+	
 	//right wall
 	createBox(30, 0, false, metal_box);
 	createBox(30, 1, false, metal_box);
