@@ -14,7 +14,8 @@ resources.load([
 	'res/giant_floor.png',
 	'res/enemycopter.png',
 	'res/gear_animation.png',
-	'res/menu.png'
+	'res/menu.png',
+	'res/portal_spritesheet.png'
 ]);
 resources.onReady(initialize);
  
@@ -87,4 +88,18 @@ var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0
 var enemycopter_sprite = new Sprite('res/enemycopter.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
 var gear_sprite =  new Sprite('res/gear_animation.png', [0,0], spritesize, 7, [0,1,2,3,4,3,2,1,0], 'horizontal', false);
 
-//enemycopter_sprite = gear_sprite;
+var spike_square_start = new Sprite('res/misc_spritesheet.png', [0,3*64], spritesize, 0, [0], 'horizontal', true);
+var spike_square = new Sprite('res/misc_spritesheet.png', [1*64,3*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_square = new Sprite('res/misc_spritesheet.png', [2*64,3*64], spritesize, 0, [0], 'horizontal', true);
+var spike_square_end = new Sprite('res/misc_spritesheet.png', [3*64,3*64], spritesize, 0, [0], 'horizontal', true);
+
+var spike_circle_start = new Sprite('res/misc_spritesheet.png', [0,1*64], spritesize, 0, [0], 'horizontal', true);
+var spike_circle = new Sprite('res/misc_spritesheet.png', [1*64,1*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_circle = new Sprite('res/misc_spritesheet.png', [2*64,1*64], spritesize, 0, [0], 'horizontal', true);
+var spike_circle_end = new Sprite('res/misc_spritesheet.png', [3*64,1*64], spritesize, 0, [0], 'horizontal', true);
+
+var spike_triangle_start = new Sprite('res/misc_spritesheet.png', [0,5*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [1*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [2*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spike_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,5*64], spritesize, 0, [0], 'horizontal', true);
+

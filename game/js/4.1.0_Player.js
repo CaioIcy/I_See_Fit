@@ -3,8 +3,12 @@ function Player(x, y){
 
 	Entity.call(this, x, y);
 	
+	this.invulnerableSeconds = 2*1000;
+	this.now = window.performance.now();
+	this.lastDamageTaken = this.now;
+	
 	this.health = 3;
-	this.speed = 600;
+	this.speed = 400;
 	this.vx = 0;
 	this.vy = 0;
 	this.currentType = PLAYER_IS_CIRCLE;
@@ -21,6 +25,7 @@ function Player(x, y){
 	this.sprite = player_circle_walking_left;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 	
 	this.update = function(dt) {
+		this.now = window.performance.now();
 		this.determineCurrentAction();
 		
 		this.sprite = this.currentSprites[this.currentAction];
@@ -112,8 +117,8 @@ function Player(x, y){
 					FLOOR = array[i].y;
 					this.lastCollision = array[i];
 				}
-				if(this.lastCollision.sprite == boxgear_triangle_sprite){
-					this.health--;
+				if(this.lastCollision.sprite == boxgear_triangle_sprite || this.lastCollision.sprite == box_triangle_sprite){
+					this.takeDamage();
 				}
 			}
 			else{
@@ -134,17 +139,17 @@ function Player(x, y){
 	this.transform = function(type){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
-				this.speed = 600;
+				this.speed = 400;
 				this.currentSprites = playerCircleSprites;
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
-				this.speed = 300;
+				this.speed = 200;
 				this.currentSprites = playerSquareSprites;
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
-				this.speed = 300;
+				this.speed = 200;
 				this.currentSprites = playerTriangleSprites;
 				this.currentType = PLAYER_IS_TRIANGLE;
 			}
@@ -201,6 +206,15 @@ function Player(x, y){
 		if(this.health <= 0){
 			//alert("flw");
 			refreshPage();
+		}
+	};
+	
+	this.takeDamage = function(){
+		//alert(this.now +" - "+ this.lastDamageTaken +" >= "+this.invulnerableSeconds);
+		if((this.now - this.lastDamageTaken) >= this.invulnerableSeconds){
+			this.lastDamageTaken = window.performance.now();
+			this.health--;
+			alert("health = " + this.health);
 		}
 	};
 	

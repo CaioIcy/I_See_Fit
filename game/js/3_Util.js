@@ -95,7 +95,7 @@ function updateAll(listOfEntities, dt) {
 
 function applyGravity(obj){
 	if(obj.midAir){
-		var gravity = 15/40;
+		var gravity = 19/40;
 		obj.vy += gravity;
 		if( (obj.y + obj.sprite.height) > FLOOR){
 			obj.vy = 0;

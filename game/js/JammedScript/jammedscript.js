@@ -60,7 +60,8 @@ resources.load([
 	'res/giant_floor.png',
 	'res/enemycopter.png',
 	'res/gear_animation.png',
-	'res/menu.png'
+	'res/menu.png',
+	'res/portal_spritesheet.png'
 ]);
 resources.onReady(initialize);
  
@@ -133,7 +134,22 @@ var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0
 var enemycopter_sprite = new Sprite('res/enemycopter.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
 var gear_sprite =  new Sprite('res/gear_animation.png', [0,0], spritesize, 7, [0,1,2,3,4,3,2,1,0], 'horizontal', false);
 
-//enemycopter_sprite = gear_sprite;
+var spike_square_start = new Sprite('res/misc_spritesheet.png', [0,3*64], spritesize, 0, [0], 'horizontal', true);
+var spike_square = new Sprite('res/misc_spritesheet.png', [1*64,3*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_square = new Sprite('res/misc_spritesheet.png', [2*64,3*64], spritesize, 0, [0], 'horizontal', true);
+var spike_square_end = new Sprite('res/misc_spritesheet.png', [3*64,3*64], spritesize, 0, [0], 'horizontal', true);
+
+var spike_circle_start = new Sprite('res/misc_spritesheet.png', [0,1*64], spritesize, 0, [0], 'horizontal', true);
+var spike_circle = new Sprite('res/misc_spritesheet.png', [1*64,1*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_circle = new Sprite('res/misc_spritesheet.png', [2*64,1*64], spritesize, 0, [0], 'horizontal', true);
+var spike_circle_end = new Sprite('res/misc_spritesheet.png', [3*64,1*64], spritesize, 0, [0], 'horizontal', true);
+
+var spike_triangle_start = new Sprite('res/misc_spritesheet.png', [0,5*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [1*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [2*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spike_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,5*64], spritesize, 0, [0], 'horizontal', true);
+
+
 // Jamming from file: 1.1_Audio.js
 /* *************************
  * Game Sounds
@@ -373,7 +389,7 @@ function updateAll(listOfEntities, dt) {
 
 function applyGravity(obj){
 	if(obj.midAir){
-		var gravity = 15/40;
+		var gravity = 19/40;
 		obj.vy += gravity;
 		if( (obj.y + obj.sprite.height) > FLOOR){
 			obj.vy = 0;
@@ -444,8 +460,12 @@ function Player(x, y){
 
 	Entity.call(this, x, y);
 	
+	this.invulnerableSeconds = 2*1000;
+	this.now = window.performance.now();
+	this.lastDamageTaken = this.now;
+	
 	this.health = 3;
-	this.speed = 600;
+	this.speed = 400;
 	this.vx = 0;
 	this.vy = 0;
 	this.currentType = PLAYER_IS_CIRCLE;
@@ -462,6 +482,7 @@ function Player(x, y){
 	this.sprite = player_circle_walking_left;//new Sprite('res/player_circle.png', [0, 0], [SPRITE_SIZE, SPRITE_SIZE] , 12, [0,1,2,3]);
 	
 	this.update = function(dt) {
+		this.now = window.performance.now();
 		this.determineCurrentAction();
 		
 		this.sprite = this.currentSprites[this.currentAction];
@@ -553,8 +574,8 @@ function Player(x, y){
 					FLOOR = array[i].y;
 					this.lastCollision = array[i];
 				}
-				if(this.lastCollision.sprite == boxgear_triangle_sprite){
-					this.health--;
+				if(this.lastCollision.sprite == boxgear_triangle_sprite || this.lastCollision.sprite == box_triangle_sprite){
+					this.takeDamage();
 				}
 			}
 			else{
@@ -575,17 +596,17 @@ function Player(x, y){
 	this.transform = function(type){
 		if(!this.midAir){
 			if(type == PLAYER_IS_CIRCLE){
-				this.speed = 600;
+				this.speed = 400;
 				this.currentSprites = playerCircleSprites;
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
-				this.speed = 300;
+				this.speed = 200;
 				this.currentSprites = playerSquareSprites;
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
-				this.speed = 300;
+				this.speed = 200;
 				this.currentSprites = playerTriangleSprites;
 				this.currentType = PLAYER_IS_TRIANGLE;
 			}
@@ -645,6 +666,15 @@ function Player(x, y){
 		}
 	};
 	
+	this.takeDamage = function(){
+		//alert(this.now +" - "+ this.lastDamageTaken +" >= "+this.invulnerableSeconds);
+		if((this.now - this.lastDamageTaken) >= this.invulnerableSeconds){
+			this.lastDamageTaken = window.performance.now();
+			this.health--;
+			alert("health = " + this.health);
+		}
+	};
+	
 }
 
 var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE - 24);
@@ -692,7 +722,7 @@ function createEnemy(xpos,ypos){
 	var position = xpos*7 + ypos;
 	entities[position] = new EnemyCopter(x,y);
 }
-// Jamming from file: 4.2_Box.js
+// Jamming from file: 4.2.0_Box.js
 /* *************************
  * "CLASS": Box
  * *************************/
@@ -738,6 +768,53 @@ function createBox(xpos,ypos,mutant,sprite){
 	var y = (ypos*SPRITE_SIZE) + 64;
 	var position = xpos*7 + ypos;
 	entities[position] = new Box(x,y,mutant,sprite);
+}
+// Jamming from file: 4.2.1_Spike.js
+/* *************************
+ * "CLASS": Spike
+ * *************************/
+
+function Spike(x,y,mutant,sprite){
+
+	Entity.call(this,x,y);
+	
+	this.mutant = mutant;	
+	this.sprite = sprite;
+	
+	this.update = function(dt){
+		this.sprite.update(dt);
+		if(this.mutant){
+			if(player.currentType == PLAYER_IS_SQUARE){
+				this.sprite = spikegear_square;
+			}
+			else if(player.currentType == PLAYER_IS_CIRCLE){
+				this.sprite = spikegear_circle;
+			}
+			else if(player.currentType == PLAYER_IS_TRIANGLE){
+				this.sprite = spikegear_triangle;
+			}
+		}
+		else{
+			//don't change sprites
+		}
+	};
+	
+	this.render = function(){
+		renderEntity(this);
+	};
+	
+	this.destroy = function(){
+		entities.splice(entities.indexOf(this), 1);
+	};
+
+	return this;
+}
+
+function createSpike(xpos,ypos,mutant,sprite){
+	var x = xpos*SPRITE_SIZE;
+	var y = (ypos*SPRITE_SIZE) + 64;
+	var position = xpos*7 + ypos;
+	entities[position] = new Spike(x,y,mutant,sprite);
 }
 // Jamming from file: 4.3_Scenary.js
 /* *************************
@@ -1052,6 +1129,39 @@ function initialize(){
 	createBox(0, 6, false, metal_box);
 	createBox(0, 7, false, metal_box);
 	
+	//puzzle 1
+	createBox(1, 7, false, box_square_sprite);
+	createBox(8, 6, false, metal_box);
+	createBox(8, 7, false, metal_box);
+	
+	//puzzle 2
+	createBox(9, 7, true, boxgear_circle_sprite);
+	createBox(15, 5, false, metal_box);
+	createBox(15, 6, false, metal_box);
+	createBox(15, 7, false, metal_box);
+	
+	//puzzle 3
+	createBox(17, 7, false, box_circle_sprite);
+	createBox(12, 4, false, metal_box);
+	createBox(11, 4, false, metal_box);
+	createBox(11, 3, false, metal_box);
+	createBox(10, 3, false, metal_box);
+	createBox(9, 3, false, metal_box);
+	createBox(8, 3, false, metal_box);
+	createBox(7, 3, false, metal_box);
+	createBox(6, 3, false, metal_box);
+	createBox(5, 3, false, metal_box);
+	createBox(4, 3, false, metal_box);
+	createBox(3, 3, false, metal_box);
+	createBox(2, 3, false, metal_box);
+	createBox(1, 3, false, metal_box);
+	//createBox(4, 2, false, metal_box);
+	//createBox(4, 1, false, metal_box);
+	//gear on 1,2
+	createSpike(2,2,false,spike_triangle_start);
+	createSpike(3,2,false,spikegear_triangle);
+	createSpike(4,2,false,spike_triangle_end);
+	
 	createBox(30, 0, false, metal_box);
 	createBox(30, 1, false, metal_box);
 	createBox(30, 2, false, metal_box);
@@ -1060,10 +1170,6 @@ function initialize(){
 	createBox(30, 5, false, metal_box);
 	createBox(30, 6, false, metal_box);
 	createBox(30, 7, false, metal_box);
-	
-	createBox(3,7,true,boxgear_circle_sprite);
-	
-	createEnemy(15,5);
 	
 	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
 	

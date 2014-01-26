@@ -32,6 +32,39 @@ function initialize(){
 	createBox(0, 6, false, metal_box);
 	createBox(0, 7, false, metal_box);
 	
+	//puzzle 1
+	createBox(1, 7, false, box_square_sprite);
+	createBox(8, 6, false, metal_box);
+	createBox(8, 7, false, metal_box);
+	
+	//puzzle 2
+	createBox(9, 7, true, boxgear_circle_sprite);
+	createBox(15, 5, false, metal_box);
+	createBox(15, 6, false, metal_box);
+	createBox(15, 7, false, metal_box);
+	
+	//puzzle 3
+	createBox(17, 7, false, box_circle_sprite);
+	createBox(12, 4, false, metal_box);
+	createBox(11, 4, false, metal_box);
+	createBox(11, 3, false, metal_box);
+	createBox(10, 3, false, metal_box);
+	createBox(9, 3, false, metal_box);
+	createBox(8, 3, false, metal_box);
+	createBox(7, 3, false, metal_box);
+	createBox(6, 3, false, metal_box);
+	createBox(5, 3, false, metal_box);
+	createBox(4, 3, false, metal_box);
+	createBox(3, 3, false, metal_box);
+	createBox(2, 3, false, metal_box);
+	createBox(1, 3, false, metal_box);
+	//createBox(4, 2, false, metal_box);
+	//createBox(4, 1, false, metal_box);
+	//gear on 1,2
+	createSpike(2,2,false,spike_triangle_start);
+	createSpike(3,2,false,spikegear_triangle);
+	createSpike(4,2,false,spike_triangle_end);
+	
 	createBox(30, 0, false, metal_box);
 	createBox(30, 1, false, metal_box);
 	createBox(30, 2, false, metal_box);
@@ -40,10 +73,6 @@ function initialize(){
 	createBox(30, 5, false, metal_box);
 	createBox(30, 6, false, metal_box);
 	createBox(30, 7, false, metal_box);
-	
-	createBox(3,7,true,boxgear_circle_sprite);
-	
-	createEnemy(15,5);
 	
 	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
 	
