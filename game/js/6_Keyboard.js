@@ -36,6 +36,8 @@ function Keyboard(){
 				var boxesColliding = NOT_COLLIDING;
 				for(i = 0; i<entities.length; i++){
 					 boxesColliding = detectCollision(player.lastCollision, entities[i]);
+					 if(entities[i] instanceof Portal) continue;
+					 
 					 if(player.lastCollision.x == entities[i].x && player.lastCollision.y == entities[i].y){
 					 
 					 }

@@ -7,7 +7,7 @@ function update(dt){
 		keyboard.updateKeyInput(dt);
 		mouse.update();
 		player.update(dt);
-		player.checkPlayerCollisionWith(entities);
+		player.checkPlayerCollisionWith(entities, dt);
 		updateAll(entities, dt);
 		camera.update(dt);
 	}
@@ -16,13 +16,14 @@ function update(dt){
 function render(){
 	if(!paused){
 		scenary.render();
-		player.render();
 		renderAll(entities);
+		player.render();
 	}
 	renderHUD();
 }
 
 function initialize(){
+	//left wall
 	createBox(0, 0, false, metal_box);
 	createBox(0, 1, false, metal_box);
 	createBox(0, 2, false, metal_box);
@@ -37,7 +38,9 @@ function initialize(){
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
-	//puzzle 2k
+	createEnemy(14,4, 1000);
+	
+	//puzzle 2
 	createBox(9, 7, true, boxgear_circle_sprite);
 	createBox(15, 5, false, metal_box);
 	createBox(15, 6, false, metal_box);
@@ -58,17 +61,19 @@ function initialize(){
 	createBox(3, 3, false, metal_box);
 	createBox(2, 3, false, metal_box);
 	createBox(1, 3, false, metal_box);
-	//createBox(4, 2, false, metal_box);
-	//createBox(4, 1, false, metal_box);
-	//gear on 1,2
-	createSpike(2,2,true,spikegear_triangle_start,START_SPIKE);
-	createSpike(3,2,true,spikegear_triangle,MIDDLE_SPIKE);
-	createSpike(4,2,true,spikegear_triangle_end,END_SPIKE);
+	createGear(1,2);
+	createSpike(3,2,true,spikegear_triangle_start,START_SPIKE);
+	createSpike(4,2,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(5,2,true,spikegear_triangle_end,END_SPIKE);
+	createBox(6, 2, false, metal_box);
 	
-	createSpike(2,1,false,spike_triangle_start,START_SPIKE);
-	createSpike(3,1,false,spike_triangle,MIDDLE_SPIKE);
-	createSpike(4,1,false,spike_triangle_end,END_SPIKE);
-	
+	//puzzle 4
+	createPortal(18,4);
+	createBox(23, 5, false, metal_box);
+	createBox(23, 6, false, metal_box);
+	createBox(23, 7, false, metal_box);
+
+	//right wall
 	createBox(30, 0, false, metal_box);
 	createBox(30, 1, false, metal_box);
 	createBox(30, 2, false, metal_box);

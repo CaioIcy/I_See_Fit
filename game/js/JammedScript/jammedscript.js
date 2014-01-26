@@ -58,7 +58,7 @@ resources.load([
 	'res/triangle_spritesheet_right.png',
 	'res/misc_spritesheet.png',
 	'res/giant_floor.png',
-	'res/enemycopter.png',
+	'res/enemycopter_spritesheet.png',
 	'res/gear_animation.png',
 	'res/menu.png',
 	'res/portal_spritesheet.png'
@@ -131,7 +131,8 @@ var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], s
 
 var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0, [0], 'horizontal', true);
 
-var enemycopter_sprite = new Sprite('res/enemycopter.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var enemycopter_sprite_left = new Sprite('res/enemycopter_spritesheet.png', [0,0], spritesize, 7, [0,1,2,3], 'horizontal', false);
+var enemycopter_sprite_right = new Sprite('res/enemycopter_spritesheet.png', [0,64], spritesize, 7, [0,1,2,3], 'horizontal', false);
 var gear_sprite =  new Sprite('res/gear_animation.png', [0,0], spritesize, 7, [0,1,2,3,4,3,2,1,0], 'horizontal', false);
 
 var spike_square_start = new Sprite('res/misc_spritesheet.png', [0,3*64], spritesize, 0, [0], 'horizontal', true);
@@ -155,6 +156,10 @@ var spike_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,5*64], spr
 var spikegear_triangle_start = new Sprite('res/misc_spritesheet.png', [0,6*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,6*64], spritesize, 0, [0], 'horizontal', true);
 
+var portal_closed_sprite = new Sprite('res/portal_spritesheet.png', [0,0], [320,256], 0, [0], 'horizontal', true);
+var portal_onegear_sprite = new Sprite('res/portal_spritesheet.png', [320,0], [320,256], 0, [0], 'horizontal', true);
+var portal_twogear_sprite = new Sprite('res/portal_spritesheet.png', [0,256], [320,256], 0, [0], 'horizontal', true);
+var portal_open_sprite = new Sprite('res/portal_spritesheet.png', [320,256], [320,256], 0, [0], 'horizontal', true);
 
 // Jamming from file: 1.1_Audio.js
 /* *************************
@@ -188,6 +193,9 @@ playerSquareAudio[SKILL] = sound_square_skill;
 playerTriangleAudio[IDLE] = sound_triangle_idle;
 playerTriangleAudio[WALKING] = sound_triangle_walking;
 playerTriangleAudio[SKILL] = sound_triangle_skill;
+
+var gear_collect = new Audio;
+
 // Jamming from file: 2_VkValues.js
 /* *************************
  * Virtual Keyboard Values
@@ -444,11 +452,11 @@ function Entity(x, y){
 	this.speed;
 	
 	this.update = function(dt){
-	}
+	};
 	
 	this.render = function(){
 		renderEntity(this);
-	}
+	};
 
 	return this;
 }
@@ -480,6 +488,8 @@ function Player(x, y){
 	this.collidingWith;
 	this.collidingFrom;
 	this.lastCollision;
+	
+	this.gearsCollected = 0;
 	
 	this.currentAudio = playerCircleAudio;
 	
@@ -549,11 +559,22 @@ function Player(x, y){
 		this.checkHealth();
 	};
 	
-	this.checkPlayerCollisionWith = function(array){
+	this.checkPlayerCollisionWith = function(array, dt){
 		for(i = 0; i<array.length; i++){
+			if(array[i] instanceof Portal){
+				//depends on number of gears collected
+				continue;
+			}
 			var collision = detectCollision(player, array[i]);
 			if(collision != NOT_COLLIDING){
 				this.collidingWith = array[i];
+				
+				if(array[i] instanceof Gear){
+					this.gearsCollected++;
+					array[i].destroy();
+					continue;
+				}
+				
 				if(collision == FROM_LEFT){
 					this.collidingFrom = FROM_LEFT;
 					this.x = array[i].x - this.sprite.width;
@@ -579,6 +600,27 @@ function Player(x, y){
 					this.midAir = false;
 					FLOOR = array[i].y;
 					this.lastCollision = array[i];
+					
+					if(array[i] instanceof Spike){
+						if(this.currentType == PLAYER_IS_SQUARE){
+							//nothing
+						}
+						else if(this.currentType == PLAYER_IS_CIRCLE){
+							if(player.collidingFrom == FROM_UP && player.collidingWith.sprite == boxgear_circle_sprite || player.collidingWith.sprite == box_circle_sprite){
+								player.vy = JUMPSPEED * Math.sqrt(Math.PI) * 0.78 * dt;
+							}
+							else{
+								player.vy = JUMPSPEED * dt;
+							}
+							player.midAir = true;
+							FLOOR = canvas.height -24;
+						}
+						else if(this.currentType == PLAYER_IS_TRIANGLE){
+							//fix margin of error
+							this.takeDamage();
+						}
+					}
+					
 				}
 				if(this.lastCollision.sprite == boxgear_triangle_sprite || this.lastCollision.sprite == box_triangle_sprite){
 					this.takeDamage();
@@ -690,27 +732,38 @@ var player = new Player(canvas.width/2, canvas.height - SPRITE_SIZE - 24);
  * "CLASS": EnemyCopter
  * *************************/
 
-function EnemyCopter(x, y){
+function EnemyCopter(x, y, range){
 
 	Entity.call(this,x,y);
-	this.sprite = enemycopter_sprite;
+	this.sprite = enemycopter_sprite_left;
 	this.speed = 177;
+	this.range = range;
 	
 	this.updateMovement = function(dt){
-		var xToFollow = player.x - this.x;
-		var yToFollow = player.y - this.y;
-		var hypotenuse = Math.sqrt( (xToFollow*xToFollow)+(yToFollow*yToFollow) );
-		
-		hypotenuse = (hypotenuse==0) ? 1 : hypotenuse;
-		xToFollow /= hypotenuse;
-		yToFollow /= hypotenuse;
-		
-		this.x += xToFollow * dt * this.speed;
-		this.y += yToFollow * dt * this.speed;
+		if(Math.abs(this.x-player.x) < this.range){
+			var xToFollow = player.x - this.x;
+			var yToFollow = player.y - this.y;
+			var hypotenuse = Math.sqrt( (xToFollow*xToFollow)+(yToFollow*yToFollow) );
+			
+			hypotenuse = (hypotenuse==0) ? 1 : hypotenuse;
+			xToFollow /= hypotenuse;
+			yToFollow /= hypotenuse;
+			
+			this.x += xToFollow * dt * this.speed;
+			this.y += yToFollow * dt * this.speed;
+		}
 	};
 	
 	//Update
 	this.update = function(dt){
+	
+		if(this.x - player.x < 0){
+			this.sprite = enemycopter_sprite_left;
+		}
+		else{
+			this.sprite = enemycopter_sprite_right;
+		}
+	
 		this.sprite.update(dt);
 		this.updateMovement(dt);
 	};
@@ -722,11 +775,11 @@ function EnemyCopter(x, y){
 	return this;
 }
 
-function createEnemy(xpos,ypos){
+function createEnemy(xpos,ypos,range){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 64;
 	var position = xpos*7 + ypos;
-	entities[position] = new EnemyCopter(x,y);
+	entities[position] = new EnemyCopter(x,y,range);
 }
 // Jamming from file: 4.2.0_Box.js
 /* *************************
@@ -852,6 +905,74 @@ function createSpike(xpos,ypos,mutant,sprite,type){
 	var position = xpos*7 + ypos;
 	entities[position] = new Spike(x,y,mutant,sprite,type);
 }
+// Jamming from file: 4.2.2_Gear.js
+/* *************************
+ * "CLASS": Gear
+ * *************************/
+ 
+function Gear(x,y){
+	Entity.call(this,x,y);
+		
+	this.sprite = gear_sprite;
+	
+	this.update = function(dt){
+		this.sprite.update(dt);
+	};
+	
+	this.render = function(){
+		renderEntity(this);
+	};
+	
+	this.destroy = function(){
+		entities.splice(entities.indexOf(this), 1);
+	};
+
+	return this;
+}
+
+function createGear(xpos,ypos){
+	var x = xpos*SPRITE_SIZE;
+	var y = (ypos*SPRITE_SIZE) + 64;
+	var position = xpos*7 + ypos;
+	entities[position] = new Gear(x,y);
+}
+// Jamming from file: 4.2.3_Portal.js
+/* *************************
+ * "CLASS": Portal
+ * *************************/
+
+function Portal(x,y){
+	
+	Entity.call(this,x,y);
+	this.sprite = portal_closed_sprite;
+	
+	this.update = function(dt){
+		this.sprite.update(dt);
+		
+		if(player.gearsCollected == 0){
+			this.sprite = portal_closed_sprite;
+		}
+		else if(player.gearsCollected == 1){
+			this.sprite = portal_onegear_sprite;
+		}
+		else if(player.gearsCollected == 2){
+			this.sprite = portal_twogear_sprite;
+		}
+		else if(player.gearsCollected == 3){
+			this.sprite = portal_open_sprite;
+		}
+		
+	};
+	
+	return this;
+}
+
+function createPortal(xpos,ypos){
+	var x = xpos*SPRITE_SIZE;
+	var y = (ypos*SPRITE_SIZE) + 64;
+	var position = xpos*7 + ypos;
+	entities[position] = new Portal(x,y);
+}
 // Jamming from file: 4.3_Scenary.js
 /* *************************
  * "CLASS": Scenary
@@ -971,6 +1092,8 @@ function Keyboard(){
 				var boxesColliding = NOT_COLLIDING;
 				for(i = 0; i<entities.length; i++){
 					 boxesColliding = detectCollision(player.lastCollision, entities[i]);
+					 if(entities[i] instanceof Portal) continue;
+					 
 					 if(player.lastCollision.x == entities[i].x && player.lastCollision.y == entities[i].y){
 					 
 					 }
@@ -1169,7 +1292,7 @@ function update(dt){
 		keyboard.updateKeyInput(dt);
 		mouse.update();
 		player.update(dt);
-		player.checkPlayerCollisionWith(entities);
+		player.checkPlayerCollisionWith(entities, dt);
 		updateAll(entities, dt);
 		camera.update(dt);
 	}
@@ -1178,13 +1301,14 @@ function update(dt){
 function render(){
 	if(!paused){
 		scenary.render();
-		player.render();
 		renderAll(entities);
+		player.render();
 	}
 	renderHUD();
 }
 
 function initialize(){
+	//left wall
 	createBox(0, 0, false, metal_box);
 	createBox(0, 1, false, metal_box);
 	createBox(0, 2, false, metal_box);
@@ -1199,7 +1323,9 @@ function initialize(){
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
-	//puzzle 2k
+	createEnemy(14,4, 1000);
+	
+	//puzzle 2
 	createBox(9, 7, true, boxgear_circle_sprite);
 	createBox(15, 5, false, metal_box);
 	createBox(15, 6, false, metal_box);
@@ -1220,17 +1346,19 @@ function initialize(){
 	createBox(3, 3, false, metal_box);
 	createBox(2, 3, false, metal_box);
 	createBox(1, 3, false, metal_box);
-	//createBox(4, 2, false, metal_box);
-	//createBox(4, 1, false, metal_box);
-	//gear on 1,2
-	createSpike(2,2,true,spikegear_triangle_start,START_SPIKE);
-	createSpike(3,2,true,spikegear_triangle,MIDDLE_SPIKE);
-	createSpike(4,2,true,spikegear_triangle_end,END_SPIKE);
+	createGear(1,2);
+	createSpike(3,2,true,spikegear_triangle_start,START_SPIKE);
+	createSpike(4,2,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(5,2,true,spikegear_triangle_end,END_SPIKE);
+	createBox(6, 2, false, metal_box);
 	
-	createSpike(2,1,false,spike_triangle_start,START_SPIKE);
-	createSpike(3,1,false,spike_triangle,MIDDLE_SPIKE);
-	createSpike(4,1,false,spike_triangle_end,END_SPIKE);
-	
+	//puzzle 4
+	createPortal(18,4);
+	createBox(23, 5, false, metal_box);
+	createBox(23, 6, false, metal_box);
+	createBox(23, 7, false, metal_box);
+
+	//right wall
 	createBox(30, 0, false, metal_box);
 	createBox(30, 1, false, metal_box);
 	createBox(30, 2, false, metal_box);

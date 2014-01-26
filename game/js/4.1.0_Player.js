@@ -18,6 +18,8 @@ function Player(x, y){
 	this.collidingFrom;
 	this.lastCollision;
 	
+	this.gearsCollected = 0;
+	
 	this.currentAudio = playerCircleAudio;
 	
 	this.currentSprites = playerCircleSprites;
@@ -86,11 +88,22 @@ function Player(x, y){
 		this.checkHealth();
 	};
 	
-	this.checkPlayerCollisionWith = function(array){
+	this.checkPlayerCollisionWith = function(array, dt){
 		for(i = 0; i<array.length; i++){
+			if(array[i] instanceof Portal){
+				//depends on number of gears collected
+				continue;
+			}
 			var collision = detectCollision(player, array[i]);
 			if(collision != NOT_COLLIDING){
 				this.collidingWith = array[i];
+				
+				if(array[i] instanceof Gear){
+					this.gearsCollected++;
+					array[i].destroy();
+					continue;
+				}
+				
 				if(collision == FROM_LEFT){
 					this.collidingFrom = FROM_LEFT;
 					this.x = array[i].x - this.sprite.width;
@@ -116,6 +129,27 @@ function Player(x, y){
 					this.midAir = false;
 					FLOOR = array[i].y;
 					this.lastCollision = array[i];
+					
+					if(array[i] instanceof Spike){
+						if(this.currentType == PLAYER_IS_SQUARE){
+							//nothing
+						}
+						else if(this.currentType == PLAYER_IS_CIRCLE){
+							if(player.collidingFrom == FROM_UP && player.collidingWith.sprite == boxgear_circle_sprite || player.collidingWith.sprite == box_circle_sprite){
+								player.vy = JUMPSPEED * Math.sqrt(Math.PI) * 0.78 * dt;
+							}
+							else{
+								player.vy = JUMPSPEED * dt;
+							}
+							player.midAir = true;
+							FLOOR = canvas.height -24;
+						}
+						else if(this.currentType == PLAYER_IS_TRIANGLE){
+							//fix margin of error
+							this.takeDamage();
+						}
+					}
+					
 				}
 				if(this.lastCollision.sprite == boxgear_triangle_sprite || this.lastCollision.sprite == box_triangle_sprite){
 					this.takeDamage();

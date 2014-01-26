@@ -11,11 +11,11 @@ function Entity(x, y){
 	this.speed;
 	
 	this.update = function(dt){
-	}
+	};
 	
 	this.render = function(){
 		renderEntity(this);
-	}
+	};
 
 	return this;
 }

@@ -29,3 +29,5 @@ playerSquareAudio[SKILL] = sound_square_skill;
 playerTriangleAudio[IDLE] = sound_triangle_idle;
 playerTriangleAudio[WALKING] = sound_triangle_walking;
 playerTriangleAudio[SKILL] = sound_triangle_skill;
+
+var gear_collect = new Audio;
