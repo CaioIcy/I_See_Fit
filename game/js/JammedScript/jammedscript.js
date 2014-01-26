@@ -931,19 +931,31 @@ function Keyboard(){
 			}
 			//SQUARE -- PUSH
 			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false && player.collidingWith.sprite != metal_box){
+				
+				var boxesColliding = NOT_COLLIDING;
+				for(i = 0; i<entities.length; i++){
+					 boxesColliding = detectCollision(player.lastCollision, entities[i]);
+					 if(player.lastCollision.x == entities[i].x && player.lastCollision.y == entities[i].y){
+					 
+					 }
+					 else if(boxesColliding != NOT_COLLIDING){
+						break;
+					}
+				}
+			
 				if(player.collidingFrom == FROM_LEFT){
-					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
+					if((pressedKeys[VK_LEFT] || pressedKeys[VK_A]) && boxesColliding == NOT_COLLIDING){
 						player.collidingWith.x = player.x + player.sprite.width;
 					}
-					else if(pressedKeys[VK_RIGHT] || pressedKeys[VK_D]){
+					else if((pressedKeys[VK_RIGHT] || pressedKeys[VK_D])&& boxesColliding == NOT_COLLIDING){
 						player.collidingWith.x = player.x+player.sprite.width + 2;
 					}
 				}
 				else if(player.collidingFrom == FROM_RIGHT){
-					if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
+					if((pressedKeys[VK_LEFT] || pressedKeys[VK_A])&& boxesColliding == NOT_COLLIDING){
 						player.collidingWith.x = player.x - player.collidingWith.sprite.width - 2;
 					}
-					else if(pressedKeys[VK_RIGHT] || pressedKeys[VK_D]){
+					else if((pressedKeys[VK_RIGHT] || pressedKeys[VK_D])&& boxesColliding == NOT_COLLIDING){
 						player.collidingWith.x = player.x - player.sprite.width;
 					}
 				}
