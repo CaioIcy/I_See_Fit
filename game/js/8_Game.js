@@ -61,9 +61,13 @@ function initialize(){
 	//createBox(4, 2, false, metal_box);
 	//createBox(4, 1, false, metal_box);
 	//gear on 1,2
-	createSpike(2,2,false,spike_triangle_start);
-	createSpike(3,2,false,spikegear_triangle);
-	createSpike(4,2,false,spike_triangle_end);
+	createSpike(2,2,true,spikegear_triangle_start,START_SPIKE);
+	createSpike(3,2,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(4,2,true,spikegear_triangle_end,END_SPIKE);
+	
+	createSpike(2,1,false,spike_triangle_start,START_SPIKE);
+	createSpike(3,1,false,spike_triangle,MIDDLE_SPIKE);
+	createSpike(4,1,false,spike_triangle_end,END_SPIKE);
 	
 	createBox(30, 0, false, metal_box);
 	createBox(30, 1, false, metal_box);

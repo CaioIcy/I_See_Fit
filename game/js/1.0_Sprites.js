@@ -92,14 +92,20 @@ var spike_square_start = new Sprite('res/misc_spritesheet.png', [0,3*64], sprite
 var spike_square = new Sprite('res/misc_spritesheet.png', [1*64,3*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_square = new Sprite('res/misc_spritesheet.png', [2*64,3*64], spritesize, 0, [0], 'horizontal', true);
 var spike_square_end = new Sprite('res/misc_spritesheet.png', [3*64,3*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_square_start = new Sprite('res/misc_spritesheet.png', [0,4*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_square_end = new Sprite('res/misc_spritesheet.png', [3*64,4*64], spritesize, 0, [0], 'horizontal', true);
 
 var spike_circle_start = new Sprite('res/misc_spritesheet.png', [0,1*64], spritesize, 0, [0], 'horizontal', true);
 var spike_circle = new Sprite('res/misc_spritesheet.png', [1*64,1*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_circle = new Sprite('res/misc_spritesheet.png', [2*64,1*64], spritesize, 0, [0], 'horizontal', true);
 var spike_circle_end = new Sprite('res/misc_spritesheet.png', [3*64,1*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_circle_start = new Sprite('res/misc_spritesheet.png', [0,2*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_circle_end = new Sprite('res/misc_spritesheet.png', [3*64,2*64], spritesize, 0, [0], 'horizontal', true);
 
 var spike_triangle_start = new Sprite('res/misc_spritesheet.png', [0,5*64], spritesize, 0, [0], 'horizontal', true);
-var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [1*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spike_triangle = new Sprite('res/misc_spritesheet.png', [1*64,5*64], spritesize, 0, [0], 'horizontal', true);
 var spikegear_triangle = new Sprite('res/misc_spritesheet.png', [2*64,5*64], spritesize, 0, [0], 'horizontal', true);
 var spike_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,5*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle_start = new Sprite('res/misc_spritesheet.png', [0,6*64], spritesize, 0, [0], 'horizontal', true);
+var spikegear_triangle_end = new Sprite('res/misc_spritesheet.png', [3*64,6*64], spritesize, 0, [0], 'horizontal', true);
 
