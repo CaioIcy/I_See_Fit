@@ -80,7 +80,8 @@ resources.load([
 	'res/game_over.png',
 	'res/victory.png',
 	'res/credits.png',
-	'res/pause.png'
+	'res/pause.png',
+	'res/isf.png'
 ]);
 resources.onReady(initialize);
  
@@ -202,6 +203,10 @@ var portal_open_sprite = new Sprite('res/portal_spritesheet.png', [320,256], [32
 var health_sprite1 = new Sprite('res/health.png', [0,0], [192,64], 0, [0], 'horizontal', true);
 var health_sprite2 = new Sprite('res/health.png', [0,64*1], [192,64], 0, [0], 'horizontal', true);
 var health_sprite3 = new Sprite('res/health.png', [0,64*2], [192,64], 0, [0], 'horizontal', true);
+
+//	               function Sprite(url,           pos,  size,      speed, frames, dir, once) {
+var switching_robots1 = new Sprite('res/isf.png', [0,0], [64,64], 0, [0], 'horizontal', true);
+var switching_robots2 = new Sprite('res/isf.png', [64,0], [64,64], 0, [0], 'horizontal', true);
 
 // Jamming from file: 1.1_Audio.js
 /* *************************
@@ -670,7 +675,6 @@ function Player(x, y){
 				}
 				else if(array[i] instanceof Portal){
 					if(this.gearsCollected == 3){
-						//alert("You have collected all three gears! Good job, and thank you for playing!");
 						//refreshPage();
 						ENDGAME_VICTORY = true;
 					}
@@ -766,6 +770,7 @@ function Player(x, y){
 	
 	this.transform = function(type){
 		if(!this.midAir){
+			// switching_robots1.render(d);
 			if(type == PLAYER_IS_CIRCLE){
 				robot_ready.play();
 				this.speed = 400;
@@ -835,14 +840,11 @@ function Player(x, y){
 	
 	this.checkHealth = function(){
 		if(this.health <= 0){
-			//alert("flw");
-			//refreshPage();
 			ENDGAME_GAMEOVER = true;
 		}
 	};
 	
 	this.takeDamage = function(){
-		//alert(this.now +" - "+ this.lastDamageTaken +" >= "+this.invulnerableSeconds);
 		if((this.now - this.lastDamageTaken) >= this.invulnerableSeconds){
 			hit.play();
 			this.lastDamageTaken = window.performance.now();
@@ -853,7 +855,6 @@ function Player(x, y){
 			else if(this.health == 1){
 				this.sprite_health = health_sprite3;
 			}
-			//alert("health = " + this.health);
 		}
 	};
 	
@@ -1203,7 +1204,6 @@ var camera = new Camera(0,0);
 function Keyboard(){
 
 	this.updateKeyInput = function(dt){	
-		//alert(dt);
 	
 		//PLAYER MOVEMENT
 		if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){
@@ -1514,6 +1514,7 @@ function initialize(){
 	createBox(16,7,false, box_square_sprite);
 	
 	//puzzle 3
+	createBox(13, 4, false, metal_box);
 	createBox(12, 4, false, metal_box);
 	createBox(11, 4, false, metal_box);
 	createBox(11, 3, false, metal_box);
@@ -1535,6 +1536,7 @@ function initialize(){
 	
 	//puzzle 4
 	createPortal(16,4);
+	// createBox(15, 3, false, metal_box);
 	createBox(16, 3, false, metal_box);
 	createBox(17, 3, false, metal_box);
 	createBox(18, 3, false, metal_box);
@@ -1628,7 +1630,7 @@ function initializeLevel2(quant){
 
 	//puzzle 5
 	
-	createEnemy(28,1,160);
+	createEnemy(28,1,900);
 	createGear(29,2);
 	
 	//right wall
@@ -1647,18 +1649,25 @@ function initializeLevel2(quant){
 }
 
 // The main game loop
-var lastTime;
+var lastTime = 0;
+var dt = 1.0 / 60.0;
+var acct = 0;
+var gameSpeed = 1 / 777.0;
 function main() {
-    var now = window.performance.now();
-    var dt = (now - lastTime) / 1000.0;
-	
+    var now = (window.performance.now() - lastTime) * gameSpeed;
+    console.log(now);
 	if(!paused){
-		update(dt);
-		render();
-		gameTime += dt;
+	    acct += now;
+	
+		while(acct >= dt) {
+			update(dt);
+			render();
+			acct -= dt;
+			gameTime += dt;
+		}
 	}
 	
-	lastTime = now;
+	lastTime = window.performance.now();
 	requestAnimFrame(main);
 
 	//drawing menu
@@ -1683,6 +1692,7 @@ function main() {
 		d.clearRect(0, 0, canvas.width, canvas.height);
 		d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
 	}
+	// change from level 1 to level 2
 	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 1){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
@@ -1690,10 +1700,12 @@ function main() {
 		initializeLevel2(entities.length);
 		level = 2;
 		state = STATE_GAME;
+		player.health = 3; // also update hud later
 		player.x = 50;
 		player.y = 100;
 		ENDGAME_VICTORY = false;
 	}
+	// victory
 	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 2){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
@@ -1701,6 +1713,7 @@ function main() {
 		d.drawImage(victoryScreen,0,0,canvas.width, canvas.height);
 		state = STATE_ENDGAME;
 	}
+	// game over
 	else if(ENDGAME_GAMEOVER && state == STATE_GAME ){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
