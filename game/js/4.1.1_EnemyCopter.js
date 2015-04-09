@@ -48,6 +48,6 @@ function EnemyCopter(x, y, range){
 function createEnemy(xpos,ypos,range){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 64;
-	var position = xpos*7 + ypos;
-	entities[position] = new EnemyCopter(x,y,range);
+	//var position = xpos*7 + ypos;
+	entities[entities.length] = new EnemyCopter(x,y,range);
 }

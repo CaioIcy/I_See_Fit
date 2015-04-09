@@ -46,13 +46,14 @@ function initialize(){
 	createBox(8, 7, false, metal_box);
 	
 	//puzzle 2
-	createGear(17,4);
+	createGear(11,6);
 	createBox(9, 7, true, boxgear_circle_sprite);
 	createBox(15, 6, false, box_circle_sprite);
 	createBox(15, 7, false, metal_box);
 	createBox(16,7,false, box_square_sprite);
 	
 	//puzzle 3
+	createBox(13, 4, false, metal_box);
 	createBox(12, 4, false, metal_box);
 	createBox(11, 4, false, metal_box);
 	createBox(11, 3, false, metal_box);
@@ -74,6 +75,7 @@ function initialize(){
 	
 	//puzzle 4
 	createPortal(16,4);
+	// createBox(15, 3, false, metal_box);
 	createBox(16, 3, false, metal_box);
 	createBox(17, 3, false, metal_box);
 	createBox(18, 3, false, metal_box);
@@ -103,7 +105,7 @@ function initialize(){
 	createSpike(28,0,false,downspike_middle, MIDDLE_SPIKE);
 	createSpike(29,0,false,downspike_end, END_SPIKE);
 	
-	createEnemy(28,1,160);
+	createEnemy(28,1,260);
 	createGear(29,2);
 	
 	//right wall
@@ -118,27 +120,95 @@ function initialize(){
 	
 	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
 	
-	
+
 	lastTime = window.performance.now();
     main();
 }
 
+function initializeLevel2(quant){
+	music.play();
+
+	entities.splice(0,entities.length);
+	
+	//left wall
+	createBox(0, 0, false, box_triangle_sprite);
+	createBox(0, 1, false, box_triangle_sprite);
+	createBox(0, 2, false, box_triangle_sprite);
+	createBox(0, 3, false, box_triangle_sprite);
+	createBox(0, 4, false, box_triangle_sprite);
+	createBox(0, 5, false, box_triangle_sprite);
+	createBox(0, 6, false, box_triangle_sprite);
+	createBox(0, 7, false, box_triangle_sprite);
+	createBox(1, 7, false, box_triangle_sprite);
+	createBox(2, 7, false, box_triangle_sprite);
+	createBox(3, 7, false, box_triangle_sprite);
+	createBox(4, 7, false, box_circle_sprite);
+	createBox(5, 0, false, box_triangle_sprite);
+	createBox(5, 1, false, box_triangle_sprite);
+	createBox(5, 2, false, box_triangle_sprite);
+	createBox(5, 3, false, box_triangle_sprite);
+	
+	//puzzle 1
+	createSpike(5,7,true,spikegear_triangle_start,START_SPIKE);
+	createSpike(6,7,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(7,7,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(8,7,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(9,7,true,spikegear_triangle,MIDDLE_SPIKE);
+	createSpike(10,7,true,spikegear_triangle_end,END_SPIKE);
+	createBox(5, 4, true, spike_circle_start, START_SPIKE);
+	createBox(6, 4, true, spike_circle, MIDDLE_SPIKE);
+	createBox(7, 4, true, spike_circle, MIDDLE_SPIKE); 
+	createBox(8, 4, true, spike_circle, MIDDLE_SPIKE);
+	createBox(9, 4, true, spike_circle, MIDDLE_SPIKE);
+	createBox(10, 4, true, spike_circle_end, END_SPIKE);
+	//puzzle 2
+	
+	//puzzle 3
+	
+	//puzzle 4
+
+	//puzzle 5
+	
+	createEnemy(28,1,900);
+	createGear(29,2);
+	
+	//right wall
+	createBox(30, 0, true, metal_box);
+	createBox(30, 1, true, metal_box);
+	createBox(30, 2, true, metal_box);
+	createBox(30, 3, true, metal_box);
+	createBox(30, 4, true, metal_box);
+	createBox(30, 5, true, metal_box);
+	createBox(30, 6, true, metal_box);
+	createBox(30, 7, true, metal_box);
+
+	player.gearsCollected = 0;
+	scenary = new Scenary(0, 0);
+	paused = false;
+}
+
 // The main game loop
-var lastTime;
+var lastTime = 0;
+var dt = 1.0 / 60.0;
+var acct = 0;
+var gameSpeed = 1 / 777.0;
 function main() {
-    var now = window.performance.now();
-    var dt = (now - lastTime) / 1000.0;
-	
-	update(dt);
-	render();
-	
+    var now = (window.performance.now() - lastTime) * gameSpeed;
+    console.log(now);
 	if(!paused){
-		gameTime += dt;
+	    acct += now;
+	
+		while(acct >= dt) {
+			update(dt);
+			render();
+			acct -= dt;
+			gameTime += dt;
+		}
 	}
 	
-	lastTime = now;
+	lastTime = window.performance.now();
 	requestAnimFrame(main);
-	
+
 	//drawing menu
 	if(state == STATE_MENU){
 		paused = true;
@@ -161,13 +231,28 @@ function main() {
 		d.clearRect(0, 0, canvas.width, canvas.height);
 		d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
 	}
-	else if(ENDGAME_VICTORY && state == STATE_GAME ){
+	// change from level 1 to level 2
+	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 1){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		initializeLevel2(entities.length);
+		level = 2;
+		state = STATE_GAME;
+		player.health = 3; // also update hud later
+		player.x = 50;
+		player.y = 100;
+		ENDGAME_VICTORY = false;
+	}
+	// victory
+	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 2){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
 		d.drawImage(victoryScreen,0,0,canvas.width, canvas.height);
 		state = STATE_ENDGAME;
 	}
+	// game over
 	else if(ENDGAME_GAMEOVER && state == STATE_GAME ){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
@@ -177,3 +262,4 @@ function main() {
 	}
 	
 }
+

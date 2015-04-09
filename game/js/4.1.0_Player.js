@@ -117,7 +117,6 @@ function Player(x, y){
 				}
 				else if(array[i] instanceof Portal){
 					if(this.gearsCollected == 3){
-						//alert("You have collected all three gears! Good job, and thank you for playing!");
 						//refreshPage();
 						ENDGAME_VICTORY = true;
 					}
@@ -213,6 +212,7 @@ function Player(x, y){
 	
 	this.transform = function(type){
 		if(!this.midAir){
+			// switching_robots1.render(d);
 			if(type == PLAYER_IS_CIRCLE){
 				robot_ready.play();
 				this.speed = 400;
@@ -282,14 +282,11 @@ function Player(x, y){
 	
 	this.checkHealth = function(){
 		if(this.health <= 0){
-			//alert("flw");
-			//refreshPage();
 			ENDGAME_GAMEOVER = true;
 		}
 	};
 	
 	this.takeDamage = function(){
-		//alert(this.now +" - "+ this.lastDamageTaken +" >= "+this.invulnerableSeconds);
 		if((this.now - this.lastDamageTaken) >= this.invulnerableSeconds){
 			hit.play();
 			this.lastDamageTaken = window.performance.now();
@@ -300,7 +297,6 @@ function Player(x, y){
 			else if(this.health == 1){
 				this.sprite_health = health_sprite3;
 			}
-			//alert("health = " + this.health);
 		}
 	};
 	

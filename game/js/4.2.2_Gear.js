@@ -25,6 +25,6 @@ function Gear(x,y){
 function createGear(xpos,ypos){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 64;
-	var position = xpos*7 + ypos;
-	entities[position] = new Gear(x,y);
+	//var position = xpos*7 + ypos;
+	entities[entities.length] = new Gear(x,y);
 }

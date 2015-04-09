@@ -13,6 +13,7 @@ var i = 0;
 var pressedKeys = [];
 
 var state = 0;
+var level = 1;
 
 var ENDGAME_VICTORY = false;
 var ENDGAME_GAMEOVER = false;
@@ -48,6 +49,6 @@ var JUMPSPEED = (-830);
 var player_direction = '';
 
 var LEFT_CAMERA_PIN = 200;
-var RIGHT_CAMERA_PIN = 600;
+var RIGHT_CAMERA_PIN = 400;
 
 var BACKGROUND_WIDTH = 2000;

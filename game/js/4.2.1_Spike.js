@@ -71,6 +71,6 @@ function Spike(x,y,mutant,sprite,type){
 function createSpike(xpos,ypos,mutant,sprite,type){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 64;
-	var position = xpos*7 + ypos;
-	entities[position] = new Spike(x,y,mutant,sprite,type);
+	//var position = xpos*7 + ypos;
+	entities[entities.length] = new Spike(x,y,mutant,sprite,type);
 }

@@ -5,7 +5,6 @@
 function Keyboard(){
 
 	this.updateKeyInput = function(dt){	
-		//alert(dt);
 	
 		//PLAYER MOVEMENT
 		if(pressedKeys[VK_LEFT] || pressedKeys[VK_A]){

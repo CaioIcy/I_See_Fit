@@ -23,7 +23,8 @@ resources.load([
 	'res/game_over.png',
 	'res/victory.png',
 	'res/credits.png',
-	'res/pause.png'
+	'res/pause.png',
+	'res/isf.png'
 ]);
 resources.onReady(initialize);
  
@@ -145,3 +146,7 @@ var portal_open_sprite = new Sprite('res/portal_spritesheet.png', [320,256], [32
 var health_sprite1 = new Sprite('res/health.png', [0,0], [192,64], 0, [0], 'horizontal', true);
 var health_sprite2 = new Sprite('res/health.png', [0,64*1], [192,64], 0, [0], 'horizontal', true);
 var health_sprite3 = new Sprite('res/health.png', [0,64*2], [192,64], 0, [0], 'horizontal', true);
+
+//	               function Sprite(url,           pos,  size,      speed, frames, dir, once) {
+var switching_robots1 = new Sprite('res/isf.png', [0,0], [64,64], 0, [0], 'horizontal', true);
+var switching_robots2 = new Sprite('res/isf.png', [64,0], [64,64], 0, [0], 'horizontal', true);

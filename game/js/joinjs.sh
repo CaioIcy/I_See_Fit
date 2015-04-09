@@ -2,5 +2,6 @@
 
 FINAL_FILE="JammedScript/jammedscript.js"
 
-rm -f ${FINAL_FILE}
+rm -rf JammedScript/
+mkdir JammedScript
 cat *.js > ${FINAL_FILE}

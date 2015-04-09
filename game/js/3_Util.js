@@ -109,7 +109,7 @@ function renderHP(){
 	var gearhp = new Image();
 	gearhp.src = "res/gear_HP.png";
 	
-	d.drawImage(gearhp, 30, 30, 80, 80);
+	//d.drawImage(gearhp, 30, 30, 80, 80);
 	
 	var gearhit = new Image();
 	gearhit.src = "res/gear_HIT.png";

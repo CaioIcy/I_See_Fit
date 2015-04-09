@@ -31,6 +31,6 @@ function Portal(x,y){
 function createPortal(xpos,ypos){
 	var x = xpos*SPRITE_SIZE;
 	var y = (ypos*SPRITE_SIZE) + 64;
-	var position = xpos*7 + ypos;
-	entities[position] = new Portal(x,y);
+	//var position = xpos*7 + ypos;
+	entities[entities.length] = new Portal(x,y);
 }
