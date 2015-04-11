@@ -99,8 +99,7 @@ function initialize(){
 
 	if(firstInit) {
 		console.log("First initialization!");
-		ENDGAME_VICTORY = true;
-		level = 2;
+		ENDGAME_VICTORY = false;
 		firstInit = false;
 		lastTime = window.performance.now();
 	    main();
