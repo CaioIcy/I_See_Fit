@@ -77,8 +77,8 @@ function main() {
 		level = 3;
 		state = STATE_GAME;
 		player.health = 3; // also update hud later
-		player.x = 50;
-		player.y = 100;
+		player.x = 400;
+		player.y = 500;
 		ENDGAME_VICTORY = false;
 	}
 	// victory
