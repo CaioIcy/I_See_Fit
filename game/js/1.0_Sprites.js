@@ -53,7 +53,10 @@ selector1.src = "res/selector.png";
 
 var selector2 = new Image();
 selector2.src = "res/selector2.png";
- 
+
+var hitBlood = new Image();
+hitBlood.src = "res/hit_blood.png";
+
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 
 //(url, pos, size, speed, frames, dir, once) 

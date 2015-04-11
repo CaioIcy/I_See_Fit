@@ -308,6 +308,10 @@ function Player(x, y){
 		d.translate(5, 5);
 		this.sprite_health.render(d);
 		d.restore();
+
+		if((this.now - this.lastDamageTaken) < this.invulnerableSeconds) {
+			d.drawImage(hitBlood, 0, 0, canvas.width, canvas.height);
+		}
 	};
 	
 }
