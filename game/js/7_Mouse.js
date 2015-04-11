@@ -13,9 +13,13 @@ function Mouse() {
 	};
 	
 	this.render = function(){
-		daux.clearRect(auxcanvas.width-60, 10, 40, 40);
+		var orgfill = daux.fillStyle;
+		daux.fillStyle = "white";
+		daux.fillRect(auxcanvas.width-100, 10, 100, 40);
+		daux.fillStyle = "black";
 		daux.fillText("mX: " + this.mx, auxcanvas.width-60, 20);
 		daux.fillText("mY: " + this.my, auxcanvas.width-60, 40);
+		daux.fillStyle = orgfill;
 	};
 	
 	this.update = function(){
@@ -29,24 +33,24 @@ function Mouse() {
 		//if menu
 		if(state == STATE_MENU){
 			//if start
-			if(this.mx > 83 && this.mx < 290 && this.my > 453 && this.my < 525){
+			if(this.mx > 162 && this.mx < 162+200 && this.my > 458 && this.my < 458+62){
 				state = STATE_HELP;
 			}
 			//if credits
-			if(this.mx > 500 && this.mx < 707 && this.my > 453 && this.my < 525){
+			if(this.mx > 586 && this.mx < 586+200 && this.my > 458 && this.my < 458+62){
 				state = STATE_CREDITS;
 			}
 		}
 		//if credits
 		if(state == STATE_CREDITS){
-			if(this.mx > 293 && this.mx < 504 && this.my > 515 && this.my < 586){
+			if(this.mx > 377 && this.mx < 377+200+10 && this.my > 521 && this.my < 595){
 				state = STATE_MENU;
 			}
 		}
 		//if help
 		if(state == STATE_HELP){
 			//X
-			if(this.mx > 715 && this.mx < 800 && this.my > 0 && this.my < 85){
+			if(this.mx > 810 && this.mx < 810+80 && this.my > 0 && this.my < 0+85){
 				state = STATE_GAME;
 				paused = false;
 			}
