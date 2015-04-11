@@ -40,9 +40,11 @@ function initializeLevel2(){
 	
 	//puzzle 2
 
-	createBox(15,6, false, box_circle_sprite);
-	createBox(17,4, false, box_circle_sprite);
-	createBox(15,2, false, box_circle_sprite);
+	createBox(14,5, false, box_circle_sprite);
+	createBox(16,3, false, box_circle_sprite);
+	createBox(14,1, false, box_circle_sprite);
+	createBox(16,7, false, breakable_box);
+	createBox(17,7, true, boxgear_circle_sprite);
 	createBox(18, 1, false, metal_box);
 	createBox(18, 2, false, metal_box);
 	createBox(18, 3, false, metal_box);
@@ -105,6 +107,10 @@ function initializeLevel2(){
 	createBox(43, 7, false, metal_box);
 	createBox(43, 8, false, metal_box);
 	createBox(42, 3, false, box_circle_sprite);
+
+	player.x = 400;
+	player.y = canvas.height - FLOOR - 24;
+	ENDGAME_VICTORY = true;
 
 	player.gearsCollected = 0;
 	scenary = new Scenary(0, 0);

@@ -51,7 +51,7 @@ function initialize(){
 	createBox(6, 2, false, metal_box);
 	
 	//puzzle 4
-	createPortal(16,4);
+	createPortal(18,4);
 	// createBox(15, 3, false, metal_box);
 	createBox(16, 3, false, metal_box);
 	createBox(17, 3, false, metal_box);
@@ -59,10 +59,10 @@ function initialize(){
 	createBox(19, 3, false, metal_box);
 	createBox(20, 3, false, metal_box);
 	createBox(21, 3, false, metal_box);
-	createBox(21, 4, false, box_triangle_sprite);
-	createBox(21, 5, false, box_triangle_sprite);
-	createBox(21, 6, false, box_triangle_sprite);
-	createBox(21, 7, false, box_triangle_sprite);
+	createBox(23, 4, false, box_triangle_sprite);
+	createBox(23, 5, false, box_triangle_sprite);
+	createBox(23, 6, false, box_triangle_sprite);
+	createBox(23, 7, false, box_triangle_sprite);
 
 	//puzzle 5
 	createBox(22, 3, false, metal_box);
@@ -98,7 +98,7 @@ function initialize(){
 	menu = resources.get('res/menu.png');
 
 
-	ENDGAME_VICTORY = false;
+	ENDGAME_VICTORY = true;
 	level = 1;
 
 	lastTime = window.performance.now();

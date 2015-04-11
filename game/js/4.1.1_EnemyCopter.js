@@ -10,7 +10,7 @@ function EnemyCopter(x, y, range){
 	this.range = range;
 	
 	this.updateMovement = function(dt){
-		if(Math.abs(this.x-player.x) < this.range){
+		if(Math.abs(this.x-player.x) < this.range && Math.abs(this.y-player.y) < this.range){
 			var xToFollow = player.x - this.x;
 			var yToFollow = player.y - this.y;
 			var hypotenuse = Math.sqrt( (xToFollow*xToFollow)+(yToFollow*yToFollow) );
