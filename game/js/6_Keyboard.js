@@ -32,7 +32,13 @@ function Keyboard(){
 				}
 			}
 			//SQUARE -- PUSH
-			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false && player.collidingWith.sprite != metal_box){
+			else if(player.currentType == PLAYER_IS_SQUARE && player.collidingWith != false &&
+					player.collidingWith.sprite != metal_box &&
+					player.collidingWith.sprite != box_triangle_sprite &&
+					player.collidingWith.sprite != boxgear_triangle_sprite &&
+					player.collidingWith.sprite != box_circle_sprite &&
+					player.collidingWith.sprite != boxgear_circle_sprite &&
+					player.collidingWith.sprite != breakable_box){
 				
 				var boxesColliding = NOT_COLLIDING;
 				for(i = 0; i<entities.length; i++){
