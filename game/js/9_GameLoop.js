@@ -83,6 +83,8 @@ function main() {
 		d.drawImage(gameOverScreen,0,0,canvas.width, canvas.height);
 		state = STATE_ENDGAME;
 	}
+
+	mouse.render();
 	
 }
 

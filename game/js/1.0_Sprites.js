@@ -20,6 +20,7 @@ resources.load([
 	'res/gear_HIT.png',
 	'res/health.png',
 	'res/help.png',
+	'res/selector.png',
 	'res/game_over.png',
 	'res/victory.png',
 	'res/credits.png',
@@ -46,6 +47,12 @@ creditsScreen.src = "res/credits.png";
 
 var pauseImage = new Image();
 pauseImage.src = "res/pause.png";
+
+var selector1 = new Image();
+selector1.src = "res/selector.png";
+
+var selector2 = new Image();
+selector2.src = "res/selector2.png";
  
 var spritesize = [SPRITE_SIZE, SPRITE_SIZE];
 
