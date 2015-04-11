@@ -118,7 +118,7 @@ function initialize(){
 	createBox(30, 6, false, metal_box);
 	createBox(30, 7, false, metal_box);
 	
-	menu = d.createPattern(resources.get('res/menu.png'), 'repeat');
+	menu = resources.get('res/menu.png');
 	
 	ENDGAME_VICTORY = true;
 	level = 1;
@@ -191,6 +191,19 @@ function initializeLevel2(quant){
 	createSpike(27,7,false,box_triangle_sprite);
 	
 	//puzzle 3
+	createBox(30, 2, false, metal_box);
+	createBox(30, 3, false, metal_box);
+	createBox(30, 4, false, metal_box);
+	createBox(30, 5, false, metal_box);
+	createBox(30, 6, false, metal_box);
+	createBox(30, 7, false, metal_box);
+	createBox(31, 2, false, metal_box);
+	createBox(32, 2, false, metal_box);
+	createBox(33, 2, false, metal_box);
+	createBox(34, 2, false, metal_box);
+	createBox(35, 2, false, metal_box);
+	createBox(36, 2, false, metal_box);
+	createBox(37, 2, false, metal_box);
 	
 	//puzzle 4
 
@@ -200,12 +213,7 @@ function initializeLevel2(quant){
 	createGear(29,2);
 	
 	//right wall;
-	createBox(30, 2, false, metal_box);
-	createBox(30, 3, false, metal_box);
-	createBox(30, 4, false, metal_box);
-	createBox(30, 5, false, metal_box);
-	createBox(30, 6, false, metal_box);
-	createBox(30, 7, false, metal_box);
+
 
 	player.gearsCollected = 0;
 	scenary = new Scenary(0, 0);
@@ -219,7 +227,6 @@ var acct = 0;
 var gameSpeed = 1 / 777.0;
 function main() {
     var now = (window.performance.now() - lastTime) * gameSpeed;
-    console.log(now);
 	if(!paused){
 	    acct += now;
 	
@@ -239,8 +246,7 @@ function main() {
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
-		d.fillStyle = menu;
-		d.fillRect(0,0,canvas.width, canvas.height);
+		d.drawImage(menu,0,0,canvas.width, canvas.height);
 	}
 	//credits
 	else if(state == STATE_CREDITS){
