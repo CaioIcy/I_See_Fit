@@ -120,7 +120,8 @@ function initialize(){
 	createBox(30, 7, false, metal_box);
 	
 	menu = resources.get('res/menu.png');
-	
+
+
 	ENDGAME_VICTORY = false;
 	level = 1;
 
@@ -128,7 +129,7 @@ function initialize(){
     main();
 }
 
-function initializeLevel2(quant){
+function initializeLevel2(){
 	music.play();
 
 	entities.splice(0,entities.length);
@@ -202,17 +203,66 @@ function initializeLevel2(quant){
 	createBox(31, 2, false, metal_box);
 	createBox(32, 2, false, metal_box);
 	createBox(33, 2, true, spikegear_triangle,MIDDLE_SPIKE);
+	createBox(32, 3, false, metal_box);
+	createBox(33, 3, false, metal_box);
+	createBox(34, 3, false, metal_box);
 	createBox(34, 2, false, metal_box);
 	createBox(35, 2, false, metal_box);
 	createBox(36, 2, true, spikegear_triangle,MIDDLE_SPIKE);
+	createBox(35, 3, false, metal_box);
+	createBox(36, 3, false, metal_box);
+	createBox(37, 3, false, metal_box);
 	createBox(37, 2, false, metal_box);
 	createBox(38, 2, false, metal_box);
 	createEnemy(39,1,200);
-	createGear(40,2);
+	createGear(40,-1);
 	createPortal(31,4);
 	//puzzle 4
 
 	//puzzle 5
+	
+	createEnemy(28,4,200);
+	createGear(30,1);
+	
+	//right wall;
+	createBox(43, 0, false, metal_box);
+	createBox(43, 1, false, metal_box);
+	createBox(43, 2, false, metal_box);
+	createBox(43, 3, false, metal_box);
+	createBox(43, 4, false, metal_box);
+	createBox(43, 5, false, metal_box);
+	createBox(43, 6, false, metal_box);
+	createBox(43, 7, false, metal_box);
+	createBox(43, 8, false, metal_box);
+	createBox(42, 3, false, box_circle_sprite);
+
+	player.gearsCollected = 0;
+	scenary = new Scenary(0, 0);
+	paused = false;
+}
+
+function initializeLevel3(){
+	music.play();
+
+	entities.splice(0,entities.length);
+	
+	//left wall
+	createBox(0, 0, false, metal_box);
+	createBox(0, 1, false, metal_box);
+	createBox(0, 2, false, metal_box);
+	createBox(0, 3, false, metal_box);
+	createBox(0, 4, false, metal_box);
+	createBox(0, 5, false, metal_box);
+	createBox(0, 6, false, metal_box);
+	createBox(0, 7, false, metal_box);
+	createBox(1, 7, false, box_triangle_sprite);
+	createBox(2, 7, false, box_triangle_sprite);
+	createBox(3, 7, false, box_triangle_sprite);
+	createBox(4, 7, false, box_circle_sprite);
+	createBox(5, 0, false, box_triangle_sprite);
+	createBox(5, 1, false, box_triangle_sprite);
+	createBox(5, 2, false, box_triangle_sprite);
+	createBox(5, 3, false, box_triangle_sprite);
 	
 	createEnemy(28,4,200);
 	createGear(30,1);
@@ -272,7 +322,7 @@ function main() {
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
-		initializeLevel2(entities.length);
+		initializeLevel2();
 		level = 2;
 		state = STATE_GAME;
 		player.health = 3; // also update hud later
@@ -280,8 +330,21 @@ function main() {
 		player.y = 100;
 		ENDGAME_VICTORY = false;
 	}
-	// victory
+	// change from level 2 to level 3
 	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 2){
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		initializeLevel3();
+		level = 3;
+		state = STATE_GAME;
+		player.health = 3; // also update hud later
+		player.x = 50;
+		player.y = 100;
+		ENDGAME_VICTORY = false;
+	}
+	// victory
+	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 3){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
 		d.clearRect(0, 0, canvas.width, canvas.height);
