@@ -41,7 +41,8 @@ function initialize(){
 	createSpike(3,4,false,downspike_end, END_SPIKE);
 	
 	//puzzle 1
-	createBox(3, 7, false, box_square_sprite);
+	createBox(1, 7, false, box_square_sprite);
+	createBox(2, 7, false, breakable_box);
 	createBox(8, 6, false, metal_box);
 	createBox(8, 7, false, metal_box);
 	
@@ -120,7 +121,7 @@ function initialize(){
 	
 	menu = resources.get('res/menu.png');
 	
-	ENDGAME_VICTORY = true;
+	ENDGAME_VICTORY = false;
 	level = 1;
 
 	lastTime = window.performance.now();

@@ -214,18 +214,20 @@ function Player(x, y){
 		if(!this.midAir){
 			// switching_robots1.render(d);
 			if(type == PLAYER_IS_CIRCLE){
-				robot_ready.play();
+				if(this.currentType != PLAYER_IS_CIRCLE) robot_ready.play();
 				this.speed = 400;
 				this.currentSprites = playerCircleSprites;
 				this.currentType = PLAYER_IS_CIRCLE;
 			}
 			else if(type == PLAYER_IS_SQUARE){
+				if(this.currentType != PLAYER_IS_SQUARE) robot_ready.play();
 				robot_go.play();
 				this.speed = 200;
 				this.currentSprites = playerSquareSprites;
 				this.currentType = PLAYER_IS_SQUARE;
 			}
 			else if(type == PLAYER_IS_TRIANGLE){
+				if(this.currentType != PLAYER_IS_TRIANGLE) robot_ready.play();
 				robot_bleep.play();
 				this.speed = 200;
 				this.currentSprites = playerTriangleSprites;

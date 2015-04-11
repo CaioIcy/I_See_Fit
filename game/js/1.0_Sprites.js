@@ -108,6 +108,7 @@ var box_triangle_sprite = new Sprite('res/misc_spritesheet.png', [192, 0], sprit
 var boxgear_triangle_sprite = new Sprite('res/misc_spritesheet.png', [256, 0], spritesize , 0, [0], 'horizontal', true);
 
 var metal_box = new Sprite('res/misc_spritesheet.png', [320, 64], spritesize , 0, [0], 'horizontal', true);
+var breakable_box = new Sprite('res/misc_spritesheet.png', [128, 0], spritesize , 0, [0], 'horizontal', true);
 
 var enemycopter_sprite_left = new Sprite('res/enemycopter_spritesheet.png', [0,0], spritesize, 7, [0,1,2,1,0], 'horizontal', false);
 var enemycopter_sprite_right = new Sprite('res/enemycopter_spritesheet.png', [0,64], spritesize, 7, [0,1,2,1,0], 'horizontal', false);
