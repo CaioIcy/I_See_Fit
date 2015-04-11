@@ -57,7 +57,7 @@ function Mouse() {
 		}
 		//if endgame
 		if(state == STATE_ENDGAME){
-			if(this.mx > 43+120 && this.mx < 43+120+210 && this.my > 434 && this.my < 510){
+			if(this.mx > 121+120 && this.mx < 121+120 && this.my > 435 && this.my < 435+70){
 				refreshPage();
 			}
 		}
