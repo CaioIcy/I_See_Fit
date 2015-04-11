@@ -41,6 +41,20 @@ function main() {
 		d.clearRect(0, 0, canvas.width, canvas.height);
 		d.drawImage(helpScreen,0,0,canvas.width, canvas.height);
 	}
+	// level 1
+	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 0) {
+		paused = true;
+		daux.clearRect(0, 0, canvas.width, canvas.height);
+		d.clearRect(0, 0, canvas.width, canvas.height);
+		entities.splice(0,entities.length);
+		initialize();
+		state = STATE_GAME;
+		level = 1;
+		player.health = 3; // also update hud later
+		player.x = canvas.width/2;
+		player.y = canvas.height - SPRITE_SIZE - 24;
+		ENDGAME_VICTORY = false;
+	}
 	// change from level 1 to level 2
 	else if(ENDGAME_VICTORY && state == STATE_GAME && level == 1){
 		paused = true;
@@ -79,6 +93,7 @@ function main() {
 	else if(ENDGAME_GAMEOVER && state == STATE_GAME ){
 		paused = true;
 		daux.clearRect(0, 0, canvas.width, canvas.height);
+		mouse.update();
 		d.clearRect(0, 0, canvas.width, canvas.height);
 		d.drawImage(gameOverScreen,0,0,canvas.width, canvas.height);
 		state = STATE_ENDGAME;

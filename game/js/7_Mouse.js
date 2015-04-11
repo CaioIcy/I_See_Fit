@@ -14,13 +14,13 @@ function Mouse() {
 	
 	this.render = function(){
 		// // debug mx my
-		var orgfill = daux.fillStyle;
-		daux.fillStyle = "white";
-		daux.fillRect(auxcanvas.width-100, 10, 100, 40);
-		daux.fillStyle = "black";
-		daux.fillText("mX: " + this.mx, auxcanvas.width-60, 20);
-		daux.fillText("mY: " + this.my, auxcanvas.width-60, 40);
-		daux.fillStyle = orgfill;
+		// var orgfill = daux.fillStyle;
+		// daux.fillStyle = "white";
+		// daux.fillRect(auxcanvas.width-100, 10, 100, 40);
+		// daux.fillStyle = "black";
+		// daux.fillText("mX: " + this.mx, auxcanvas.width-60, 20);
+		// daux.fillText("mY: " + this.my, auxcanvas.width-60, 40);
+		// daux.fillStyle = orgfill;
 
 		//if menu
 		if(state == STATE_MENU){
@@ -67,7 +67,7 @@ function Mouse() {
 	this.mouseClick = function(){
 		//state = 1;
 		//paused = false;
-		
+
 		//if menu
 		if(state == STATE_MENU){
 			//if start
@@ -95,8 +95,13 @@ function Mouse() {
 		}
 		//if endgame
 		if(state == STATE_ENDGAME){
-			if(this.mx > 121+120 && this.mx < 121+120 && this.my > 435 && this.my < 435+70){
-				refreshPage();
+			if(this.mx > 121+120 && this.mx < 121+200+120 && this.my > 435 && this.my < 435+70){
+				if(level == 1)
+					refreshPage();
+				ENDGAME_VICTORY = true;
+				ENDGAME_GAMEOVER = false;
+				level--;
+				state = STATE_GAME;
 			}
 		}
 	};

@@ -1,4 +1,4 @@
-
+var firstInit = true;
 function initialize(){
 	music.play();
 
@@ -97,10 +97,17 @@ function initialize(){
 	
 	menu = resources.get('res/menu.png');
 
+	if(firstInit) {
+		console.log("First initialization!");
+		ENDGAME_VICTORY = false;
+		firstInit = false;
 
-	ENDGAME_VICTORY = true;
-	level = 1;
+		lastTime = window.performance.now();
+	    main();
+	}
+	else {
+		ENDGAME_VICTORY = false;
 
-	lastTime = window.performance.now();
-    main();
+		console.log("Initializing first level again");
+	}
 }
