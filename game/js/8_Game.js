@@ -164,6 +164,7 @@ function initializeLevel2(quant){
 	createBox(9, 4, false, box_circle_sprite);
 	createBox(10, 4, false, box_circle_sprite);
 	createEnemy(14,6,170);
+	createGear(7,3);
 	
 	//puzzle 2
 
@@ -199,18 +200,21 @@ function initializeLevel2(quant){
 	createBox(30, 7, false, metal_box);
 	createBox(31, 2, false, metal_box);
 	createBox(32, 2, false, metal_box);
-	createBox(33, 2, false, metal_box);
+	createBox(33, 2, true, spikegear_triangle,MIDDLE_SPIKE);
 	createBox(34, 2, false, metal_box);
 	createBox(35, 2, false, metal_box);
-	createBox(36, 2, false, metal_box);
+	createBox(36, 2, true, spikegear_triangle,MIDDLE_SPIKE);
 	createBox(37, 2, false, metal_box);
-	
+	createBox(38, 2, false, metal_box);
+	createEnemy(39,1,200);
+	createGear(40,2);
+	createPortal(31,4);
 	//puzzle 4
 
 	//puzzle 5
 	
-	createEnemy(28,1,200);
-	createGear(29,2);
+	createEnemy(28,4,200);
+	createGear(30,1);
 	
 	//right wall;
 
