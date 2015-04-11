@@ -33,31 +33,31 @@ function Mouse() {
 		//if menu
 		if(state == STATE_MENU){
 			//if start
-			if(this.mx > 162 && this.mx < 162+200 && this.my > 458 && this.my < 458+62){
+			if(this.mx > 162+120 && this.mx < 162+120+200 && this.my > 458 && this.my < 458+62){
 				state = STATE_HELP;
 			}
 			//if credits
-			if(this.mx > 586 && this.mx < 586+200 && this.my > 458 && this.my < 458+62){
+			if(this.mx > 586+120 && this.mx < 586+120+200 && this.my > 458 && this.my < 458+62){
 				state = STATE_CREDITS;
 			}
 		}
 		//if credits
 		if(state == STATE_CREDITS){
-			if(this.mx > 377 && this.mx < 377+200+10 && this.my > 521 && this.my < 595){
+			if(this.mx > 377+120 && this.mx < 377+120+200+10 && this.my > 521 && this.my < 595){
 				state = STATE_MENU;
 			}
 		}
 		//if help
 		if(state == STATE_HELP){
 			//X
-			if(this.mx > 810 && this.mx < 810+80 && this.my > 0 && this.my < 0+85){
+			if(this.mx > 810+120 && this.mx < 810+120+80 && this.my > 0 && this.my < 0+85){
 				state = STATE_GAME;
 				paused = false;
 			}
 		}
 		//if endgame
 		if(state == STATE_ENDGAME){
-			if(this.mx > 43 && this.mx < 253 && this.my > 434 && this.my < 510){
+			if(this.mx > 43+120 && this.mx < 43+120+210 && this.my > 434 && this.my < 510){
 				refreshPage();
 			}
 		}
